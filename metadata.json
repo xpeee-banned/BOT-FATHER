@@ -1,0 +1,6 @@
+{
+  "name": "BotFather",
+  "description": "The ultimate Telegram utility for downloading media, discovering channels, and enhancing your experience. Created by xpe.nettt.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
