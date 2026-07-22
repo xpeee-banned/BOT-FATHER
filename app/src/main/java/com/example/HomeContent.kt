@@ -1,5 +1,6 @@
 package com.example
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -49,8 +50,8 @@ fun HomeContent(onNavigate: (String) -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp),
-                    colors = CardDefaults.cardColors(containerColor = SurfaceLight),
-                    border = BorderStroke(1.dp, PrimaryContainer),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer),
                     shape = RoundedCornerShape(20.dp)
                 ) {
                     Row(
@@ -61,14 +62,14 @@ fun HomeContent(onNavigate: (String) -> Unit) {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text("Guarda tu progreso", fontWeight = FontWeight.Bold, color = OnBackgroundLight)
-                            Text("Inicia sesión para no perder recompensas", fontSize = 10.sp, color = TextSecondary)
+                            Text("Guarda tu progreso", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                            Text("Inicia sesión para no perder recompensas", fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         Spacer(modifier = Modifier.width(12.dp))
                         Button(
                             onClick = { isLoggedIn = true },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = OnBackgroundLight),
-                            border = BorderStroke(1.dp, PrimaryContainer),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = MaterialTheme.colorScheme.onBackground),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer),
                             shape = RoundedCornerShape(12.dp),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                         ) {
@@ -122,10 +123,15 @@ fun HomeContent(onNavigate: (String) -> Unit) {
         item {
             // ESPACIO PARA TU LINK DE SOCIAL TRAFFIC DE MONETAG AQUÍ
             // Reemplaza la siguiente URL con tu link directo (Social Traffic):
-            val socialTrafficUrl = "https://t.me/tu_canal_o_link_monetag"
+            val socialTrafficUrl = "https://omg10.com/4/11368455"
+            
+            val context = LocalContext.current
             
             Card(
-                onClick = { /* Abrir link en el navegador */ },
+                onClick = { 
+                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(socialTrafficUrl))
+                    context.startActivity(intent)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
@@ -162,7 +168,7 @@ fun HeroSection() {
             .clip(RoundedCornerShape(32.dp))
             .background(
                 Brush.linearGradient(
-                    colors = listOf(PrimaryBlue, OnBackgroundLight)
+                    colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onBackground)
                 )
             )
             .padding(24.dp)
@@ -206,8 +212,8 @@ fun HeroSection() {
                     onClick = { /* Retirar */ },
                     modifier = Modifier.weight(1f).height(48.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryContainer,
-                        contentColor = OnPrimaryContainer
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                     shape = RoundedCornerShape(16.dp)
                 ) {
@@ -241,15 +247,15 @@ fun AiTrendsSection() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = SurfaceLight),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape = RoundedCornerShape(28.dp),
-        border = BorderStroke(1.dp, PrimaryContainer)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = PrimaryBlue)
+                Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(8.dp))
-                Text("AI Pulse - Telegram Trends", fontWeight = FontWeight.Bold, color = OnBackgroundLight)
+                Text("AI Pulse - Telegram Trends", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
             }
             Spacer(Modifier.height(12.dp))
             Surface(
@@ -260,7 +266,7 @@ fun AiTrendsSection() {
                 Text(
                     text = trends,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = OnBackgroundLight,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.padding(16.dp)
                 )
             }
@@ -269,7 +275,7 @@ fun AiTrendsSection() {
                 "Powered by Gemini AI",
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Medium,
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.align(Alignment.End)
             )
         }
@@ -322,7 +328,7 @@ fun SectionHeader(title: String) {
         modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold,
-        color = OnBackgroundLight
+        color = MaterialTheme.colorScheme.onBackground
     )
 }
 
@@ -332,9 +338,9 @@ fun ChannelCard(channel: TelegramChannel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = SurfaceLight),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape = RoundedCornerShape(20.dp),
-        border = BorderStroke(1.dp, PrimaryContainer)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -350,12 +356,12 @@ fun ChannelCard(channel: TelegramChannel) {
             )
             Spacer(Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(channel.name, fontWeight = FontWeight.Bold, color = OnBackgroundLight)
-                Text(channel.description, style = MaterialTheme.typography.bodySmall, color = TextSecondary, maxLines = 1)
+                Text(channel.name, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                Text(channel.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
             }
             Button(
                 onClick = { /* Open link */ },
-                colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 shape = RoundedCornerShape(12.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
             ) {
@@ -376,7 +382,7 @@ fun TestimonialCard(testimonial: Testimonial, modifier: Modifier = Modifier) {
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = SurfaceVariantLight),
         shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, PrimaryContainer)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -388,7 +394,7 @@ fun TestimonialCard(testimonial: Testimonial, modifier: Modifier = Modifier) {
             Text(
                 text = "\"${testimonial.review}\"",
                 fontSize = 10.sp,
-                color = OnBackgroundLight,
+                color = MaterialTheme.colorScheme.onBackground,
                 lineHeight = 14.sp,
                 fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
             )
@@ -397,7 +403,7 @@ fun TestimonialCard(testimonial: Testimonial, modifier: Modifier = Modifier) {
                 text = "- ${testimonial.name}",
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
-                color = PrimaryBlue
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }
