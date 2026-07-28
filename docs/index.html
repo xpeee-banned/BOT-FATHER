@@ -26,8 +26,7 @@
     <meta name="twitter:image" content="https://xpeee-banned.github.io/BOT-FATHER/og-image.jpg">
     
     <!-- Monetag Telegram Mini App Ad Script -->
-    <!-- PEGA TU ETIQUETA <script> DE MONETAG AQUÍ ABAJO: -->
-    <!-- <script src="..."></script> -->
+    <script src='//libtl.com/sdk.js' data-zone='11443377' data-sdk='show_11443377'></script>
     <!-- ============================================== -->
     
     <style>
@@ -206,21 +205,45 @@
     
     <!-- Monetag Activation Functions -->
     <script>
-        // PEGA LAS FUNCIONES DE MONETAG AQUÍ
-        // Reemplaza estas funciones vacías con las que te dio Monetag (con tus Zone IDs)
-        
+        // In-App Interstitial (Se muestra automáticamente según la configuración)
+        if (typeof show_11443377 === 'function') {
+            show_11443377({
+              type: 'inApp',
+              inAppSettings: {
+                frequency: 2,
+                capping: 0.1,
+                interval: 30,
+                timeout: 5,
+                everyPage: false
+              }
+            });
+        }
+
         function showRewardedInterstitial() {
-            // Ejemplo de Monetag: 
-            // show_8888888().then(() => { alert('¡Recompensa entregada!'); });
-            console.log("Intentando mostrar Rewarded Interstitial...");
-            alert("Aquí se mostrará el Anuncio Recompensado (Requiere configurar script y Zone ID de Monetag)");
+            if (typeof show_11443377 === 'function') {
+                // Rewarded popup (opción alternativa: show_11443377('pop'))
+                show_11443377().then(() => {
+                    // You need to add your user reward function here
+                    alert('You have seen an ad! ¡Recompensa entregada!');
+                }).catch(e => {
+                    console.log("User got error during playing ad", e);
+                });
+            } else {
+                alert("Anuncio no disponible aún. Intenta en unos segundos.");
+            }
         }
 
         function showInAppInterstitial() {
-            // Ejemplo de Monetag:
-            // show_9999999().then(() => { console.log('Intersticial cerrado'); });
-            console.log("Intentando mostrar In-app Interstitial...");
-            alert("Aquí se mostrará el Anuncio Intersticial (Requiere configurar script y Zone ID de Monetag)");
+            // Este botón puede disparar el formato popup o simplemente recordar que ya se auto-ejecuta
+            if (typeof show_11443377 === 'function') {
+                show_11443377('pop').then(() => {
+                    console.log('Popup reward completado');
+                }).catch((err) => {
+                    console.log("Error al mostrar anuncio", err);
+                });
+            } else {
+                alert("Anuncio no disponible aún. Intenta en unos segundos.");
+            }
         }
     </script>
 </body>
