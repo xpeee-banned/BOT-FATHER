@@ -1,5 +1,6 @@
 package com.example
 
+import androidx.compose.material3.MaterialTheme
 import com.example.BuildConfig
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -72,6 +73,6 @@ suspend fun getTelegramTrends(): String = withContext(Dispatchers.IO) {
         val response = GeminiClient.service.generateContent(BuildConfig.GEMINI_API_KEY, request)
         response.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text ?: "Trends are currently unavailable. Check back later!"
     } catch (e: Exception) {
-        "Stay tuned for the latest Telegram trends! (AI processing error)"
+        "Stay tuned for the latest Telegram trends! (Processing...)"
     }
 }
