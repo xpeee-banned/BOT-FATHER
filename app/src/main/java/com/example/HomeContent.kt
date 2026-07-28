@@ -253,9 +253,9 @@ fun AiTrendsSection() {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Icon(Icons.Default.TrendingUp, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(8.dp))
-                Text("AI Pulse - Telegram Trends", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                Text("Insights - Telegram Trends", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
             }
             Spacer(Modifier.height(12.dp))
             Surface(
@@ -272,7 +272,7 @@ fun AiTrendsSection() {
             }
             Spacer(Modifier.height(8.dp))
             Text(
-                "Powered by Gemini AI",
+                "Updated regularly",
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
