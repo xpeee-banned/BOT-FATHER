@@ -27,6 +27,9 @@
     
     <!-- Monetag Telegram Mini App Ad Script -->
     <script src='//libtl.com/sdk.js' data-zone='11443377' data-sdk='show_11443377'></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- ============================================== -->
     
     <style>
@@ -42,6 +45,20 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+        }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); color: #FFD700; }
+            100% { transform: scale(1); }
+        }
+        .pop-animation {
+            display: inline-block;
+            animation: pop 0.4s ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
         }
         .container {
             background: white;
@@ -140,9 +157,62 @@
             color: rgba(67, 94, 145, 0.6);
             letter-spacing: 1px;
         }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: #121212;
+            color: #E0E0E0;
+        }
+        body.dark-mode .container {
+            background: #1E1E1E;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        body.dark-mode h1, body.dark-mode p, body.dark-mode .testimonial-card .author, body.dark-mode h3, body.dark-mode h4 {
+            color: #E0E0E0;
+        }
+        body.dark-mode .testimonial-card {
+            background: #2C2C2C;
+            border-color: #3C3C3C;
+        }
+        body.dark-mode .google-auth-btn {
+            background: #2C2C2C;
+            color: #E0E0E0;
+            border-color: #3C3C3C;
+        }
+        body.dark-mode .google-auth-btn:hover {
+            background: #3C3C3C;
+        }
+        body.dark-mode .footer {
+            color: rgba(255,255,255,0.5);
+        }
+        body.dark-mode .rewards-store {
+            background: #2C2C2C !important;
+            border-color: #FF8C00 !important;
+        }
+        body.dark-mode .history-box {
+            background: #1E1E1E !important;
+        }
+        body.dark-mode .points-box {
+            background: #2C2C2C !important;
+            border-color: #3C3C3C !important;
+        }
+        body.dark-mode .points-box-inner {
+            background: #1E1E1E !important;
+            border-color: #3C3C3C !important;
+        }
+        .theme-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    <button class="theme-switch" onclick="toggleTheme()" id="theme-btn">🌙</button>
     <div class="container">
         <!-- Botón de Simulación de Google Auth -->
         <button class="google-auth-btn" onclick="alert('Google Auth Simulation: Progreso guardado exitosamente.')">
@@ -193,9 +263,60 @@
         <a href="https://omg10.com/4/11368455" class="social-traffic-btn" target="_blank">🔥 Acceso Exclusivo / Grupos VIP</a>
         
         <!-- Sección de Monetag Telegram Mini App Ads -->
-        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px; align-items: center;">
-            <button onclick="showRewardedInterstitial()" style="background: #34A853; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;">🎁 Ver Anuncio Recompensado</button>
-            <button onclick="showInAppInterstitial()" style="background: #4285F4; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;">📺 Ver Anuncio Intersticial</button>
+        <div class="points-box" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px; align-items: center; background: #f0f4f8; padding: 20px; border-radius: 12px; border: 2px solid #e1e8ed;">
+            <h3 style="margin: 0; color: #435E91;">Tus Puntos: <span id="user-balance" style="display: inline-block; transition: color 0.3s;">0</span> 💎</h3>
+            <div class="points-box-inner" style="margin-top: 5px; margin-bottom: 10px; padding: 10px 15px; background: white; border-radius: 12px; border: 1px solid #d0d7de; font-size: 0.9em; width: 100%; box-sizing: border-box; text-align: center;">
+                <div style="margin-bottom: 8px;"><strong>Nivel Actual:</strong> <span id="user-level" style="font-weight: bold;">Bronce 🥉</span></div>
+                <div style="width: 100%; background: #e1e8ed; border-radius: 10px; height: 12px; overflow: hidden; margin-bottom: 4px;">
+                    <div id="level-progress-bar" style="height: 100%; background: linear-gradient(90deg, #4285F4, #34A853); width: 0%; transition: width 0.5s ease-out;"></div>
+                </div>
+                <div style="font-size: 0.8em; color: #555;" id="level-progress-text">0 / 100 para Plata</div>
+            </div>
+            <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #555;">Gana puntos viendo anuncios</p>
+            <button onclick="showRewardedInterstitial()" style="background: #34A853; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">🎁 Ver Anuncio Recompensado (+10 💎)</button>
+            <button onclick="showInAppInterstitial()" style="background: #4285F4; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">📺 Ver Anuncio Intersticial (+5 💎)</button>
+            <div style="margin-top: 15px; width: 100%;">
+                <button id="daily-reward-btn" onclick="claimDailyReward()" style="background: #9b59b6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">🎁 Reclamar Recompensa Diaria (+50 💎)</button>
+                <p id="daily-streak-display" style="margin: 5px 0 0 0; font-size: 0.85em; color: #ff8c00; font-weight: bold; text-align: center; display: none;">Racha actual: 0 días 🔥</p>
+                <p id="daily-reward-timer" style="margin: 5px 0 0 0; font-size: 0.8em; color: #555; text-align: center; display: none;">Próxima recompensa en: <span id="reward-time-left"></span></p>
+            </div>
+        </div>
+        
+        <!-- Tienda de Recompensas y Sistema de Referidos -->
+        <div class="rewards-store" style="margin-top: 20px; background: #fff3e0; padding: 20px; border-radius: 12px; border: 2px solid #ffcc80;">
+            <h3 style="margin: 0 0 15px 0; color: #e65100;">🛒 Tienda de Recompensas</h3>
+            
+            <div id="flash-sale-banner" style="display: none; background: #e74c3c; color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: bold; animation: pulse 2s infinite;">
+                ⚡ ¡Venta Flash! Termina en: <span id="flash-sale-timer">00:00</span>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button id="btn-modo-vip" onclick="redeemItem('Modo VIP', 100)" style="background: #fb8c00; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">🌟 Modo VIP (100 💎)</button>
+                <button id="btn-descargas" onclick="redeemItem('Descargas Rápidas', 50)" style="background: #fb8c00; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">⚡ +10 Descargas Rápidas (50 💎)</button>
+            </div>
+            
+            <hr style="border: none; border-top: 1px solid #ffcc80; margin: 20px 0;">
+            
+            <h4 style="margin: 0 0 10px 0; color: #e65100;">🤝 Referidos (+20 💎)</h4>
+            <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                <button onclick="generateReferralLink()" style="background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.9em; width: 100%;">Generar Link de Invitación</button>
+                <div style="display: flex; gap: 5px; width: 100%;">
+                    <input type="text" id="referral-code-input" placeholder="Ingresa código de invitado" style="flex: 1; padding: 8px; border-radius: 8px; border: 1px solid #ccc;">
+                    <button onclick="claimReferralCode()" style="background: #34495e; color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer;">Canjear</button>
+                </div>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid #ffcc80; margin: 20px 0;">
+            
+            <h4 style="margin: 0 0 10px 0; color: #e65100;">📈 Tendencia de Puntos (7 días)</h4>
+            <div id="d3-chart-container" style="background: white; border-radius: 8px; border: 1px dashed #ffcc80; padding: 10px; width: 100%; box-sizing: border-box; overflow: hidden;" class="history-box"></div>
+            
+            <div class="history-box" style="margin-top: 20px; text-align: left; background: white; padding: 15px; border-radius: 8px; border: 1px dashed #ffcc80;">
+                <h4 style="margin: 0 0 10px 0; color: #e65100; text-align: center;">📜 Historial de Canjes</h4>
+                <ul id="redeem-history" style="margin: 0; padding-left: 20px; font-size: 0.85em; color: #555; max-height: 100px; overflow-y: auto;">
+                    <li>Aún no has canjeado nada.</li>
+                </ul>
+            </div>
         </div>
         
         <div class="footer">
@@ -205,6 +326,484 @@
     
     <!-- Monetag Activation Functions -->
     <script>
+        // Tema Claro/Oscuro
+        let isDarkMode = localStorage.getItem('botfather_theme') === 'dark';
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('botfather_theme', isDarkMode ? 'dark' : 'light');
+            applyTheme();
+        }
+        function applyTheme() {
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-btn').innerText = '☀️';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('theme-btn').innerText = '🌙';
+            }
+            renderChart(); // Redibujar gráfico con colores correctos
+        }
+        applyTheme();
+
+        // Web Audio API para efectos de sonido
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            if (type === 'earn') {
+                // Sonido corto y agudo de éxito
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'redeem') {
+                // Sonido de dos tonos tipo éxito/desbloqueo
+                oscillator.type = 'triangle';
+                oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+                oscillator.frequency.setValueAtTime(600, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'error') {
+                // Sonido de error o falta de puntos
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.2);
+            }
+        }
+
+        // Puntos y Recompensas (Local Storage)
+        let userPoints = parseInt(localStorage.getItem('botfather_points')) || 0;
+        let totalPointsEarned = parseInt(localStorage.getItem('botfather_total_points')) || userPoints;
+        let redeemedHistory = JSON.parse(localStorage.getItem('botfather_redeem_history')) || [];
+        let pointsHistory = JSON.parse(localStorage.getItem('botfather_points_history')) || [];
+        let currentLevel = getLevelInfo(totalPointsEarned).name;
+        
+        // Referidos
+        let myReferralCode = localStorage.getItem('botfather_my_ref_code');
+        if (!myReferralCode) {
+            myReferralCode = 'REF-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            localStorage.setItem('botfather_my_ref_code', myReferralCode);
+        }
+        let hasUsedReferral = localStorage.getItem('botfather_used_ref') === 'true';
+
+        function generateReferralLink() {
+            const link = window.location.href.split('?')[0] + '?ref=' + myReferralCode;
+            navigator.clipboard.writeText(link).then(() => {
+                alert('¡Link de invitación copiado al portapapeles!\n' + link);
+            });
+        }
+        
+        function claimReferralCode() {
+            if (hasUsedReferral) {
+                alert('Ya has usado un código de referido.');
+                playSound('error');
+                return;
+            }
+            const inputCode = document.getElementById('referral-code-input').value.trim();
+            if (!inputCode) return;
+            if (inputCode === myReferralCode) {
+                alert('No puedes usar tu propio código.');
+                playSound('error');
+                return;
+            }
+            
+            // Simular validación exitosa (en la vida real verificaría con un backend)
+            hasUsedReferral = true;
+            localStorage.setItem('botfather_used_ref', 'true');
+            addPoints(20);
+            alert('¡Código canjeado! Has recibido 20 💎.');
+        }
+
+        // Auto-canjear si viene en URL
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            if (refCode && !hasUsedReferral && refCode !== myReferralCode) {
+                document.getElementById('referral-code-input').value = refCode;
+                // Dejamos que el usuario le de al botón o auto-canjeamos
+            }
+        });
+
+        // Recompensa Diaria y Racha
+        let lastDailyReward = parseInt(localStorage.getItem('botfather_last_daily')) || 0;
+        let dailyStreak = parseInt(localStorage.getItem('botfather_daily_streak')) || 0;
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+        
+        function updateDailyRewardTimer() {
+            const now = Date.now();
+            const timeSinceLast = now - lastDailyReward;
+            const timerEl = document.getElementById('daily-reward-timer');
+            const timeLeftEl = document.getElementById('reward-time-left');
+            const btnEl = document.getElementById('daily-reward-btn');
+            const streakEl = document.getElementById('daily-streak-display');
+            
+            // Mostrar racha
+            if (dailyStreak > 0) {
+                streakEl.style.display = 'block';
+                streakEl.innerText = `Racha actual: ${dailyStreak} días 🔥`;
+            } else {
+                streakEl.style.display = 'none';
+            }
+
+            // Chequear si se perdió la racha (más de 48 horas sin reclamar)
+            if (lastDailyReward > 0 && timeSinceLast >= ONE_DAY_MS * 2) {
+                dailyStreak = 0;
+                localStorage.setItem('botfather_daily_streak', dailyStreak);
+                if (dailyStreak > 0) {
+                    streakEl.innerText = `Racha perdida 😢`;
+                }
+            }
+            
+            if (timeSinceLast >= ONE_DAY_MS) {
+                btnEl.disabled = false;
+                btnEl.style.opacity = '1';
+                btnEl.style.cursor = 'pointer';
+                timerEl.style.display = 'none';
+            } else {
+                btnEl.disabled = true;
+                btnEl.style.opacity = '0.5';
+                btnEl.style.cursor = 'not-allowed';
+                timerEl.style.display = 'block';
+                
+                const timeLeft = ONE_DAY_MS - timeSinceLast;
+                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                timeLeftEl.innerText = `${hours}h ${minutes}m`;
+            }
+        }
+        
+        function claimDailyReward() {
+            const now = Date.now();
+            if (now - lastDailyReward >= ONE_DAY_MS) {
+                // Chequear si es un nuevo día consecutivo (menos de 48h desde el último reclamo)
+                if (lastDailyReward > 0 && (now - lastDailyReward) < (ONE_DAY_MS * 2)) {
+                    dailyStreak += 1;
+                } else {
+                    dailyStreak = 1; // Primer día de la nueva racha
+                }
+
+                lastDailyReward = now;
+                localStorage.setItem('botfather_last_daily', lastDailyReward);
+                localStorage.setItem('botfather_daily_streak', dailyStreak);
+                
+                let basePoints = 50;
+                let multiplier = 1;
+                let message = `¡Has reclamado tu recompensa diaria de 50 💎!`;
+
+                // Multiplicador si racha > 3
+                if (dailyStreak > 3) {
+                    multiplier = 2; // 2x puntos por racha mayor a 3 días
+                    message = `¡Racha de ${dailyStreak} días! 🎉 Multiplicador x2 activado. ¡Has ganado ${basePoints * multiplier} 💎!`;
+                }
+
+                addPoints(basePoints * multiplier);
+                updateDailyRewardTimer();
+                
+                Swal.fire({
+                    title: '¡Recompensa Diaria!',
+                    text: message,
+                    icon: 'success',
+                    confirmButtonColor: '#9b59b6'
+                });
+            }
+        }
+        
+        setInterval(updateDailyRewardTimer, 60000); // Actualizar temporizador cada minuto
+        
+        function getLevelInfo(points) {
+            if (points >= 500) return { name: 'Oro 🏆', color: '#FFD700', nextGoal: null, nextName: null, minPoints: 500 };
+            if (points >= 100) return { name: 'Plata 🥈', color: '#808080', nextGoal: 500, nextName: 'Oro', minPoints: 100 };
+            return { name: 'Bronce 🥉', color: '#CD7F32', nextGoal: 100, nextName: 'Plata', minPoints: 0 };
+        }
+        
+        function updatePointsDisplay(animate = false) {
+            const balanceEl = document.getElementById('user-balance');
+            balanceEl.innerText = userPoints;
+            
+            const levelInfo = getLevelInfo(totalPointsEarned);
+            const levelEl = document.getElementById('user-level');
+            levelEl.innerText = levelInfo.name;
+            levelEl.style.color = levelInfo.color;
+            
+            // Progress Bar Logic
+            const progressText = document.getElementById('level-progress-text');
+            const progressBar = document.getElementById('level-progress-bar');
+            
+            if (levelInfo.nextGoal !== null) {
+                const pointsInLevel = totalPointsEarned - levelInfo.minPoints;
+                const pointsNeeded = levelInfo.nextGoal - levelInfo.minPoints;
+                const percentage = Math.min(100, Math.max(0, (pointsInLevel / pointsNeeded) * 100));
+                
+                progressBar.style.width = percentage + '%';
+                progressText.innerText = `${totalPointsEarned} / ${levelInfo.nextGoal} para ${levelInfo.nextName}`;
+            } else {
+                progressBar.style.width = '100%';
+                progressBar.style.background = 'linear-gradient(90deg, #FFD700, #FFA500)';
+                progressText.innerText = `¡Nivel Máximo Alcanzado! (${totalPointsEarned} pts)`;
+            }
+            
+            // Confetti y nivel arriba
+            const newLevelInfo = getLevelInfo(totalPointsEarned);
+            if (newLevelInfo.name !== currentLevel) {
+                currentLevel = newLevelInfo.name;
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+                playSound('earn');
+                setTimeout(() => alert(`¡Felicidades! Has subido al nivel ${currentLevel}`), 500);
+            }
+            
+            if (animate) {
+                balanceEl.classList.remove('pop-animation');
+                void balanceEl.offsetWidth; // Force reflow para reiniciar la animación
+                balanceEl.classList.add('pop-animation');
+            }
+            
+            updateHistoryDisplay();
+        }
+        
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('redeem-history');
+            if (redeemedHistory.length === 0) {
+                historyList.innerHTML = '<li>Aún no has canjeado nada.</li>';
+            } else {
+                historyList.innerHTML = redeemedHistory.map(item => `<li>${item.date}: <strong>${item.name}</strong> (-${item.cost} 💎)</li>`).join('');
+            }
+        }
+
+        function addPoints(amount) {
+            playSound('earn');
+            userPoints += amount;
+            totalPointsEarned += amount;
+            
+            // Registrar historial para D3
+            const todayStr = new Date().toISOString().split('T')[0];
+            const existingDay = pointsHistory.find(p => p.date === todayStr);
+            if (existingDay) {
+                existingDay.value += amount;
+            } else {
+                pointsHistory.push({ date: todayStr, value: amount });
+            }
+            // Mantener últimos 7 días
+            if (pointsHistory.length > 7) pointsHistory.shift();
+            
+            localStorage.setItem('botfather_points', userPoints);
+            localStorage.setItem('botfather_total_points', totalPointsEarned);
+            localStorage.setItem('botfather_points_history', JSON.stringify(pointsHistory));
+            updatePointsDisplay(true);
+            renderChart();
+        }
+        
+        function redeemItem(itemName, cost) {
+            Swal.fire({
+                title: `¿Canjear ${itemName}?`,
+                text: `Esto costará ${cost} 💎 puntos.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#fb8c00',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, canjear',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (userPoints >= cost) {
+                        playSound('redeem');
+                        userPoints -= cost;
+                        localStorage.setItem('botfather_points', userPoints);
+                        
+                        const dateStr = new Date().toLocaleDateString();
+                        redeemedHistory.push({ name: itemName, cost: cost, date: dateStr });
+                        localStorage.setItem('botfather_redeem_history', JSON.stringify(redeemedHistory));
+                        
+                        updatePointsDisplay(true);
+                        Swal.fire(
+                            '¡Felicidades!',
+                            `Has canjeado exitosamente: ${itemName}`,
+                            'success'
+                        );
+                    } else {
+                        playSound('error');
+                        Swal.fire(
+                            'Puntos insuficientes',
+                            `Te faltan ${cost - userPoints} 💎.`,
+                            'error'
+                        );
+                    }
+                }
+            });
+        }
+        
+        // Inicializar display y timer
+        updatePointsDisplay();
+        updateDailyRewardTimer();
+        
+        // Flash Sale Mechanic
+        const flashSaleConfig = {
+            active: false,
+            endTime: 0,
+            duration: 10 * 60 * 1000 // 10 minutes
+        };
+
+        function startFlashSale() {
+            flashSaleConfig.active = true;
+            flashSaleConfig.endTime = Date.now() + flashSaleConfig.duration;
+            localStorage.setItem('botfather_flash_sale_end', flashSaleConfig.endTime);
+            updateFlashSaleUI();
+        }
+
+        function checkFlashSale() {
+            const savedEnd = parseInt(localStorage.getItem('botfather_flash_sale_end')) || 0;
+            if (savedEnd > Date.now()) {
+                flashSaleConfig.active = true;
+                flashSaleConfig.endTime = savedEnd;
+            } else {
+                flashSaleConfig.active = false;
+            }
+            updateFlashSaleUI();
+        }
+        
+        function updateFlashSaleUI() {
+            const banner = document.getElementById('flash-sale-banner');
+            const timerSpan = document.getElementById('flash-sale-timer');
+            const btnVip = document.getElementById('btn-modo-vip');
+            const btnDesc = document.getElementById('btn-descargas');
+
+            if (flashSaleConfig.active) {
+                const timeLeft = flashSaleConfig.endTime - Date.now();
+                if (timeLeft <= 0) {
+                    flashSaleConfig.active = false;
+                    localStorage.removeItem('botfather_flash_sale_end');
+                    updateFlashSaleUI(); // Revert UI
+                    return;
+                }
+
+                banner.style.display = 'block';
+                
+                const m = Math.floor((timeLeft / 1000 / 60) % 60).toString().padStart(2, '0');
+                const s = Math.floor((timeLeft / 1000) % 60).toString().padStart(2, '0');
+                timerSpan.innerText = `${m}:${s}`;
+                
+                btnVip.innerHTML = `🌟 Modo VIP (<span style="text-decoration: line-through; opacity: 0.7;">100</span> <span style="color: #FFD700;">50</span> 💎)`;
+                btnVip.onclick = () => redeemItem('Modo VIP', 50);
+                
+                btnDesc.innerHTML = `⚡ +10 Descargas Rápidas (<span style="text-decoration: line-through; opacity: 0.7;">50</span> <span style="color: #FFD700;">25</span> 💎)`;
+                btnDesc.onclick = () => redeemItem('Descargas Rápidas', 25);
+            } else {
+                banner.style.display = 'none';
+                
+                btnVip.innerHTML = `🌟 Modo VIP (100 💎)`;
+                btnVip.onclick = () => redeemItem('Modo VIP', 100);
+                
+                btnDesc.innerHTML = `⚡ +10 Descargas Rápidas (50 💎)`;
+                btnDesc.onclick = () => redeemItem('Descargas Rápidas', 50);
+            }
+        }
+
+        setInterval(() => {
+            if (flashSaleConfig.active) {
+                updateFlashSaleUI();
+            } else {
+                // 5% chance to start a flash sale every minute if not active
+                if (Math.random() < 0.05) {
+                    startFlashSale();
+                }
+            }
+        }, 1000);
+        
+        checkFlashSale();
+        
+        // D3.js Gráfico de tendencia
+        function renderChart() {
+            const container = document.getElementById('d3-chart-container');
+            container.innerHTML = '';
+            
+            if (pointsHistory.length === 0) {
+                container.innerHTML = '<p style="text-align:center;font-size:0.85em;color:#888;">No hay datos aún. ¡Gana puntos para ver tu tendencia!</p>';
+                return;
+            }
+
+            const margin = {top: 10, right: 10, bottom: 20, left: 30},
+                  width = container.clientWidth - margin.left - margin.right,
+                  height = 120 - margin.top - margin.bottom;
+
+            const svg = d3.select("#d3-chart-container")
+              .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+              .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // Añadir días faltantes para que siempre se vea bien
+            let data = [...pointsHistory];
+            const parseDate = d3.timeParse("%Y-%m-%d");
+            
+            const x = d3.scaleTime()
+              .domain(d3.extent(data, d => parseDate(d.date)))
+              .range([ 0, width ]);
+              
+            const textColor = isDarkMode ? "#E0E0E0" : "#555";
+              
+            svg.append("g")
+              .attr("transform", `translate(0, ${height})`)
+              .call(d3.axisBottom(x).ticks(data.length).tickFormat(d3.timeFormat("%d %b")))
+              .selectAll("text")
+                .style("fill", textColor)
+                .style("font-size", "9px");
+
+            const y = d3.scaleLinear()
+              .domain([0, d3.max(data, d => d.value) || 10])
+              .range([ height, 0 ]);
+              
+            svg.append("g")
+              .call(d3.axisLeft(y).ticks(4))
+              .selectAll("text")
+                .style("fill", textColor)
+                .style("font-size", "9px");
+
+            svg.append("path")
+              .datum(data)
+              .attr("fill", "none")
+              .attr("stroke", isDarkMode ? "#FFD700" : "#4285F4")
+              .attr("stroke-width", 2)
+              .attr("d", d3.line()
+                .x(d => x(parseDate(d.date)))
+                .y(d => y(d.value))
+                .curve(d3.curveMonotoneX)
+              );
+              
+            svg.selectAll("circle")
+              .data(data)
+              .enter()
+              .append("circle")
+                .attr("fill", isDarkMode ? "#FFD700" : "#34A853")
+                .attr("stroke", "none")
+                .attr("cx", d => x(parseDate(d.date)))
+                .attr("cy", d => y(d.value))
+                .attr("r", 3);
+        }
+        
+        window.addEventListener('resize', renderChart);
+        setTimeout(renderChart, 100);
+
         // In-App Interstitial (Se muestra automáticamente según la configuración)
         if (typeof show_11443377 === 'function') {
             show_11443377({
@@ -224,7 +823,8 @@
                 // Rewarded popup (opción alternativa: show_11443377('pop'))
                 show_11443377().then(() => {
                     // You need to add your user reward function here
-                    alert('You have seen an ad! ¡Recompensa entregada!');
+                    addPoints(10);
+                    alert('¡Genial! Has ganado +10 💎 puntos por ver el anuncio.');
                 }).catch(e => {
                     console.log("User got error during playing ad", e);
                 });
@@ -237,13 +837,28 @@
             // Este botón puede disparar el formato popup o simplemente recordar que ya se auto-ejecuta
             if (typeof show_11443377 === 'function') {
                 show_11443377('pop').then(() => {
-                    console.log('Popup reward completado');
+                    addPoints(5);
+                    alert('¡Excelente! Has ganado +5 💎 puntos.');
                 }).catch((err) => {
                     console.log("Error al mostrar anuncio", err);
                 });
             } else {
                 alert("Anuncio no disponible aún. Intenta en unos segundos.");
             }
+        }
+    </script>
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
         }
     </script>
 </body>
