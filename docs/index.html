@@ -30,13 +30,62 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <!-- ============================================== -->
     
     <style>
+        :root {
+            --bg-color: #F8FAFC;
+            --text-color: #0F172A;
+            --container-bg: #FFFFFF;
+            --container-border: #E2E8F0;
+            --container-shadow: 0 20px 40px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255,255,255,1);
+            --btn-bg: #FFFFFF;
+            --btn-text: #0F172A;
+            --btn-border: #CBD5E1;
+            --btn-hover-bg: #F1F5F9;
+            --text-muted: #64748B;
+            --card-bg: #F8FAFC;
+            --card-border: #E2E8F0;
+            --chart-line: #3B82F6;
+            --chart-dot: #34A853;
+            --history-box-bg: #FFFFFF;
+            --history-box-border: #ffcc80;
+            --points-box-bg: #f0f4f8;
+            --points-box-border: #e1e8ed;
+            --points-inner-bg: #FFFFFF;
+            --points-inner-border: #d0d7de;
+            --rewards-store-bg: #fff3e0;
+        }
+        body.dark-mode {
+            --bg-color: #0F172A;
+            --text-color: #F8FAFC;
+            --container-bg: #1E293B;
+            --container-border: #334155;
+            --container-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+            --btn-bg: #0F172A;
+            --btn-text: #F8FAFC;
+            --btn-border: #334155;
+            --btn-hover-bg: #1E293B;
+            --text-muted: #94A3B8;
+            --card-bg: #0F172A;
+            --card-border: #334155;
+            --chart-line: #FFD700;
+            --chart-dot: #FFD700;
+            --history-box-bg: #1E293B;
+            --history-box-border: #475569;
+            --points-box-bg: #0F172A;
+            --points-box-border: #334155;
+            --points-inner-bg: #1E293B;
+            --points-inner-border: #475569;
+            --rewards-store-bg: #1E293B;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0F172A; /* Deep Slate Blue / Black */
-            color: #F8FAFC;
+            background: var(--bg-color);
+            color: var(--text-color);
             text-align: center;
             padding: 40px 15px;
             margin: 0;
@@ -45,6 +94,7 @@
             align-items: center;
             justify-content: flex-start;
             min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
         }
         @keyframes pop {
             0% { transform: scale(1); }
@@ -61,19 +111,20 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
         }
         .container {
-            background: #1E293B;
+            background: var(--container-bg);
             padding: 40px;
             border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+            box-shadow: var(--container-shadow);
             max-width: 500px;
             width: 100%;
             box-sizing: border-box;
-            border: 1px solid #334155;
+            border: 1px solid var(--container-border);
+            transition: background 0.3s, border-color 0.3s;
         }
         .google-auth-btn {
-            background: #0F172A;
-            color: #F8FAFC;
-            border: 1px solid #334155;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: 1px solid var(--btn-border);
             padding: 12px 24px;
             border-radius: 12px;
             font-weight: 600;
@@ -85,18 +136,18 @@
             transition: all 0.2s;
         }
         .google-auth-btn:hover {
-            background: #1E293B;
-            border-color: #475569;
+            background: var(--btn-hover-bg);
+            border-color: var(--text-muted);
         }
         h1 {
-            color: #F8FAFC;
+            color: var(--text-color);
             margin-bottom: 5px;
             font-size: 2.2em;
             font-weight: 800;
             letter-spacing: -0.5px;
         }
         p {
-            color: #94A3B8;
+            color: var(--text-muted);
             line-height: 1.6;
             margin-bottom: 25px;
         }
@@ -108,18 +159,19 @@
             text-align: left;
         }
         .testimonial-card {
-            background: #0F172A;
+            background: var(--card-bg);
             padding: 15px;
             border-radius: 16px;
-            border: 1px solid #334155;
+            border: 1px solid var(--card-border);
             font-size: 0.85em;
+            transition: background 0.3s, border-color 0.3s;
         }
         .testimonial-card .stars {
             color: #F59E0B;
             margin-bottom: 5px;
         }
         .testimonial-card .author {
-            color: #F8FAFC;
+            color: var(--text-color);
             font-weight: bold;
             margin-top: 8px;
             font-size: 0.9em;
@@ -161,13 +213,43 @@
         .footer {
             margin-top: 30px;
             font-size: 0.8em;
-            color: #64748B;
+            color: var(--text-muted);
             letter-spacing: 1px;
+        }
+        .theme-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        .history-box {
+            background: var(--history-box-bg) !important;
+            border-color: var(--history-box-border) !important;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .points-box {
+            background: var(--points-box-bg) !important;
+            border-color: var(--points-box-border) !important;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .points-box-inner {
+            background: var(--points-inner-bg) !important;
+            border-color: var(--points-inner-border) !important;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .rewards-store {
+            background: var(--rewards-store-bg) !important;
+            border-color: var(--history-box-border) !important;
+            transition: background 0.3s, border-color 0.3s;
         }
         
     </style>
 </head>
 <body>
+    <button class="theme-switch" onclick="toggleTheme()" id="theme-btn">🌙</button>
     <div class="container">
         <!-- Botón de Simulación de Google Auth -->
         <button class="google-auth-btn" onclick="alert('Google Auth Simulation: Progreso guardado exitosamente.')">
@@ -241,6 +323,14 @@
         <div class="rewards-store" style="margin-top: 20px; background: #fff3e0; padding: 20px; border-radius: 12px; border: 2px solid #ffcc80;">
             <h3 style="margin: 0 0 15px 0; color: #e65100;">🛒 Tienda de Recompensas</h3>
             
+            <div id="checkin-container" style="background: var(--points-box-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--points-box-border); margin-bottom: 15px; text-align: center;">
+                <h4 style="margin: 0 0 10px 0; color: var(--text-color);">📅 Check-in Diario</h4>
+                <p style="font-size: 0.8em; color: var(--text-muted); margin-top: 0; margin-bottom: 10px;">¡Abre la app cada día para recompensas más grandes!</p>
+                <div id="checkin-days" style="display: flex; justify-content: space-between; gap: 5px; overflow-x: auto; padding-bottom: 5px;">
+                    <!-- Se generará con JS -->
+                </div>
+            </div>
+            
             <div id="flash-sale-banner" style="display: none; background: #e74c3c; color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: bold; animation: pulse 2s infinite;">
                 ⚡ ¡Venta Flash! Termina en: <span id="flash-sale-timer">00:00</span>
             </div>
@@ -254,13 +344,24 @@
             
             <h4 style="margin: 0 0 10px 0; color: #e65100;">🤝 Referidos (+20 💎)</h4>
             <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
-                <button onclick="generateReferralLink()" style="background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.9em; width: 100%;">Generar Link de Invitación</button>
+                <button onclick="shareToTelegram()" style="background: #0088cc; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">✈️ Compartir en Telegram</button>
+                <button onclick="generateReferralLink()" style="background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.9em; width: 100%;">Copiar Link de Invitación</button>
                 <div style="display: flex; gap: 5px; width: 100%;">
                     <input type="text" id="referral-code-input" placeholder="Ingresa código de invitado" style="flex: 1; padding: 8px; border-radius: 8px; border: 1px solid #ccc;">
                     <button onclick="claimReferralCode()" style="background: #34495e; color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer;">Canjear</button>
                 </div>
             </div>
 
+            <hr style="border: none; border-top: 1px solid #ffcc80; margin: 20px 0;">
+            
+            <h4 style="margin: 0 0 10px 0; color: #1565c0;">💰 Gana Más: Socios y Promos</h4>
+            <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 0;">Descubre ofertas exclusivas y apps patrocinadas para ganar dinero o diamantes.</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button onclick="window.open('https://t.me/xpe_official_bot?start=cpa_offer', '_blank')" style="background: #ef5350; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">🚀 Oferta Especial: Juega y Gana (+200 💎)</button>
+                <button onclick="window.open('https://t.me/xpe_official_bot?start=crypto_promo', '_blank')" style="background: #fbc02d; color: #212121; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">📈 Bono Cripto: Binance/Bybit (+500 💎)</button>
+                <button onclick="window.open('https://t.me/xpe_official_bot?start=download_app', '_blank')" style="background: #ab47bc; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">📲 Descargar App Patrocinada (+150 💎)</button>
+            </div>
+            
             <hr style="border: none; border-top: 1px solid #ffcc80; margin: 20px 0;">
             
             <h4 style="margin: 0 0 10px 0; color: #e65100;">🎯 Misiones Diarias</h4>
@@ -288,8 +389,29 @@
     
     <!-- Monetag Activation Functions -->
     <script>
-        // Tema Siempre Oscuro
-        let isDarkMode = true;
+        // Tema Claro/Oscuro dinámico
+        let isDarkMode = localStorage.getItem('botfather_theme') === 'dark';
+        
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('botfather_theme', isDarkMode ? 'dark' : 'light');
+            applyTheme();
+        }
+        
+        function applyTheme() {
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-btn').innerText = '☀️';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('theme-btn').innerText = '🌙';
+            }
+            renderChartIfReady();
+        }
+        
+        // Aplicar al cargar
+        applyTheme();
+
         function renderChartIfReady() {
             if(typeof renderChart === 'function') {
                 renderChart();
@@ -353,6 +475,23 @@
             localStorage.setItem('botfather_my_ref_code', myReferralCode);
         }
         let hasUsedReferral = localStorage.getItem('botfather_used_ref') === 'true';
+
+        function shareToTelegram() {
+            const link = window.location.href.split('?')[0] + '?ref=' + myReferralCode;
+            const text = '¡Únete a RewardNexus y gana recompensas increíbles! Usa mi link y obtén un bono:';
+            const tgLink = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
+            
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && Object.keys(window.Telegram.WebApp.initDataUnsafe).length > 0) {
+                // We are inside Telegram Web App
+                window.Telegram.WebApp.openTelegramLink(tgLink);
+            } else {
+                // Fallback for regular browser
+                window.open(tgLink, '_blank');
+            }
+            
+            // Auto progress mission
+            progressMission('share', 1);
+        }
 
         function generateReferralLink() {
             const link = window.location.href.split('?')[0] + '?ref=' + myReferralCode;
@@ -427,6 +566,7 @@
                 btnEl.style.opacity = '1';
                 btnEl.style.cursor = 'pointer';
                 timerEl.style.display = 'none';
+                btnEl.innerText = `🎁 Reclamar Recompensa Diaria`;
             } else {
                 btnEl.disabled = true;
                 btnEl.style.opacity = '0.5';
@@ -437,6 +577,58 @@
                 const hours = Math.floor(timeLeft / (1000 * 60 * 60));
                 const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 timeLeftEl.innerText = `${hours}h ${minutes}m`;
+                btnEl.innerText = `Reclamada hoy ✔️`;
+            }
+            renderCheckinUI();
+        }
+        
+        function renderCheckinUI() {
+            const container = document.getElementById('checkin-days');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            const maxDays = 7;
+            const rewards = [10, 20, 30, 40, 50, 75, 100];
+            
+            const displayStreak = Math.min(dailyStreak, maxDays);
+            
+            const now = Date.now();
+            const timeSinceLast = now - lastDailyReward;
+            const canClaimToday = timeSinceLast >= ONE_DAY_MS;
+            
+            for (let i = 1; i <= maxDays; i++) {
+                let isClaimed = i <= displayStreak;
+                if (canClaimToday && i === displayStreak) {
+                    isClaimed = false; // The current streak day hasn't been claimed yet today (wait, if streak is 3 and we haven't claimed today, streak is 3 from yesterday? No, if we haven't claimed today and streak is intact, it means we claimed yesterday, so 3 days claimed so far. Wait, dailyStreak is the number of CONSECUTIVE days claimed. If we haven't claimed today, the streak so far is `dailyStreak`, and today is `dailyStreak + 1`! So `isClaimed = i <= dailyStreak`).
+                }
+                
+                const dayEl = document.createElement('div');
+                dayEl.style.minWidth = '50px';
+                dayEl.style.padding = '8px 5px';
+                dayEl.style.borderRadius = '8px';
+                dayEl.style.display = 'flex';
+                dayEl.style.flexDirection = 'column';
+                dayEl.style.alignItems = 'center';
+                dayEl.style.fontSize = '0.8em';
+                
+                if (i <= displayStreak && !(canClaimToday && i === displayStreak + 1)) {
+                    dayEl.style.background = 'var(--chart-dot)';
+                    dayEl.style.color = '#fff';
+                    dayEl.style.border = '1px solid var(--chart-dot)';
+                    dayEl.innerHTML = `<span style="font-weight:bold;">Día ${i}</span><span style="font-size:1.2em; margin:2px 0;">✔️</span><span>+${rewards[i-1]}</span>`;
+                } else if (i === displayStreak + 1 || (displayStreak === 0 && i === 1)) {
+                    dayEl.style.background = 'var(--points-inner-bg)';
+                    dayEl.style.color = 'var(--text-color)';
+                    dayEl.style.border = '2px solid var(--chart-line)';
+                    dayEl.innerHTML = `<span style="font-weight:bold;">Día ${i}</span><span style="font-size:1.2em; margin:2px 0;">🎁</span><span>+${rewards[i-1]}</span>`;
+                } else {
+                    dayEl.style.background = 'var(--points-inner-bg)';
+                    dayEl.style.color = 'var(--text-muted)';
+                    dayEl.style.border = '1px dashed var(--container-border)';
+                    dayEl.innerHTML = `<span>Día ${i}</span><span style="font-size:1.2em; margin:2px 0; opacity:0.5;">🔒</span><span>+${rewards[i-1]}</span>`;
+                }
+                
+                container.appendChild(dayEl);
             }
         }
         
@@ -450,25 +642,23 @@
                     dailyStreak = 1; // Primer día de la nueva racha
                 }
 
+                if (dailyStreak > 7) {
+                    dailyStreak = 1; // Loop around after 7 days
+                }
+
                 lastDailyReward = now;
                 localStorage.setItem('botfather_last_daily', lastDailyReward);
                 localStorage.setItem('botfather_daily_streak', dailyStreak);
                 
-                let basePoints = 50;
-                let multiplier = 1;
-                let message = `¡Has reclamado tu recompensa diaria de 50 💎!`;
+                const rewards = [10, 20, 30, 40, 50, 75, 100];
+                let basePoints = rewards[dailyStreak - 1] || 10;
+                let message = `¡Has reclamado tu recompensa del Día ${dailyStreak}! Has ganado ${basePoints} 💎.`;
 
-                // Multiplicador si racha > 3
-                if (dailyStreak > 3) {
-                    multiplier = 2; // 2x puntos por racha mayor a 3 días
-                    message = `¡Racha de ${dailyStreak} días! 🎉 Multiplicador x2 activado. ¡Has ganado ${basePoints * multiplier} 💎!`;
-                }
-
-                addPoints(basePoints * multiplier);
+                addPoints(basePoints);
                 updateDailyRewardTimer();
                 
                 Swal.fire({
-                    title: '¡Recompensa Diaria!',
+                    title: '¡Check-in Completo!',
                     text: message,
                     icon: 'success',
                     confirmButtonColor: '#9b59b6'
@@ -628,16 +818,16 @@
                 
                 const missionEl = document.createElement('div');
                 missionEl.style.padding = '10px';
-                missionEl.style.background = isComplete ? '#d4edda' : '#fff';
-                missionEl.style.border = '1px solid ' + (isComplete ? '#c3e6cb' : '#ccc');
+                missionEl.style.background = isComplete ? 'var(--card-bg)' : 'var(--container-bg)';
+                missionEl.style.border = '1px solid ' + (isComplete ? '#c3e6cb' : 'var(--container-border)');
                 missionEl.style.borderRadius = '8px';
                 missionEl.style.display = 'flex';
                 missionEl.style.justifyContent = 'space-between';
                 missionEl.style.alignItems = 'center';
 
                 const textDiv = document.createElement('div');
-                textDiv.innerHTML = `<span style="text-decoration: ${isComplete ? 'line-through' : 'none'}; font-weight: bold; color: #333;">${mission.desc}</span>
-                                     <div style="font-size: 0.8em; color: #666;">Progreso: ${mission.current}/${mission.target}</div>`;
+                textDiv.innerHTML = `<span style="text-decoration: ${isComplete ? 'line-through' : 'none'}; font-weight: bold; color: var(--text-color);">${mission.desc}</span>
+                                     <div style="font-size: 0.8em; color: var(--text-muted);">Progreso: ${mission.current}/${mission.target}</div>`;
                 
                 const actionBtn = document.createElement('button');
                 actionBtn.style.padding = '5px 10px';
