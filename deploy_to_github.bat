@@ -1,12 +1,12 @@
 @echo off
 echo ==========================================
-echo   BotFather - Despliegue a GitHub
+echo   RewardNexus - Despliegue a GitHub
 echo ==========================================
 echo Iniciando repositorio local...
 git init
 git branch -M main
 git add .
-git commit -m "Initial commit - BotFather App"
+git commit -m "Initial commit - RewardNexus App"
 
 echo.
 echo Por favor, introduce la URL de tu repositorio de GitHub (ej. https://github.com/tu-usuario/tu-repo.git):

@@ -52,7 +52,7 @@ fun RewardContent() {
             )
             Spacer(Modifier.height(24.dp))
             Text(
-                "BotFather Rewards",
+                "RewardNexus Rewards",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = OnBackgroundLight

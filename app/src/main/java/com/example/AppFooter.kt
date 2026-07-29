@@ -19,7 +19,7 @@ fun AppFooter(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Powered by BotFather",
+            text = "Powered by RewardNexus",
             color = TextSecondary.copy(alpha = 0.8f),
             fontSize = 11.sp,
             fontWeight = FontWeight.Bold,

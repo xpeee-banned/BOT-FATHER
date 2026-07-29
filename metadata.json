@@ -1,6 +1,6 @@
 {
-  "name": "BotFather",
-  "description": "The ultimate Telegram utility for downloading media, discovering channels, and enhancing your experience. Created by xpe.nettt.",
+  "name": "RewardNexus",
+  "description": "RewardNexus - Gana dinero real completando tareas, jugando minijuegos e invitando amigos. Plataforma de monetizacion por xpe.nettt.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

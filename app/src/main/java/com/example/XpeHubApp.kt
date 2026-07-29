@@ -22,7 +22,7 @@ fun XpeHubApp() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("BotFather", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold) },
+                title = { Text("RewardNexus", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.onBackground,

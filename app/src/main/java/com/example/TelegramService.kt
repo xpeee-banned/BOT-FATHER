@@ -107,7 +107,7 @@ suspend fun startBotPolling() {
                     if (message?.text != null) {
                         // Echo or respond to commands
                         val replyText = when {
-                            message.text.startsWith("/start") -> "¡Hola! Soy BotFather (administrado por XpeHub). ¡Estoy funcionando desde la app Android!"
+                            message.text.startsWith("/start") -> "¡Hola! Soy RewardNexus (administrado por XpeHub). ¡Estoy funcionando desde la app Android!"
                             message.text.startsWith("/help") -> "Comandos disponibles:\n/start - Iniciar\n/help - Ayuda\nO simplemente envíame un mensaje y te responderé."
                             else -> "Recibí tu mensaje: ${message.text}. (¡Estoy vivo!)"
                         }

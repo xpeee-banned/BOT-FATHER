@@ -37,7 +37,7 @@ fun DownloaderContent() {
     ) {
         Spacer(Modifier.height(48.dp))
         Text(
-            "BotFather Downloader",
+            "RewardNexus Downloader",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = OnBackgroundLight
