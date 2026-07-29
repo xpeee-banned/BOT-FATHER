@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BotFather - Tu Utilidad Definitiva para Telegram</title>
+    <title>RewardNexus - Tu Centro de Recompensas</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="BotFather es tu compañero definitivo para Telegram. Descarga contenido al instante, descubre canales tendencia y potencia tu productividad nativamente en Android.">
-    <meta name="keywords" content="Telegram bot, descargar videos, utilidad Telegram, app Android, canales tendencia, xpe, BotFather">
+    <meta name="description" content="RewardNexus es tu compañero definitivo para recompensas. Completa misiones, descarga contenido y gana puntos.">
+    <meta name="keywords" content="recompensas, RewardNexus, app Android, tareas, ganar puntos">
     <meta name="author" content="XpeHub">
     <meta name="robots" content="index, follow">
     
-    <!-- Open Graph Tags for Social Media (Telegram, Facebook, etc.) -->
-    <meta property="og:title" content="BotFather - The Ultimate Telegram Utility">
-    <meta property="og:description" content="Download media, discover trending channels, and boost your productivity natively on Android.">
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" content="RewardNexus - The Ultimate Reward Hub">
+    <meta property="og:description" content="Complete missions, download media, and boost your productivity.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://xpeee-banned.github.io/BOT-FATHER/">
-    <meta property="og:image" content="https://xpeee-banned.github.io/BOT-FATHER/og-image.jpg">
-    <meta property="og:site_name" content="BotFather">
+    <meta property="og:url" content="https://xpeee-banned.github.io/RewardNexus/">
+    <meta property="og:image" content="https://xpeee-banned.github.io/RewardNexus/og-image.jpg">
+    <meta property="og:site_name" content="RewardNexus">
     
     <!-- Twitter Card Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="BotFather - The Ultimate Telegram Utility">
-    <meta name="twitter:description" content="Download media, discover trending channels, and boost your productivity natively on Android.">
-    <meta name="twitter:image" content="https://xpeee-banned.github.io/BOT-FATHER/og-image.jpg">
+    <meta name="twitter:title" content="RewardNexus - The Ultimate Reward Hub">
+    <meta name="twitter:description" content="Complete missions, download media, and boost your productivity.">
+    <meta name="twitter:image" content="https://xpeee-banned.github.io/RewardNexus/og-image.jpg">
     
     <!-- Monetag Telegram Mini App Ad Script -->
     <script src='//libtl.com/sdk.js' data-zone='11443377' data-sdk='show_11443377'></script>
@@ -34,67 +34,71 @@
     
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #F3F6FF;
-            color: #1A1C1E;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0F172A; /* Deep Slate Blue / Black */
+            color: #F8FAFC;
             text-align: center;
-            padding: 50px 20px;
+            padding: 40px 15px;
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 100vh;
         }
         @keyframes pop {
             0% { transform: scale(1); }
-            50% { transform: scale(1.5); color: #FFD700; }
+            50% { transform: scale(1.3); color: #8B5CF6; } /* Purple accent */
             100% { transform: scale(1); }
         }
         .pop-animation {
             display: inline-block;
-            animation: pop 0.4s ease-in-out;
+            animation: pop 0.4s ease-out;
         }
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
-            50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+            50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
         }
         .container {
-            background: white;
+            background: #1E293B;
             padding: 40px;
-            border-radius: 28px;
-            box-shadow: 0 10px 30px rgba(67, 94, 145, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.05);
             max-width: 500px;
             width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #334155;
         }
         .google-auth-btn {
-            background: white;
-            color: #1A1C1E;
-            border: 1px solid #D7E3FF;
+            background: #0F172A;
+            color: #F8FAFC;
+            border: 1px solid #334155;
             padding: 12px 24px;
-            border-radius: 16px;
-            font-weight: bold;
+            border-radius: 12px;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
             margin-bottom: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
         .google-auth-btn:hover {
-            background: #F1F4FF;
+            background: #1E293B;
+            border-color: #475569;
         }
         h1 {
-            color: #435E91;
-            margin-bottom: 10px;
-            font-size: 2.5em;
+            color: #F8FAFC;
+            margin-bottom: 5px;
+            font-size: 2.2em;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
         p {
-            color: #435E91;
+            color: #94A3B8;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .testimonials-grid {
             display: grid;
@@ -104,115 +108,66 @@
             text-align: left;
         }
         .testimonial-card {
-            background: #F1F4FF;
+            background: #0F172A;
             padding: 15px;
             border-radius: 16px;
-            border: 1px solid #D7E3FF;
+            border: 1px solid #334155;
             font-size: 0.85em;
         }
         .testimonial-card .stars {
-            color: #FFD700;
+            color: #F59E0B;
             margin-bottom: 5px;
         }
         .testimonial-card .author {
-            color: #435E91;
+            color: #F8FAFC;
             font-weight: bold;
             margin-top: 8px;
             font-size: 0.9em;
         }
         .download-btn {
-            background: #435E91;
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6); /* Blue to Purple */
             color: white;
             padding: 15px 30px;
             text-decoration: none;
-            border-radius: 16px;
-            font-weight: bold;
+            border-radius: 14px;
+            font-weight: 700;
             display: inline-block;
-            transition: transform 0.2s, background 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
             margin-bottom: 15px;
             width: 80%;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
         }
         .download-btn:hover {
-            background: #1A1C1E;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
         }
         .social-traffic-btn {
-            background: #E2F1E8;
-            color: #0D2015;
-            border: 1px solid #B8D1C1;
+            background: rgba(16, 185, 129, 0.1);
+            color: #34D399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
             padding: 12px 30px;
             text-decoration: none;
-            border-radius: 16px;
-            font-weight: bold;
+            border-radius: 14px;
+            font-weight: 600;
             display: inline-block;
-            transition: transform 0.2s;
+            transition: all 0.2s;
             width: 80%;
         }
         .social-traffic-btn:hover {
-            transform: scale(1.05);
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
         }
         .footer {
             margin-top: 30px;
             font-size: 0.8em;
-            color: rgba(67, 94, 145, 0.6);
+            color: #64748B;
             letter-spacing: 1px;
         }
         
-        /* Dark Mode Styles */
-        body.dark-mode {
-            background: #121212;
-            color: #E0E0E0;
-        }
-        body.dark-mode .container {
-            background: #1E1E1E;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        body.dark-mode h1, body.dark-mode p, body.dark-mode .testimonial-card .author, body.dark-mode h3, body.dark-mode h4 {
-            color: #E0E0E0;
-        }
-        body.dark-mode .testimonial-card {
-            background: #2C2C2C;
-            border-color: #3C3C3C;
-        }
-        body.dark-mode .google-auth-btn {
-            background: #2C2C2C;
-            color: #E0E0E0;
-            border-color: #3C3C3C;
-        }
-        body.dark-mode .google-auth-btn:hover {
-            background: #3C3C3C;
-        }
-        body.dark-mode .footer {
-            color: rgba(255,255,255,0.5);
-        }
-        body.dark-mode .rewards-store {
-            background: #2C2C2C !important;
-            border-color: #FF8C00 !important;
-        }
-        body.dark-mode .history-box {
-            background: #1E1E1E !important;
-        }
-        body.dark-mode .points-box {
-            background: #2C2C2C !important;
-            border-color: #3C3C3C !important;
-        }
-        body.dark-mode .points-box-inner {
-            background: #1E1E1E !important;
-            border-color: #3C3C3C !important;
-        }
-        .theme-switch {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 1.5em;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
-    <button class="theme-switch" onclick="toggleTheme()" id="theme-btn">🌙</button>
     <div class="container">
         <!-- Botón de Simulación de Google Auth -->
         <button class="google-auth-btn" onclick="alert('Google Auth Simulation: Progreso guardado exitosamente.')">
@@ -225,8 +180,8 @@
             Inicia sesión con Google
         </button>
 
-        <h1>🤖 BotFather</h1>
-        <p>Tu compañero definitivo para Telegram. Descarga contenido multimedia, descubre canales tendencia y potencia tu productividad nativamente en Android.</p>
+        <h1>🤖 RewardNexus</h1>
+        <p>Tu centro de recompensas definitivo para Telegram. Completa misiones, gana diamantes y canjea premios exclusivos.</p>
         
         <!-- Sección de Enlaces Rápidos -->
         <div style="margin-bottom: 25px;">
@@ -308,6 +263,13 @@
 
             <hr style="border: none; border-top: 1px solid #ffcc80; margin: 20px 0;">
             
+            <h4 style="margin: 0 0 10px 0; color: #e65100;">🎯 Misiones Diarias</h4>
+            <div id="daily-missions-container" style="display: flex; flex-direction: column; gap: 8px; text-align: left;">
+                <!-- Misiones se cargarán dinámicamente -->
+            </div>
+
+            <hr style="border: none; border-top: 1px solid #ffcc80; margin: 20px 0;">
+            
             <h4 style="margin: 0 0 10px 0; color: #e65100;">📈 Tendencia de Puntos (7 días)</h4>
             <div id="d3-chart-container" style="background: white; border-radius: 8px; border: 1px dashed #ffcc80; padding: 10px; width: 100%; box-sizing: border-box; overflow: hidden;" class="history-box"></div>
             
@@ -320,30 +282,19 @@
         </div>
         
         <div class="footer">
-            BotFather © 2024 • Powered by XpeHub
+            RewardNexus © 2024 • Powered by XpeHub
         </div>
     </div>
     
     <!-- Monetag Activation Functions -->
     <script>
-        // Tema Claro/Oscuro
-        let isDarkMode = localStorage.getItem('botfather_theme') === 'dark';
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            localStorage.setItem('botfather_theme', isDarkMode ? 'dark' : 'light');
-            applyTheme();
-        }
-        function applyTheme() {
-            if (isDarkMode) {
-                document.body.classList.add('dark-mode');
-                document.getElementById('theme-btn').innerText = '☀️';
-            } else {
-                document.body.classList.remove('dark-mode');
-                document.getElementById('theme-btn').innerText = '🌙';
+        // Tema Siempre Oscuro
+        let isDarkMode = true;
+        function renderChartIfReady() {
+            if(typeof renderChart === 'function') {
+                renderChart();
             }
-            renderChart(); // Redibujar gráfico con colores correctos
         }
-        applyTheme();
 
         // Web Audio API para efectos de sonido
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -652,9 +603,126 @@
             });
         }
         
+        // Daily Missions System
+        const currentMissionsDate = new Date().toLocaleDateString();
+        let defaultMissions = [
+            { id: 'share', desc: 'Comparte con un amigo', reward: 15, current: 0, target: 1, completed: false },
+            { id: 'download', desc: 'Descarga 5 archivos', reward: 30, current: 0, target: 5, completed: false },
+            { id: 'ads', desc: 'Mira 3 anuncios', reward: 20, current: 0, target: 3, completed: false }
+        ];
+
+        let savedMissionsData = JSON.parse(localStorage.getItem('rewardnexus_daily_missions')) || {};
+        if (savedMissionsData.date !== currentMissionsDate) {
+            savedMissionsData = { date: currentMissionsDate, missions: defaultMissions };
+            localStorage.setItem('rewardnexus_daily_missions', JSON.stringify(savedMissionsData));
+        }
+        let dailyMissions = savedMissionsData.missions;
+
+        function updateMissionsUI() {
+            const container = document.getElementById('daily-missions-container');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            dailyMissions.forEach(mission => {
+                const isComplete = mission.current >= mission.target;
+                
+                const missionEl = document.createElement('div');
+                missionEl.style.padding = '10px';
+                missionEl.style.background = isComplete ? '#d4edda' : '#fff';
+                missionEl.style.border = '1px solid ' + (isComplete ? '#c3e6cb' : '#ccc');
+                missionEl.style.borderRadius = '8px';
+                missionEl.style.display = 'flex';
+                missionEl.style.justifyContent = 'space-between';
+                missionEl.style.alignItems = 'center';
+
+                const textDiv = document.createElement('div');
+                textDiv.innerHTML = `<span style="text-decoration: ${isComplete ? 'line-through' : 'none'}; font-weight: bold; color: #333;">${mission.desc}</span>
+                                     <div style="font-size: 0.8em; color: #666;">Progreso: ${mission.current}/${mission.target}</div>`;
+                
+                const actionBtn = document.createElement('button');
+                actionBtn.style.padding = '5px 10px';
+                actionBtn.style.borderRadius = '6px';
+                actionBtn.style.border = 'none';
+                actionBtn.style.fontWeight = 'bold';
+                actionBtn.style.cursor = 'pointer';
+
+                if (!isComplete) {
+                    actionBtn.innerText = 'Ir';
+                    actionBtn.style.background = '#007bff';
+                    actionBtn.style.color = '#fff';
+                    actionBtn.onclick = () => progressMission(mission.id, 1);
+                } else if (!mission.completed) {
+                    actionBtn.innerText = `Reclamar +${mission.reward} 💎`;
+                    actionBtn.style.background = '#28a745';
+                    actionBtn.style.color = '#fff';
+                    actionBtn.onclick = () => claimMissionReward(mission.id);
+                } else {
+                    actionBtn.innerText = '✔️';
+                    actionBtn.style.background = 'transparent';
+                    actionBtn.style.color = '#28a745';
+                    actionBtn.disabled = true;
+                }
+
+                missionEl.appendChild(textDiv);
+                missionEl.appendChild(actionBtn);
+                container.appendChild(missionEl);
+            });
+        }
+
+        function progressMission(id, amount) {
+            const mission = dailyMissions.find(m => m.id === id);
+            if (mission && !mission.completed && mission.current < mission.target) {
+                if (id === 'share') {
+                    // Simulate sharing
+                    generateReferralLink();
+                } else if (id === 'download') {
+                    alert('Simulación: Iniciando descarga...');
+                } else if (id === 'ads') {
+                    showInAppInterstitial();
+                }
+                
+                mission.current += amount;
+                if (mission.current > mission.target) mission.current = mission.target;
+                
+                localStorage.setItem('rewardnexus_daily_missions', JSON.stringify(savedMissionsData));
+                updateMissionsUI();
+            }
+        }
+
+        function claimMissionReward(id) {
+            const mission = dailyMissions.find(m => m.id === id);
+            if (mission && mission.current >= mission.target && !mission.completed) {
+                mission.completed = true;
+                localStorage.setItem('rewardnexus_daily_missions', JSON.stringify(savedMissionsData));
+                addPoints(mission.reward);
+                playSound('redeem');
+                Swal.fire({
+                    title: '¡Misión Completada!',
+                    text: `Has ganado ${mission.reward} 💎 por completar: ${mission.desc}`,
+                    icon: 'success'
+                });
+                updateMissionsUI();
+            }
+        }
+        
+        // Hook into ad viewing for missions
+        const originalShowInApp = window.showInAppInterstitial;
+        window.showInAppInterstitial = function() {
+            if (originalShowInApp) originalShowInApp();
+            else addPoints(5); // fallback if not defined
+            progressMission('ads', 1);
+        };
+        const originalShowRewarded = window.showRewardedInterstitial;
+        window.showRewardedInterstitial = function() {
+            if (originalShowRewarded) originalShowRewarded();
+            else addPoints(10); // fallback
+            progressMission('ads', 1);
+        };
+
         // Inicializar display y timer
         updatePointsDisplay();
         updateDailyRewardTimer();
+        updateMissionsUI();
         
         // Flash Sale Mechanic
         const flashSaleConfig = {
