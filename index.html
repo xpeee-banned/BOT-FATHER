@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RewardNexus - Tu Centro de Recompensas</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="RewardNexus es tu compañero definitivo para recompensas. Completa misiones, descarga contenido y gana puntos.">
+    <meta name="keywords" content="recompensas, RewardNexus, app Android, tareas, ganar puntos">
+    <meta name="author" content="XpeHub">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" content="RewardNexus - The Ultimate Reward Hub">
+    <meta property="og:description" content="Complete missions, download media, and boost your productivity.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xpeee-banned.github.io/RewardNexus/">
+    <meta property="og:image" content="https://xpeee-banned.github.io/RewardNexus/og-image.jpg">
+    <meta property="og:site_name" content="RewardNexus">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RewardNexus - The Ultimate Reward Hub">
+    <meta name="twitter:description" content="Complete missions, download media, and boost your productivity.">
+    <meta name="twitter:image" content="https://xpeee-banned.github.io/RewardNexus/og-image.jpg">
+    
+    <!-- Monetag Telegram Mini App Ad Script -->
+    <script src='//libtl.com/sdk.js' data-zone='11443377' data-sdk='show_11443377'></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- ============================================== -->
+    
+    <style>
+        :root {
+            --bg-color: #F8FAFC;
+            --text-color: #0F172A;
+            --container-bg: #FFFFFF;
+            --container-border: #E2E8F0;
+            --container-shadow: 0 20px 40px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255,255,255,1);
+            --btn-bg: #FFFFFF;
+            --btn-text: #0F172A;
+            --btn-border: #CBD5E1;
+            --btn-hover-bg: #F1F5F9;
+            --text-muted: #64748B;
+            --card-bg: #F8FAFC;
+            --card-border: #E2E8F0;
+            --chart-line: #3B82F6;
+            --chart-dot: #34A853;
+            --history-box-bg: #FFFFFF;
+            --history-box-border: #ffcc80;
+            --points-box-bg: #f0f4f8;
+            --points-box-border: #e1e8ed;
+            --points-inner-bg: #FFFFFF;
+            --points-inner-border: #d0d7de;
+            --rewards-store-bg: #fff3e0;
+        }
+        body.dark-mode {
+            --bg-color: #0F172A;
+            --text-color: #F8FAFC;
+            --container-bg: #1E293B;
+            --container-border: #334155;
+            --container-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+            --btn-bg: #0F172A;
+            --btn-text: #F8FAFC;
+            --btn-border: #334155;
+            --btn-hover-bg: #1E293B;
+            --text-muted: #94A3B8;
+            --card-bg: #0F172A;
+            --card-border: #334155;
+            --chart-line: #FFD700;
+            --chart-dot: #FFD700;
+            --history-box-bg: #1E293B;
+            --history-box-border: #475569;
+            --points-box-bg: #0F172A;
+            --points-box-border: #334155;
+            --points-inner-bg: #1E293B;
+            --points-inner-border: #475569;
+            --rewards-store-bg: #1E293B;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            text-align: center;
+            padding: 40px 15px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); color: #8B5CF6; } /* Purple accent */
+            100% { transform: scale(1); }
+        }
+        .pop-animation {
+            display: inline-block;
+            animation: pop 0.4s ease-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+            50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+        }
+        .container {
+            background: var(--container-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: var(--container-shadow);
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid var(--container-border);
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .google-auth-btn {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: 1px solid var(--btn-border);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: all 0.2s;
+        }
+        .google-auth-btn:hover {
+            background: var(--btn-hover-bg);
+            border-color: var(--text-muted);
+        }
+        h1 {
+            color: var(--text-color);
+            margin-bottom: 5px;
+            font-size: 2.2em;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .testimonial-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            font-size: 0.85em;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .testimonial-card .stars {
+            color: #F59E0B;
+            margin-bottom: 5px;
+        }
+        .testimonial-card .author {
+            color: var(--text-color);
+            font-weight: bold;
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+        .download-btn {
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6); /* Blue to Purple */
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 14px;
+            font-weight: 700;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 15px;
+            width: 80%;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+        .social-traffic-btn {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34D399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 14px;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.2s;
+            width: 80%;
+        }
+        .social-traffic-btn:hover {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8em;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+        .theme-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        .history-box {
+            background: var(--history-box-bg) !important;
+            border-color: var(--history-box-border) !important;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .points-box {
+            background: var(--points-box-bg) !important;
+            border-color: var(--points-box-border) !important;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .points-box-inner {
+            background: var(--points-inner-bg) !important;
+            border-color: var(--points-inner-border) !important;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .rewards-store {
+            background: var(--rewards-store-bg) !important;
+            border-color: var(--history-box-border) !important;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        
+    </style>
+</head>
+<body>
+    <button class="theme-switch" onclick="toggleTheme()" id="theme-btn">🌙</button>
+    <div class="container">
+        <!-- Botón de Simulación de Google Auth -->
+        <button class="google-auth-btn" onclick="alert('Google Auth Simulation: Progreso guardado exitosamente.')">
+            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Inicia sesión con Google
+        </button>
+
+        <h1>🤖 RewardNexus</h1>
+        <p>Tu centro de recompensas definitivo para Telegram. Completa misiones, gana diamantes y canjea premios exclusivos.</p>
+        
+        <!-- Sección de Enlaces Rápidos -->
+        <div style="margin-bottom: 25px;">
+            <a href="https://t.me/xpe_official_bot" style="color: #435E91; font-weight: bold; text-decoration: none;">🚀 ¡Únete a nuestro Bot en Telegram! @xpe_official_bot</a>
+        </div>
+        
+        <!-- Sección de Testimonios (Grid) -->
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                "Increíble app, descargo todo al instante sin problemas."
+                <div class="author">- Carlos M.</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                "La mejor herramienta para Telegram. ¡Muy rápida y fluida!"
+                <div class="author">- Ana Gómez</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★☆</div>
+                "Me encanta la sección de recompensas y su diseño."
+                <div class="author">- Juan Perez</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                "Súper fácil de usar, la recomiendo a todos mis amigos."
+                <div class="author">- Laura F.</div>
+            </div>
+        </div>
+
+        <a href="https://github.com/xpeee-banned/BOT-FATHER/releases/latest" class="download-btn" target="_blank">⬇️ Descargar APK</a>
+        
+        <!-- Sección de Monetag -->
+        <a href="https://omg10.com/4/11368455" class="social-traffic-btn" target="_blank">🔥 Acceso Exclusivo / Grupos VIP</a>
+        
+        <!-- Sección de Monetag Telegram Mini App Ads -->
+        <div class="points-box" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px; align-items: center; background: #f0f4f8; padding: 20px; border-radius: 12px; border: 2px solid #e1e8ed;">
+            <h3 style="margin: 0; color: #435E91;">Tus Puntos: <span id="user-balance" style="display: inline-block; transition: color 0.3s;">0</span> 💎</h3>
+            <div class="points-box-inner" style="margin-top: 5px; margin-bottom: 10px; padding: 10px 15px; background: white; border-radius: 12px; border: 1px solid #d0d7de; font-size: 0.9em; width: 100%; box-sizing: border-box; text-align: center;">
+                <div style="margin-bottom: 8px;"><strong>Nivel Actual:</strong> <span id="user-level" style="font-weight: bold;">Bronce 🥉</span></div>
+                <div style="width: 100%; background: #e1e8ed; border-radius: 10px; height: 12px; overflow: hidden; margin-bottom: 4px;">
+                    <div id="level-progress-bar" style="height: 100%; background: linear-gradient(90deg, #4285F4, #34A853); width: 0%; transition: width 0.5s ease-out;"></div>
+                </div>
+                <div style="font-size: 0.8em; color: #555;" id="level-progress-text">0 / 100 para Plata</div>
+            </div>
+            <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #555;">Gana puntos viendo anuncios</p>
+            <button onclick="showRewardedInterstitial()" style="background: #34A853; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">🎁 Ver Anuncio Recompensado (+10 💎)</button>
+            <button onclick="showInAppInterstitial()" style="background: #4285F4; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">📺 Ver Anuncio Intersticial (+5 💎)</button>
+            <div style="margin-top: 15px; width: 100%;">
+                <button id="daily-reward-btn" onclick="claimDailyReward()" style="background: #9b59b6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">🎁 Reclamar Recompensa Diaria (+50 💎)</button>
+                <p id="daily-streak-display" style="margin: 5px 0 0 0; font-size: 0.85em; color: #ff8c00; font-weight: bold; text-align: center; display: none;">Racha actual: 0 días 🔥</p>
+                <p id="daily-reward-timer" style="margin: 5px 0 0 0; font-size: 0.8em; color: #555; text-align: center; display: none;">Próxima recompensa en: <span id="reward-time-left"></span></p>
+            </div>
+        </div>
+        
+        <!-- Tienda de Recompensas y Sistema de Referidos -->
+        <div class="rewards-store" style="margin-top: 20px; background: #fff3e0; padding: 20px; border-radius: 12px; border: 2px solid #ffcc80;">
+            <h3 style="margin: 0 0 15px 0; color: #e65100;">🛒 Tienda de Recompensas</h3>
+            
+            <div id="checkin-container" style="background: var(--points-box-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--points-box-border); margin-bottom: 15px; text-align: center;">
+                <h4 style="margin: 0 0 10px 0; color: var(--text-color);">📅 Check-in Diario</h4>
+                <p style="font-size: 0.8em; color: var(--text-muted); margin-top: 0; margin-bottom: 10px;">¡Abre la app cada día para recompensas más grandes!</p>
+                <div id="checkin-days" style="display: flex; justify-content: space-between; gap: 5px; overflow-x: auto; padding-bottom: 5px;">
+                    <!-- Se generará con JS -->
+                </div>
+            </div>
+            
+            <div id="flash-sale-banner" style="display: none; background: #e74c3c; color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: bold; animation: pulse 2s infinite;">
+                ⚡ ¡Venta Flash! Termina en: <span id="flash-sale-timer">00:00</span>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button id="btn-modo-vip" onclick="redeemItem('Modo VIP', 100)" style="background: #fb8c00; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">🌟 Modo VIP (100 💎)</button>
+                <button id="btn-descargas" onclick="redeemItem('Descargas Rápidas', 50)" style="background: #fb8c00; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">⚡ +10 Descargas Rápidas (50 💎)</button>
+            </div>
+            
+            <hr style="border: none; border-top: 1px solid #ffcc80; margin: 20px 0;">
+            
+            <h4 style="margin: 0 0 10px 0; color: #e65100;">🤝 Referidos (+20 💎)</h4>
+            <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                <button onclick="shareToTelegram()" style="background: #0088cc; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">✈️ Compartir en Telegram</button>
+                <button onclick="generateReferralLink()" style="background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.9em; width: 100%;">Copiar Link de Invitación</button>
+                <div style="display: flex; gap: 5px; width: 100%;">
+                    <input type="text" id="referral-code-input" placeholder="Ingresa código de invitado" style="flex: 1; padding: 8px; border-radius: 8px; border: 1px solid #ccc;">
+                    <button onclick="claimReferralCode()" style="background: #34495e; color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer;">Canjear</button>
+                </div>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid #ffcc80; margin: 20px 0;">
+            
+            <h4 style="margin: 0 0 10px 0; color: #1565c0;">💰 Gana Más: Socios y Promos</h4>
+            <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 0;">Descubre ofertas exclusivas y apps patrocinadas para ganar dinero o diamantes.</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button onclick="window.open('https://t.me/xpe_official_bot?start=cpa_offer', '_blank')" style="background: #ef5350; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">🚀 Oferta Especial: Juega y Gana (+200 💎)</button>
+                <button onclick="window.open('https://t.me/xpe_official_bot?start=crypto_promo', '_blank')" style="background: #fbc02d; color: #212121; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">📈 Bono Cripto: Binance/Bybit (+500 💎)</button>
+                <button onclick="window.open('https://t.me/xpe_official_bot?start=download_app', '_blank')" style="background: #ab47bc; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;">📲 Descargar App Patrocinada (+150 💎)</button>
+            </div>
+            
+            <hr style="border: none; border-top: 1px solid #ffcc80; margin: 20px 0;">
+            
+            <h4 style="margin: 0 0 10px 0; color: #e65100;">🎯 Misiones Diarias</h4>
+            <div id="daily-missions-container" style="display: flex; flex-direction: column; gap: 8px; text-align: left;">
+                <!-- Misiones se cargarán dinámicamente -->
+            </div>
+
+            <hr style="border: none; border-top: 1px solid #ffcc80; margin: 20px 0;">
+            
+            <h4 style="margin: 0 0 10px 0; color: #e65100;">📈 Tendencia de Puntos (7 días)</h4>
+            <div id="d3-chart-container" style="background: white; border-radius: 8px; border: 1px dashed #ffcc80; padding: 10px; width: 100%; box-sizing: border-box; overflow: hidden;" class="history-box"></div>
+            
+            <div class="history-box" style="margin-top: 20px; text-align: left; background: white; padding: 15px; border-radius: 8px; border: 1px dashed #ffcc80;">
+                <h4 style="margin: 0 0 10px 0; color: #e65100; text-align: center;">📜 Historial de Canjes</h4>
+                <ul id="redeem-history" style="margin: 0; padding-left: 20px; font-size: 0.85em; color: #555; max-height: 100px; overflow-y: auto;">
+                    <li>Aún no has canjeado nada.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            RewardNexus © 2024 • Powered by XpeHub
+        </div>
+    </div>
+    
+    <!-- Monetag Activation Functions -->
+    <script>
+        // Tema Claro/Oscuro dinámico
+        let isDarkMode = localStorage.getItem('botfather_theme') === 'dark';
+        
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('botfather_theme', isDarkMode ? 'dark' : 'light');
+            applyTheme();
+        }
+        
+        function applyTheme() {
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-btn').innerText = '☀️';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('theme-btn').innerText = '🌙';
+            }
+            renderChartIfReady();
+        }
+        
+        // Aplicar al cargar
+        applyTheme();
+
+        function renderChartIfReady() {
+            if(typeof renderChart === 'function') {
+                renderChart();
+            }
+        }
+
+        // Web Audio API para efectos de sonido
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            if (type === 'earn') {
+                // Sonido corto y agudo de éxito
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'redeem') {
+                // Sonido de dos tonos tipo éxito/desbloqueo
+                oscillator.type = 'triangle';
+                oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+                oscillator.frequency.setValueAtTime(600, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'error') {
+                // Sonido de error o falta de puntos
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.2);
+            }
+        }
+
+        // Puntos y Recompensas (Local Storage)
+        let userPoints = parseInt(localStorage.getItem('botfather_points')) || 0;
+        let totalPointsEarned = parseInt(localStorage.getItem('botfather_total_points')) || userPoints;
+        let redeemedHistory = JSON.parse(localStorage.getItem('botfather_redeem_history')) || [];
+        let pointsHistory = JSON.parse(localStorage.getItem('botfather_points_history')) || [];
+        let currentLevel = getLevelInfo(totalPointsEarned).name;
+        
+        // Referidos
+        let myReferralCode = localStorage.getItem('botfather_my_ref_code');
+        if (!myReferralCode) {
+            myReferralCode = 'REF-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            localStorage.setItem('botfather_my_ref_code', myReferralCode);
+        }
+        let hasUsedReferral = localStorage.getItem('botfather_used_ref') === 'true';
+
+        function shareToTelegram() {
+            const link = window.location.href.split('?')[0] + '?ref=' + myReferralCode;
+            const text = '¡Únete a RewardNexus y gana recompensas increíbles! Usa mi link y obtén un bono:';
+            const tgLink = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
+            
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && Object.keys(window.Telegram.WebApp.initDataUnsafe).length > 0) {
+                // We are inside Telegram Web App
+                window.Telegram.WebApp.openTelegramLink(tgLink);
+            } else {
+                // Fallback for regular browser
+                window.open(tgLink, '_blank');
+            }
+            
+            // Auto progress mission
+            progressMission('share', 1);
+        }
+
+        function generateReferralLink() {
+            const link = window.location.href.split('?')[0] + '?ref=' + myReferralCode;
+            navigator.clipboard.writeText(link).then(() => {
+                alert('¡Link de invitación copiado al portapapeles!\n' + link);
+            });
+        }
+        
+        function claimReferralCode() {
+            if (hasUsedReferral) {
+                alert('Ya has usado un código de referido.');
+                playSound('error');
+                return;
+            }
+            const inputCode = document.getElementById('referral-code-input').value.trim();
+            if (!inputCode) return;
+            if (inputCode === myReferralCode) {
+                alert('No puedes usar tu propio código.');
+                playSound('error');
+                return;
+            }
+            
+            // Simular validación exitosa (en la vida real verificaría con un backend)
+            hasUsedReferral = true;
+            localStorage.setItem('botfather_used_ref', 'true');
+            addPoints(20);
+            alert('¡Código canjeado! Has recibido 20 💎.');
+        }
+
+        // Auto-canjear si viene en URL
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            if (refCode && !hasUsedReferral && refCode !== myReferralCode) {
+                document.getElementById('referral-code-input').value = refCode;
+                // Dejamos que el usuario le de al botón o auto-canjeamos
+            }
+        });
+
+        // Recompensa Diaria y Racha
+        let lastDailyReward = parseInt(localStorage.getItem('botfather_last_daily')) || 0;
+        let dailyStreak = parseInt(localStorage.getItem('botfather_daily_streak')) || 0;
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+        
+        function updateDailyRewardTimer() {
+            const now = Date.now();
+            const timeSinceLast = now - lastDailyReward;
+            const timerEl = document.getElementById('daily-reward-timer');
+            const timeLeftEl = document.getElementById('reward-time-left');
+            const btnEl = document.getElementById('daily-reward-btn');
+            const streakEl = document.getElementById('daily-streak-display');
+            
+            // Mostrar racha
+            if (dailyStreak > 0) {
+                streakEl.style.display = 'block';
+                streakEl.innerText = `Racha actual: ${dailyStreak} días 🔥`;
+            } else {
+                streakEl.style.display = 'none';
+            }
+
+            // Chequear si se perdió la racha (más de 48 horas sin reclamar)
+            if (lastDailyReward > 0 && timeSinceLast >= ONE_DAY_MS * 2) {
+                dailyStreak = 0;
+                localStorage.setItem('botfather_daily_streak', dailyStreak);
+                if (dailyStreak > 0) {
+                    streakEl.innerText = `Racha perdida 😢`;
+                }
+            }
+            
+            if (timeSinceLast >= ONE_DAY_MS) {
+                btnEl.disabled = false;
+                btnEl.style.opacity = '1';
+                btnEl.style.cursor = 'pointer';
+                timerEl.style.display = 'none';
+                btnEl.innerText = `🎁 Reclamar Recompensa Diaria`;
+            } else {
+                btnEl.disabled = true;
+                btnEl.style.opacity = '0.5';
+                btnEl.style.cursor = 'not-allowed';
+                timerEl.style.display = 'block';
+                
+                const timeLeft = ONE_DAY_MS - timeSinceLast;
+                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                timeLeftEl.innerText = `${hours}h ${minutes}m`;
+                btnEl.innerText = `Reclamada hoy ✔️`;
+            }
+            renderCheckinUI();
+        }
+        
+        function renderCheckinUI() {
+            const container = document.getElementById('checkin-days');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            const maxDays = 7;
+            const rewards = [10, 20, 30, 40, 50, 75, 100];
+            
+            const displayStreak = Math.min(dailyStreak, maxDays);
+            
+            const now = Date.now();
+            const timeSinceLast = now - lastDailyReward;
+            const canClaimToday = timeSinceLast >= ONE_DAY_MS;
+            
+            for (let i = 1; i <= maxDays; i++) {
+                let isClaimed = i <= displayStreak;
+                if (canClaimToday && i === displayStreak) {
+                    isClaimed = false; // The current streak day hasn't been claimed yet today (wait, if streak is 3 and we haven't claimed today, streak is 3 from yesterday? No, if we haven't claimed today and streak is intact, it means we claimed yesterday, so 3 days claimed so far. Wait, dailyStreak is the number of CONSECUTIVE days claimed. If we haven't claimed today, the streak so far is `dailyStreak`, and today is `dailyStreak + 1`! So `isClaimed = i <= dailyStreak`).
+                }
+                
+                const dayEl = document.createElement('div');
+                dayEl.style.minWidth = '50px';
+                dayEl.style.padding = '8px 5px';
+                dayEl.style.borderRadius = '8px';
+                dayEl.style.display = 'flex';
+                dayEl.style.flexDirection = 'column';
+                dayEl.style.alignItems = 'center';
+                dayEl.style.fontSize = '0.8em';
+                
+                if (i <= displayStreak && !(canClaimToday && i === displayStreak + 1)) {
+                    dayEl.style.background = 'var(--chart-dot)';
+                    dayEl.style.color = '#fff';
+                    dayEl.style.border = '1px solid var(--chart-dot)';
+                    dayEl.innerHTML = `<span style="font-weight:bold;">Día ${i}</span><span style="font-size:1.2em; margin:2px 0;">✔️</span><span>+${rewards[i-1]}</span>`;
+                } else if (i === displayStreak + 1 || (displayStreak === 0 && i === 1)) {
+                    dayEl.style.background = 'var(--points-inner-bg)';
+                    dayEl.style.color = 'var(--text-color)';
+                    dayEl.style.border = '2px solid var(--chart-line)';
+                    dayEl.innerHTML = `<span style="font-weight:bold;">Día ${i}</span><span style="font-size:1.2em; margin:2px 0;">🎁</span><span>+${rewards[i-1]}</span>`;
+                } else {
+                    dayEl.style.background = 'var(--points-inner-bg)';
+                    dayEl.style.color = 'var(--text-muted)';
+                    dayEl.style.border = '1px dashed var(--container-border)';
+                    dayEl.innerHTML = `<span>Día ${i}</span><span style="font-size:1.2em; margin:2px 0; opacity:0.5;">🔒</span><span>+${rewards[i-1]}</span>`;
+                }
+                
+                container.appendChild(dayEl);
+            }
+        }
+        
+        function claimDailyReward() {
+            const now = Date.now();
+            if (now - lastDailyReward >= ONE_DAY_MS) {
+                // Chequear si es un nuevo día consecutivo (menos de 48h desde el último reclamo)
+                if (lastDailyReward > 0 && (now - lastDailyReward) < (ONE_DAY_MS * 2)) {
+                    dailyStreak += 1;
+                } else {
+                    dailyStreak = 1; // Primer día de la nueva racha
+                }
+
+                if (dailyStreak > 7) {
+                    dailyStreak = 1; // Loop around after 7 days
+                }
+
+                lastDailyReward = now;
+                localStorage.setItem('botfather_last_daily', lastDailyReward);
+                localStorage.setItem('botfather_daily_streak', dailyStreak);
+                
+                const rewards = [10, 20, 30, 40, 50, 75, 100];
+                let basePoints = rewards[dailyStreak - 1] || 10;
+                let message = `¡Has reclamado tu recompensa del Día ${dailyStreak}! Has ganado ${basePoints} 💎.`;
+
+                addPoints(basePoints);
+                updateDailyRewardTimer();
+                
+                Swal.fire({
+                    title: '¡Check-in Completo!',
+                    text: message,
+                    icon: 'success',
+                    confirmButtonColor: '#9b59b6'
+                });
+            }
+        }
+        
+        setInterval(updateDailyRewardTimer, 60000); // Actualizar temporizador cada minuto
+        
+        function getLevelInfo(points) {
+            if (points >= 500) return { name: 'Oro 🏆', color: '#FFD700', nextGoal: null, nextName: null, minPoints: 500 };
+            if (points >= 100) return { name: 'Plata 🥈', color: '#808080', nextGoal: 500, nextName: 'Oro', minPoints: 100 };
+            return { name: 'Bronce 🥉', color: '#CD7F32', nextGoal: 100, nextName: 'Plata', minPoints: 0 };
+        }
+        
+        function updatePointsDisplay(animate = false) {
+            const balanceEl = document.getElementById('user-balance');
+            balanceEl.innerText = userPoints;
+            
+            const levelInfo = getLevelInfo(totalPointsEarned);
+            const levelEl = document.getElementById('user-level');
+            levelEl.innerText = levelInfo.name;
+            levelEl.style.color = levelInfo.color;
+            
+            // Progress Bar Logic
+            const progressText = document.getElementById('level-progress-text');
+            const progressBar = document.getElementById('level-progress-bar');
+            
+            if (levelInfo.nextGoal !== null) {
+                const pointsInLevel = totalPointsEarned - levelInfo.minPoints;
+                const pointsNeeded = levelInfo.nextGoal - levelInfo.minPoints;
+                const percentage = Math.min(100, Math.max(0, (pointsInLevel / pointsNeeded) * 100));
+                
+                progressBar.style.width = percentage + '%';
+                progressText.innerText = `${totalPointsEarned} / ${levelInfo.nextGoal} para ${levelInfo.nextName}`;
+            } else {
+                progressBar.style.width = '100%';
+                progressBar.style.background = 'linear-gradient(90deg, #FFD700, #FFA500)';
+                progressText.innerText = `¡Nivel Máximo Alcanzado! (${totalPointsEarned} pts)`;
+            }
+            
+            // Confetti y nivel arriba
+            const newLevelInfo = getLevelInfo(totalPointsEarned);
+            if (newLevelInfo.name !== currentLevel) {
+                currentLevel = newLevelInfo.name;
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+                playSound('earn');
+                setTimeout(() => alert(`¡Felicidades! Has subido al nivel ${currentLevel}`), 500);
+            }
+            
+            if (animate) {
+                balanceEl.classList.remove('pop-animation');
+                void balanceEl.offsetWidth; // Force reflow para reiniciar la animación
+                balanceEl.classList.add('pop-animation');
+            }
+            
+            updateHistoryDisplay();
+        }
+        
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('redeem-history');
+            if (redeemedHistory.length === 0) {
+                historyList.innerHTML = '<li>Aún no has canjeado nada.</li>';
+            } else {
+                historyList.innerHTML = redeemedHistory.map(item => `<li>${item.date}: <strong>${item.name}</strong> (-${item.cost} 💎)</li>`).join('');
+            }
+        }
+
+        function addPoints(amount) {
+            playSound('earn');
+            userPoints += amount;
+            totalPointsEarned += amount;
+            
+            // Registrar historial para D3
+            const todayStr = new Date().toISOString().split('T')[0];
+            const existingDay = pointsHistory.find(p => p.date === todayStr);
+            if (existingDay) {
+                existingDay.value += amount;
+            } else {
+                pointsHistory.push({ date: todayStr, value: amount });
+            }
+            // Mantener últimos 7 días
+            if (pointsHistory.length > 7) pointsHistory.shift();
+            
+            localStorage.setItem('botfather_points', userPoints);
+            localStorage.setItem('botfather_total_points', totalPointsEarned);
+            localStorage.setItem('botfather_points_history', JSON.stringify(pointsHistory));
+            updatePointsDisplay(true);
+            renderChart();
+        }
+        
+        function redeemItem(itemName, cost) {
+            Swal.fire({
+                title: `¿Canjear ${itemName}?`,
+                text: `Esto costará ${cost} 💎 puntos.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#fb8c00',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, canjear',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (userPoints >= cost) {
+                        playSound('redeem');
+                        userPoints -= cost;
+                        localStorage.setItem('botfather_points', userPoints);
+                        
+                        const dateStr = new Date().toLocaleDateString();
+                        redeemedHistory.push({ name: itemName, cost: cost, date: dateStr });
+                        localStorage.setItem('botfather_redeem_history', JSON.stringify(redeemedHistory));
+                        
+                        updatePointsDisplay(true);
+                        Swal.fire(
+                            '¡Felicidades!',
+                            `Has canjeado exitosamente: ${itemName}`,
+                            'success'
+                        );
+                    } else {
+                        playSound('error');
+                        Swal.fire(
+                            'Puntos insuficientes',
+                            `Te faltan ${cost - userPoints} 💎.`,
+                            'error'
+                        );
+                    }
+                }
+            });
+        }
+        
+        // Daily Missions System
+        const currentMissionsDate = new Date().toLocaleDateString();
+        let defaultMissions = [
+            { id: 'share', desc: 'Comparte con un amigo', reward: 15, current: 0, target: 1, completed: false },
+            { id: 'download', desc: 'Descarga 5 archivos', reward: 30, current: 0, target: 5, completed: false },
+            { id: 'ads', desc: 'Mira 3 anuncios', reward: 20, current: 0, target: 3, completed: false }
+        ];
+
+        let savedMissionsData = JSON.parse(localStorage.getItem('rewardnexus_daily_missions')) || {};
+        if (savedMissionsData.date !== currentMissionsDate) {
+            savedMissionsData = { date: currentMissionsDate, missions: defaultMissions };
+            localStorage.setItem('rewardnexus_daily_missions', JSON.stringify(savedMissionsData));
+        }
+        let dailyMissions = savedMissionsData.missions;
+
+        function updateMissionsUI() {
+            const container = document.getElementById('daily-missions-container');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            dailyMissions.forEach(mission => {
+                const isComplete = mission.current >= mission.target;
+                
+                const missionEl = document.createElement('div');
+                missionEl.style.padding = '10px';
+                missionEl.style.background = isComplete ? 'var(--card-bg)' : 'var(--container-bg)';
+                missionEl.style.border = '1px solid ' + (isComplete ? '#c3e6cb' : 'var(--container-border)');
+                missionEl.style.borderRadius = '8px';
+                missionEl.style.display = 'flex';
+                missionEl.style.justifyContent = 'space-between';
+                missionEl.style.alignItems = 'center';
+
+                const textDiv = document.createElement('div');
+                textDiv.innerHTML = `<span style="text-decoration: ${isComplete ? 'line-through' : 'none'}; font-weight: bold; color: var(--text-color);">${mission.desc}</span>
+                                     <div style="font-size: 0.8em; color: var(--text-muted);">Progreso: ${mission.current}/${mission.target}</div>`;
+                
+                const actionBtn = document.createElement('button');
+                actionBtn.style.padding = '5px 10px';
+                actionBtn.style.borderRadius = '6px';
+                actionBtn.style.border = 'none';
+                actionBtn.style.fontWeight = 'bold';
+                actionBtn.style.cursor = 'pointer';
+
+                if (!isComplete) {
+                    actionBtn.innerText = 'Ir';
+                    actionBtn.style.background = '#007bff';
+                    actionBtn.style.color = '#fff';
+                    actionBtn.onclick = () => progressMission(mission.id, 1);
+                } else if (!mission.completed) {
+                    actionBtn.innerText = `Reclamar +${mission.reward} 💎`;
+                    actionBtn.style.background = '#28a745';
+                    actionBtn.style.color = '#fff';
+                    actionBtn.onclick = () => claimMissionReward(mission.id);
+                } else {
+                    actionBtn.innerText = '✔️';
+                    actionBtn.style.background = 'transparent';
+                    actionBtn.style.color = '#28a745';
+                    actionBtn.disabled = true;
+                }
+
+                missionEl.appendChild(textDiv);
+                missionEl.appendChild(actionBtn);
+                container.appendChild(missionEl);
+            });
+        }
+
+        function progressMission(id, amount) {
+            const mission = dailyMissions.find(m => m.id === id);
+            if (mission && !mission.completed && mission.current < mission.target) {
+                if (id === 'share') {
+                    // Simulate sharing
+                    generateReferralLink();
+                } else if (id === 'download') {
+                    alert('Simulación: Iniciando descarga...');
+                } else if (id === 'ads') {
+                    showInAppInterstitial();
+                }
+                
+                mission.current += amount;
+                if (mission.current > mission.target) mission.current = mission.target;
+                
+                localStorage.setItem('rewardnexus_daily_missions', JSON.stringify(savedMissionsData));
+                updateMissionsUI();
+            }
+        }
+
+        function claimMissionReward(id) {
+            const mission = dailyMissions.find(m => m.id === id);
+            if (mission && mission.current >= mission.target && !mission.completed) {
+                mission.completed = true;
+                localStorage.setItem('rewardnexus_daily_missions', JSON.stringify(savedMissionsData));
+                addPoints(mission.reward);
+                playSound('redeem');
+                Swal.fire({
+                    title: '¡Misión Completada!',
+                    text: `Has ganado ${mission.reward} 💎 por completar: ${mission.desc}`,
+                    icon: 'success'
+                });
+                updateMissionsUI();
+            }
+        }
+        
+        // Hook into ad viewing for missions
+        const originalShowInApp = window.showInAppInterstitial;
+        window.showInAppInterstitial = function() {
+            if (originalShowInApp) originalShowInApp();
+            else addPoints(5); // fallback if not defined
+            progressMission('ads', 1);
+        };
+        const originalShowRewarded = window.showRewardedInterstitial;
+        window.showRewardedInterstitial = function() {
+            if (originalShowRewarded) originalShowRewarded();
+            else addPoints(10); // fallback
+            progressMission('ads', 1);
+        };
+
+        // Inicializar display y timer
+        updatePointsDisplay();
+        updateDailyRewardTimer();
+        updateMissionsUI();
+        
+        // Flash Sale Mechanic
+        const flashSaleConfig = {
+            active: false,
+            endTime: 0,
+            duration: 10 * 60 * 1000 // 10 minutes
+        };
+
+        function startFlashSale() {
+            flashSaleConfig.active = true;
+            flashSaleConfig.endTime = Date.now() + flashSaleConfig.duration;
+            localStorage.setItem('botfather_flash_sale_end', flashSaleConfig.endTime);
+            updateFlashSaleUI();
+        }
+
+        function checkFlashSale() {
+            const savedEnd = parseInt(localStorage.getItem('botfather_flash_sale_end')) || 0;
+            if (savedEnd > Date.now()) {
+                flashSaleConfig.active = true;
+                flashSaleConfig.endTime = savedEnd;
+            } else {
+                flashSaleConfig.active = false;
+            }
+            updateFlashSaleUI();
+        }
+        
+        function updateFlashSaleUI() {
+            const banner = document.getElementById('flash-sale-banner');
+            const timerSpan = document.getElementById('flash-sale-timer');
+            const btnVip = document.getElementById('btn-modo-vip');
+            const btnDesc = document.getElementById('btn-descargas');
+
+            if (flashSaleConfig.active) {
+                const timeLeft = flashSaleConfig.endTime - Date.now();
+                if (timeLeft <= 0) {
+                    flashSaleConfig.active = false;
+                    localStorage.removeItem('botfather_flash_sale_end');
+                    updateFlashSaleUI(); // Revert UI
+                    return;
+                }
+
+                banner.style.display = 'block';
+                
+                const m = Math.floor((timeLeft / 1000 / 60) % 60).toString().padStart(2, '0');
+                const s = Math.floor((timeLeft / 1000) % 60).toString().padStart(2, '0');
+                timerSpan.innerText = `${m}:${s}`;
+                
+                btnVip.innerHTML = `🌟 Modo VIP (<span style="text-decoration: line-through; opacity: 0.7;">100</span> <span style="color: #FFD700;">50</span> 💎)`;
+                btnVip.onclick = () => redeemItem('Modo VIP', 50);
+                
+                btnDesc.innerHTML = `⚡ +10 Descargas Rápidas (<span style="text-decoration: line-through; opacity: 0.7;">50</span> <span style="color: #FFD700;">25</span> 💎)`;
+                btnDesc.onclick = () => redeemItem('Descargas Rápidas', 25);
+            } else {
+                banner.style.display = 'none';
+                
+                btnVip.innerHTML = `🌟 Modo VIP (100 💎)`;
+                btnVip.onclick = () => redeemItem('Modo VIP', 100);
+                
+                btnDesc.innerHTML = `⚡ +10 Descargas Rápidas (50 💎)`;
+                btnDesc.onclick = () => redeemItem('Descargas Rápidas', 50);
+            }
+        }
+
+        setInterval(() => {
+            if (flashSaleConfig.active) {
+                updateFlashSaleUI();
+            } else {
+                // 5% chance to start a flash sale every minute if not active
+                if (Math.random() < 0.05) {
+                    startFlashSale();
+                }
+            }
+        }, 1000);
+        
+        checkFlashSale();
+        
+        // D3.js Gráfico de tendencia
+        function renderChart() {
+            const container = document.getElementById('d3-chart-container');
+            container.innerHTML = '';
+            
+            if (pointsHistory.length === 0) {
+                container.innerHTML = '<p style="text-align:center;font-size:0.85em;color:#888;">No hay datos aún. ¡Gana puntos para ver tu tendencia!</p>';
+                return;
+            }
+
+            const margin = {top: 10, right: 10, bottom: 20, left: 30},
+                  width = container.clientWidth - margin.left - margin.right,
+                  height = 120 - margin.top - margin.bottom;
+
+            const svg = d3.select("#d3-chart-container")
+              .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+              .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // Añadir días faltantes para que siempre se vea bien
+            let data = [...pointsHistory];
+            const parseDate = d3.timeParse("%Y-%m-%d");
+            
+            const x = d3.scaleTime()
+              .domain(d3.extent(data, d => parseDate(d.date)))
+              .range([ 0, width ]);
+              
+            const textColor = isDarkMode ? "#E0E0E0" : "#555";
+              
+            svg.append("g")
+              .attr("transform", `translate(0, ${height})`)
+              .call(d3.axisBottom(x).ticks(data.length).tickFormat(d3.timeFormat("%d %b")))
+              .selectAll("text")
+                .style("fill", textColor)
+                .style("font-size", "9px");
+
+            const y = d3.scaleLinear()
+              .domain([0, d3.max(data, d => d.value) || 10])
+              .range([ height, 0 ]);
+              
+            svg.append("g")
+              .call(d3.axisLeft(y).ticks(4))
+              .selectAll("text")
+                .style("fill", textColor)
+                .style("font-size", "9px");
+
+            svg.append("path")
+              .datum(data)
+              .attr("fill", "none")
+              .attr("stroke", isDarkMode ? "#FFD700" : "#4285F4")
+              .attr("stroke-width", 2)
+              .attr("d", d3.line()
+                .x(d => x(parseDate(d.date)))
+                .y(d => y(d.value))
+                .curve(d3.curveMonotoneX)
+              );
+              
+            svg.selectAll("circle")
+              .data(data)
+              .enter()
+              .append("circle")
+                .attr("fill", isDarkMode ? "#FFD700" : "#34A853")
+                .attr("stroke", "none")
+                .attr("cx", d => x(parseDate(d.date)))
+                .attr("cy", d => y(d.value))
+                .attr("r", 3);
+        }
+        
+        window.addEventListener('resize', renderChart);
+        setTimeout(renderChart, 100);
+
+        // In-App Interstitial (Se muestra automáticamente según la configuración)
+        if (typeof show_11443377 === 'function') {
+            show_11443377({
+              type: 'inApp',
+              inAppSettings: {
+                frequency: 2,
+                capping: 0.1,
+                interval: 30,
+                timeout: 5,
+                everyPage: false
+              }
+            });
+        }
+
+        function showRewardedInterstitial() {
+            if (typeof show_11443377 === 'function') {
+                // Rewarded popup (opción alternativa: show_11443377('pop'))
+                show_11443377().then(() => {
+                    // You need to add your user reward function here
+                    addPoints(10);
+                    alert('¡Genial! Has ganado +10 💎 puntos por ver el anuncio.');
+                }).catch(e => {
+                    console.log("User got error during playing ad", e);
+                });
+            } else {
+                alert("Anuncio no disponible aún. Intenta en unos segundos.");
+            }
+        }
+
+        function showInAppInterstitial() {
+            // Este botón puede disparar el formato popup o simplemente recordar que ya se auto-ejecuta
+            if (typeof show_11443377 === 'function') {
+                show_11443377('pop').then(() => {
+                    addPoints(5);
+                    alert('¡Excelente! Has ganado +5 💎 puntos.');
+                }).catch((err) => {
+                    console.log("Error al mostrar anuncio", err);
+                });
+            } else {
+                alert("Anuncio no disponible aún. Intenta en unos segundos.");
+            }
+        }
+    </script>
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
