@@ -43,10 +43,3 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
   MyApplicationTheme { Greeting("Android") }
 }
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-  MyApplicationTheme { Greeting("Android") }
-}

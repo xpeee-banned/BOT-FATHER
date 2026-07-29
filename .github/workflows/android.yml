@@ -11,6 +11,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,29 +21,23 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: set up JDK 17
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: gradle
 
-    - name: Decode Debug Keystore
-      run: base64 -d debug.keystore.base64 > debug.keystore || echo "No base64 keystore found"
-
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Run Gradle Dependencies Diagnostic
-      run: ./gradlew dependencies
-
-    - name: Build with Gradle
-      run: ./gradlew assembleDebug
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug --stacktrace
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
+        name: BotFather-debug-apk
         path: app/build/outputs/apk/debug/app-debug.apk
 
     - name: Create Release

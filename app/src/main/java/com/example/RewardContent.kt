@@ -33,7 +33,7 @@ fun RewardContent() {
                 onClick = { showAd = false },
                 modifier = Modifier.align(Alignment.TopEnd).padding(16.dp).background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(50))
             ) {
-                Icon(Icons.Default. Diamond, contentDescription = "Close", tint = Color.White)
+                Icon(Icons.Default.Diamond, contentDescription = "Close", tint = Color.White)
             }
         }
     } else {
