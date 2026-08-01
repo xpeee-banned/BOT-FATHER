@@ -85,9 +85,10 @@ fun HomeContent(onNavigate: (String) -> Unit) {
         }
 
         item {
-        item {
             GamesThatPaySection(onNavigate)
         }
+
+        item {
             AiTrendsSection()
         }
 
@@ -157,9 +158,10 @@ fun HomeContent(onNavigate: (String) -> Unit) {
         }
 
         item {
-        item {
             UpdateCheckButton()
         }
+        
+        item {
             AppFooter()
         }
     }
@@ -242,9 +244,6 @@ fun HeroSection() {
 }
 
 @Composable
-        item {
-            GamesThatPaySection(onNavigate)
-        }
 fun AiTrendsSection() {
     var trends by remember { mutableStateOf("Loading trends...") }
     
@@ -438,10 +437,10 @@ fun GamesThatPaySection(onNavigate: (String) -> Unit) {
         val games = listOf(
             GameItem("Dado Magico", "+30 monedas", Icons.Default.Casino),
             GameItem("Adivina el Numero", "+40 monedas", Icons.Default.Psychology),
-            GameItem("Cara o Cruz", "+20 monedas", Icons.Default.CurrencyExchange),
-            GameItem("Slot Machine", "+50 monedas", Icons.Default.VideogameAsset),
-            GameItem("Lucky Number", "+100 monedas", Icons.Default.Lottery),
-            GameItem("High or Low", "+25 monedas", Icons.Default.Style)
+            GameItem("Cara o Cruz", "+20 monedas", Icons.Default.Payments),
+            GameItem("Slot Machine", "+50 monedas", Icons.Default.SportsEsports),
+            GameItem("Lucky Number", "+100 monedas", Icons.Default.ConfirmationNumber),
+            GameItem("High or Low", "+25 monedas", Icons.Default.Star)
         )
         
         games.chunked(2).forEach { rowGames ->
