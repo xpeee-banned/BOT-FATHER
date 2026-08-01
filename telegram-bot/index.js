@@ -9,7 +9,7 @@ const TelegramBot = require('node-telegram-bot-api');
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN || process.env.BOT_TOKEN;
 const PORT = process.env.PORT || 3000;
-const WEBAPP_URL = process.env.WEBAPP_URL || 'https://xpeee-banned.github.io/BOT-FATHER/';
+const WEBAPP_URL = process.env.WEBAPP_URL || 'https://rewardnexus.vercel.app';
 const ADMIN_ID = process.env.ADMIN_ID || '';
 const MONETAG_LINK = process.env.MONETAG_LINK || 'https://omg10.com/4/11368455';
 const CPA_LINK = process.env.CPA_LINK || 'https://cpalead.com/';
