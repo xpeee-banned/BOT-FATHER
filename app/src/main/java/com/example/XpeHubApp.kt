@@ -75,7 +75,7 @@ fun XpeHubApp() {
                         selected = currentRoute == "rewards",
                         onClick = { navController.navigate("rewards") },
                         icon = { Icon(Icons.Default.CardGiftcard, null) },
-                        label = { Text("Cartera") },
+                        label = { Text("Monedas") },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
                             selectedTextColor = MaterialTheme.colorScheme.onBackground,

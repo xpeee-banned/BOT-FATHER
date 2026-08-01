@@ -53,12 +53,12 @@ app.get('/postback', (req, res) => {
     const userId = parseInt(subid);
     if (userId && users.has(userId)) {
       const user = users.get(userId);
-      const diamonds = Math.floor(parseFloat(payout || 0) * 100);
-      user.diamonds += diamonds;
-      user.totalEarned += diamonds;
+      const coins = Math.floor(parseFloat(payout || 0) * 100);
+      user.coins += coins;
+      user.totalEarned += coins;
       user.tasksCompleted += 1;
       saveUser(user);
-      bot.sendMessage(userId, `📈 ¡Oferta completada!\n\n💎 +${diamonds} diamantes acreditados\n💰 Balance: ${user.diamonds} ($${(user.diamonds/100).toFixed(2)} USD)`);
+      bot.sendMessage(userId, `📈 ¡Oferta completada!\n\n🪙 +${coins} monedas acreditadas\n💰 Balance: ${user.coins} ($${(user.coins/100).toFixed(2)} USD)`);
     }
   }
   res.send('OK');
@@ -82,14 +82,14 @@ const achievements = [
   { id: 'gamer_50', name: 'Gamer Pro', desc: 'Juega 50 partidas', emoji: '🏆', check: u => u.gamesPlayed >= 50 },
   { id: 'streak_7', name: 'Constante', desc: 'Racha de 7 dias', emoji: '🔥', check: u => u.dailyStreak >= 7 },
   { id: 'streak_30', name: 'Imparable', desc: 'Racha de 30 dias', emoji: '⚡', check: u => u.dailyStreak >= 30 },
-  { id: 'earned_1000', name: 'Primer Millon', desc: 'Gana 1000 diamantes', emoji: '💎', check: u => u.totalEarned >= 1000 },
-  { id: 'earned_5000', name: 'Magnate', desc: 'Gana 5000 diamantes', emoji: '💰', check: u => u.totalEarned >= 5000 },
+  { id: 'earned_1000', name: 'Primer Millon', desc: 'Gana 1000 monedas', emoji: '🪙', check: u => u.totalEarned >= 1000 },
+  { id: 'earned_5000', name: 'Magnate', desc: 'Gana 5000 monedas', emoji: '💰', check: u => u.totalEarned >= 5000 },
 ];
 
 function getUser(id) {
   if (!users.has(id)) {
     users.set(id, {
-      id, username: '', diamonds: 0, xp: 0, level: 1, referrals: 0,
+      id, username: '', coins: 0, xp: 0, level: 1, referrals: 0,
       referralCode: 'RN' + id.toString(36).toUpperCase(),
       tasksCompleted: 0, gamesPlayed: 0, totalEarned: 0,
       joinedAt: Date.now(), lastDaily: 0, dailyStreak: 0,
@@ -105,7 +105,7 @@ const TIERS = [
   { name: 'Bronze', min: 1, color: '🥉', bonus: 0, maxDaily: 50 },
   { name: 'Silver', min: 5, color: '🥈', bonus: 0.1, maxDaily: 100 },
   { name: 'Gold', min: 15, color: '🥇', bonus: 0.2, maxDaily: 200 },
-  { name: 'Platinum', min: 30, color: '💎', bonus: 0.35, maxDaily: 500 },
+  { name: 'Platinum', min: 30, color: '🪙', bonus: 0.35, maxDaily: 500 },
   { name: 'Diamond', min: 50, color: '💠', bonus: 0.5, maxDaily: 1000 }
 ];
 
@@ -147,7 +147,7 @@ function mainMenu(user) {
   return {
     reply_markup: {
       inline_keyboard: [
-        [{ text: '🎮 Minijuegos', callback_data: 'games' }, { text: '💎 Tareas & Ofertas', callback_data: 'tasks' }],
+        [{ text: '🎮 Minijuegos', callback_data: 'games' }, { text: '🪙 Tareas & Ofertas', callback_data: 'tasks' }],
         [{ text: '📊 Dashboard', callback_data: 'dashboard' }, { text: '🏆 Logros', callback_data: 'achievements' }],
         [{ text: '💰 Cartera', callback_data: 'wallet' }, { text: '👥 Referidos', callback_data: 'referrals' }],
         [{ text: '📈 Ranking', callback_data: 'leaderboard' }, { text: '🌐 Web App', url: WEBAPP_URL }],
@@ -176,7 +176,7 @@ function tasksMenu() {
       inline_keyboard: [
         [{ text: '🎁 Muro CPA - $0.50-$3.00', callback_data: 'offer_cpa' }],
         [{ text: '₿ Bono Cripto - Binance VIP', callback_data: 'offer_crypto' }],
-        [{ text: '📺 Ver Anuncio +15 diamantes', callback_data: 'offer_ad' }],
+        [{ text: '📺 Ver Anuncio +15 monedas', callback_data: 'offer_ad' }],
         [{ text: '📋 Tarea Diaria', callback_data: 'daily_task' }],
         [{ text: '🔥 Oferta Especial', callback_data: 'offer_special' }],
         [{ text: '⬅️ Menu', callback_data: 'main' }]
@@ -198,11 +198,11 @@ bot.onText(/\/start(?:\s+(.+))?/, (msg, match) => {
     for (const u of users.values()) {
       if (u.referralCode === refCode && u.id !== chatId) {
         u.referrals += 1;
-        u.diamonds += 50; u.totalEarned += 50;
+        u.coins += 50; u.totalEarned += 50;
         addXP(u, 20); saveUser(u);
-        user.diamonds += 25; addXP(user, 10);
+        user.coins += 25; addXP(user, 10);
         saveUser(user);
-        bot.sendMessage(u.id, `🎉 Nuevo referido: ${user.username}\n📈 +50 💎 +20 XP\n👥 Total: ${u.referrals}`);
+        bot.sendMessage(u.id, `🎉 Nuevo referido: ${user.username}\n📈 +50 🪙 +20 XP\n👥 Total: ${u.referrals}`);
       }
     }
   }
@@ -214,11 +214,11 @@ bot.onText(/\/start(?:\s+(.+))?/, (msg, match) => {
     `Bienvenido, ${user.username}!\n` +
     `📊 Nivel: ${user.level} ${tier.color} ${tier.name}\n` +
     `⚡ XP: ${user.xp}/${xpForLevel(user.level)}\n` +
-    `💎 Balance: ${user.diamonds} ($${(user.diamonds/100).toFixed(2)} USD)\n` +
+    `🪙 Balance: ${user.coins} ($${(user.coins/100).toFixed(2)} USD)\n` +
     `👥 Referidos: ${user.referrals}\n` +
     `🔥 Racha: ${user.dailyStreak} dias\n\n` +
-    `Completa tareas, juega y refiere amigos para ganar diamantes.\n` +
-    `_100 💎 = $1.00 USD_\n\n` +
+    `Completa tareas, juega y refiere amigos para ganar monedas.\n` +
+    `_100 🪙 = $1.00 USD_\n\n` +
     `🔗 Codigo de referido: \`${user.referralCode}\``;
 
   bot.sendMessage(chatId, text, { parse_mode: 'Markdown', ...mainMenu(user) });
@@ -240,16 +240,16 @@ bot.onText(/\/help/, (msg) => {
     `/share - Compartir progreso\n` +
     `/app - Descargar app\n` +
     `/admin - Panel admin\n\n` +
-    `_100 💎 = $1.00 USD_`,
+    `_100 🪙 = $1.00 USD_`,
     { parse_mode: 'Markdown', ...mainMenu(getUser(msg.chat.id)) });
 });
 
 bot.onText(/\/juegos/, (msg) => {
-  bot.sendMessage(msg.chat.id, '🎮 *Minijuegos*\n\nJuega y gana XP + diamantes', { parse_mode: 'Markdown', ...gamesMenu() });
+  bot.sendMessage(msg.chat.id, '🎮 *Minijuegos*\n\nJuega y gana XP + monedas', { parse_mode: 'Markdown', ...gamesMenu() });
 });
 
 bot.onText(/\/tareas/, (msg) => {
-  bot.sendMessage(msg.chat.id, '💎 *Tareas y Ofertas*\n\nGana diamantes reales:', { parse_mode: 'Markdown', ...tasksMenu() });
+  bot.sendMessage(msg.chat.id, '🪙 *Tareas y Ofertas*\n\nGana monedas reales:', { parse_mode: 'Markdown', ...tasksMenu() });
 });
 
 bot.onText(/\/cartera/, (msg) => showWallet(msg.chat.id, getUser(msg.chat.id), null));
@@ -265,13 +265,13 @@ bot.onText(/\/app/, (msg) => showDownload(msg.chat.id, null));
 bot.onText(/\/admin/, (msg) => {
   if (ADMIN_ID && msg.chat.id.toString() !== ADMIN_ID) return bot.sendMessage(msg.chat.id, '❌ Solo el admin puede usar este comando.');
   const totalUsers = users.size;
-  const totalDiamonds = [...users.values()].reduce((s, u) => s + u.diamonds, 0);
+  const totalCoins = [...users.values()].reduce((s, u) => s + u.coins, 0);
   const totalPaid = [...users.values()].reduce((s, u) => s + u.totalEarned, 0);
   bot.sendMessage(msg.chat.id,
     `🔧 *Panel Admin - RewardNexus*\n\n` +
     `👥 Usuarios: ${totalUsers}\n` +
-    `💎 En circulacion: ${totalDiamonds} ($${(totalDiamonds/100).toFixed(2)})\n` +
-    `📊 Total generado: ${totalPaid} 💎\n` +
+    `🪙 En circulacion: ${totalCoins} ($${(totalCoins/100).toFixed(2)})\n` +
+    `📊 Total generado: ${totalPaid} 🪙\n` +
     `💸 Retiros pendientes: ${pendingWithdrawals.size}\n\n` +
     `_Comandos: /withdrawals | /pay <id> <amt> | /broadcast <msg>_`,
     { parse_mode: 'Markdown' });
@@ -286,32 +286,32 @@ bot.on('callback_query', (query) => {
   saveUser(user);
 
   if (data === 'claim_ad') {
-    user.diamonds += 15; user.tasksCompleted++; user.totalEarned += 15;
+    user.coins += 15; user.tasksCompleted++; user.totalEarned += 15;
     addXP(user, 5); saveUser(user);
     const ach = checkAchievements(user);
-    let msg = `✅ +15 💎 acreditados\n📈 Balance: ${user.diamonds}`;
+    let msg = `✅ +15 🪙 acreditadas\n📈 Balance: ${user.coins}`;
     if (ach.length) msg += `\n🏆 Logro: ${ach[0].emoji} ${ach[0].name}!`;
-    bot.answerCallbackQuery(query.id, { text: '+15 💎 +5 XP' });
+    bot.answerCallbackQuery(query.id, { text: '+15 🪙 +5 XP' });
     bot.editMessageText(msg, { chat_id: chatId, message_id: query.message.message_id, ...tasksMenu() });
     return;
   }
 
   if (data === 'confirm_withdraw') {
-    if (user.diamonds < 100) { bot.answerCallbackQuery(query.id, { text: 'Necesitas minimo 100 💎' }); return; }
-    const amount = user.diamonds;
+    if (user.coins < 100) { bot.answerCallbackQuery(query.id, { text: 'Necesitas minimo 100 🪙' }); return; }
+    const amount = user.coins;
     pendingWithdrawals.set(chatId, { user, amount, date: Date.now() });
     bot.answerCallbackQuery(query.id, { text: 'Solicitud enviada' });
     bot.editMessageText(
-      `✅ *Retiro Solicitado*\n\n💎 ${amount} ($${(amount/100).toFixed(2)})\nID: ${chatId}\n\nEl admin procesara tu pago.`,
+      `✅ *Retiro Solicitado*\n\n🪙 ${amount} ($${(amount/100).toFixed(2)})\nID: ${chatId}\n\nEl admin procesara tu pago.`,
       { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...mainMenu(user) });
-    if (ADMIN_ID) bot.sendMessage(ADMIN_ID, `💸 *Retiro pendiente*\nUsuario: ${user.username}\nID: ${chatId}\n💎 ${amount} ($${(amount/100).toFixed(2)})`, { parse_mode: 'Markdown' });
+    if (ADMIN_ID) bot.sendMessage(ADMIN_ID, `💸 *Retiro pendiente*\nUsuario: ${user.username}\nID: ${chatId}\n🪙 ${amount} ($${(amount/100).toFixed(2)})`, { parse_mode: 'Markdown' });
     return;
   }
 
   switch(data) {
-    case 'main': bot.editMessageText(`🚀 *RewardNexus*\n\nNivel ${user.level} ${getTier(user.level).color} | 💎 ${user.diamonds}`, { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...mainMenu(user) }); break;
-    case 'games': bot.editMessageText('🎮 *Minijuegos*\n\nJuega y gana XP + diamantes', { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...gamesMenu() }); break;
-    case 'tasks': bot.editMessageText('💎 *Tareas y Ofertas*\n\nGana diamantes reales:', { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...tasksMenu() }); break;
+    case 'main': bot.editMessageText(`🚀 *RewardNexus*\n\nNivel ${user.level} ${getTier(user.level).color} | 🪙 ${user.coins}`, { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...mainMenu(user) }); break;
+    case 'games': bot.editMessageText('🎮 *Minijuegos*\n\nJuega y gana XP + monedas', { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...gamesMenu() }); break;
+    case 'tasks': bot.editMessageText('🪙 *Tareas y Ofertas*\n\nGana monedas reales:', { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...tasksMenu() }); break;
     case 'game_dice': handleDice(chatId, query); break;
     case 'game_guess': handleGuess(chatId, query); break;
     case 'game_coinflip': handleCoinFlip(chatId, query); break;
@@ -352,11 +352,11 @@ function showDashboard(chatId, user, query) {
     `${tier.color} ${tier.name} | Nivel ${user.level}\n` +
     `⚡ XP: ${bar} ${user.xp}/${xpNeeded}\n` +
     `📈 Bonus: +${(tier.bonus*100)}% ganancias\n\n` +
-    `💎 Balance: ${user.diamonds} ($${(user.diamonds/100).toFixed(2)})\n` +
+    `🪙 Balance: ${user.coins} ($${(user.coins/100).toFixed(2)})\n` +
     `🎮 Juegos: ${user.gamesPlayed}\n` +
     `📋 Tareas: ${user.tasksCompleted}\n` +
     `👥 Referidos: ${user.referrals}\n` +
-    `🏆 Total: ${user.totalEarned} 💎\n` +
+    `🏆 Total: ${user.totalEarned} 🪙\n` +
     `🔥 Racha: ${user.dailyStreak} dias\n` +
     `🏅 Logros: ${user.achievements.length}/${achievements.length}`;
   if (query) bot.editMessageText(text, { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...mainMenu(user) });
@@ -389,7 +389,7 @@ function showLeaderboard(chatId, query) {
   let text = `📈 *Ranking Global*\n\n`;
   sorted.forEach((u, i) => {
     const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}.`;
-    text += `${medal} ${u.username} - ${u.totalEarned} 💎 (Nv${u.level})\n`;
+    text += `${medal} ${u.username} - ${u.totalEarned} 🪙 (Nv${u.level})\n`;
   });
   if (!sorted.length) text += 'Aun no hay datos. Se el primero!';
   if (query) bot.editMessageText(text, { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...mainMenu(getUser(chatId)) });
@@ -403,7 +403,7 @@ function showStats(chatId) {
   bot.sendMessage(chatId,
     `📊 *Estadisticas RewardNexus*\n\n` +
     `👥 Usuarios: ${all.length}\n` +
-    `💎 Generado: ${totalEarned} ($${(totalEarned/100).toFixed(2)})\n` +
+    `🪙 Generado: ${totalEarned} ($${(totalEarned/100).toFixed(2)})\n` +
     `📊 Nivel promedio: ${avgLevel}\n` +
     `🎮 Partidas jugadas: ${all.reduce((s,u)=>s+u.gamesPlayed,0)}\n` +
     `📋 Tareas completadas: ${all.reduce((s,u)=>s+u.tasksCompleted,0)}`,
@@ -415,9 +415,9 @@ function showBonuses(chatId, user) {
   bot.sendMessage(chatId,
     `⚡ *Bonuses Disponibles*\n\n` +
     `${tier.color} Tier ${tier.name}: +${(tier.bonus*100)}% en todas las ganancias\n` +
-    `🔥 Racha ${user.dailyStreak} dias: +${Math.min(user.dailyStreak*2,30)} 💎 extra en daily\n` +
-    `👥 Referral: +50 💎 por amigo, +25 💎 para el\n` +
-    `📺 Anuncio: +15 💎 por visionado\n\n` +
+    `🔥 Racha ${user.dailyStreak} dias: +${Math.min(user.dailyStreak*2,30)} 🪙 extra en daily\n` +
+    `👥 Referral: +50 🪙 por amigo, +25 🪙 para el\n` +
+    `📺 Anuncio: +15 🪙 por visionado\n\n` +
     `_Sigue subiendo de nivel para mejores bonuses_`,
     { parse_mode: 'Markdown', ...mainMenu(user) });
 }
@@ -428,7 +428,7 @@ function shareProgress(chatId, user) {
     `🚀 *RewardNexus*\n\n` +
     `📊 Mi progreso:\n` +
     `${tier.color} Nivel ${user.level} - ${tier.name}\n` +
-    `💎 ${user.diamonds} diamantes ($${(user.diamonds/100).toFixed(2)})\n` +
+    `🪙 ${user.coins} monedas ($${(user.coins/100).toFixed(2)})\n` +
     `🏆 ${user.totalEarned} ganados\n` +
     `👥 ${user.referrals} referidos\n` +
     `🔥 ${user.dailyStreak} dias de racha\n\n` +
@@ -445,9 +445,9 @@ function handleDice(chatId, query) {
       const user = getUser(chatId);
       let reward, xp, result;
       if (val === 6) { reward = 30; xp = 15; result = `🎉 JACKPOT! Sacaste ${val}`; }
-      else if (val >= 4) { reward = 10; xp = 8; result = `📈 Sacaste ${val} +${reward} 💎`; }
-      else { reward = 2; xp = 5; result = `📉 Sacaste ${val} +${reward} 💎`; }
-      user.diamonds += reward; user.gamesPlayed++; user.totalEarned += reward;
+      else if (val >= 4) { reward = 10; xp = 8; result = `📈 Sacaste ${val} +${reward} 🪙`; }
+      else { reward = 2; xp = 5; result = `📉 Sacaste ${val} +${reward} 🪙`; }
+      user.coins += reward; user.gamesPlayed++; user.totalEarned += reward;
       const xpR = addXP(user, xp); saveUser(user);
       const ach = checkAchievements(user); saveUser(user);
       if (xpR.leveledUp) result += `\n🚀 SUBISTE AL NIVEL ${user.level}!`;
@@ -459,7 +459,7 @@ function handleDice(chatId, query) {
 
 function handleGuess(chatId, query) {
   bot.answerCallbackQuery(query.id);
-  bot.editMessageText('🎯 *Adivina el numero (1-5)*\nAciertas = 40💎+15XP', {
+  bot.editMessageText('🎯 *Adivina el numero (1-5)*\nAciertas = 40🪙+15XP', {
     chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown',
     reply_markup: { inline_keyboard: [
       [{ text: '1️⃣', callback_data: 'guess_1' }, { text: '2️⃣', callback_data: 'guess_2' }, { text: '3️⃣', callback_data: 'guess_3' }, { text: '4️⃣', callback_data: 'guess_4' }, { text: '5️⃣', callback_data: 'guess_5' }],
@@ -475,17 +475,17 @@ function handleGuessAnswer(chatId, query, data) {
   let reward, xpGain, result;
   if (guess === secret) { reward = 40; xpGain = 15; result = `🎯 CORRECTO! Era ${secret}`; }
   else { reward = 5; xpGain = 5; result = `📉 Era ${secret}, elegiste ${guess}`; }
-  user.diamonds += reward; user.gamesPlayed++; user.totalEarned += reward;
+  user.coins += reward; user.gamesPlayed++; user.totalEarned += reward;
   const xp = addXP(user, xpGain); const ach = checkAchievements(user); saveUser(user);
   if (xp.leveledUp) result += `\n🚀 NIVEL ${user.level}!`;
   if (ach.length) result += `\n🏆 ${ach[0].emoji} ${ach[0].name}!`;
   bot.answerCallbackQuery(query.id, { text: result.replace(/\n/g, ' ') });
-  bot.editMessageText(`${result}\n📈 +${reward} 💎 ⚡ +${xp.gained} XP`, { chat_id: chatId, message_id: query.message.message_id, ...gamesMenu() });
+  bot.editMessageText(`${result}\n📈 +${reward} 🪙 ⚡ +${xp.gained} XP`, { chat_id: chatId, message_id: query.message.message_id, ...gamesMenu() });
 }
 
 function handleCoinFlip(chatId, query) {
   bot.answerCallbackQuery(query.id);
-  bot.editMessageText('🪙 *Cara o Cruz?*\nAcertas = 20💎+10XP', {
+  bot.editMessageText('🪙 *Cara o Cruz?*\nAcertas = 20🪙+10XP', {
     chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown',
     reply_markup: { inline_keyboard: [
       [{ text: '🪙 Cara', callback_data: 'flip_cara' }, { text: '🪙 Cruz', callback_data: 'flip_cruz' }],
@@ -501,16 +501,16 @@ function handleFlipChoice(chatId, query, data) {
   let reward, xpGain, msg;
   if (choice === result) { reward = 20; xpGain = 10; msg = `🪙 SALIO ${result.toUpperCase()} 📈 Ganaste!`; }
   else { reward = 3; xpGain = 4; msg = `🪙 SALIO ${result.toUpperCase()} 📉 Perdiste`; }
-  user.diamonds += reward; user.gamesPlayed++; user.totalEarned += reward;
+  user.coins += reward; user.gamesPlayed++; user.totalEarned += reward;
   const xp = addXP(user, xpGain); saveUser(user);
   if (xp.leveledUp) msg += `\n🚀 NIVEL ${user.level}!`;
   bot.answerCallbackQuery(query.id, { text: msg.replace(/\n/g, ' ') });
-  bot.editMessageText(`${msg}\n📈 +${reward} 💎 ⚡ +${xp.gained} XP`, { chat_id: chatId, message_id: query.message.message_id, ...gamesMenu() });
+  bot.editMessageText(`${msg}\n📈 +${reward} 🪙 ⚡ +${xp.gained} XP`, { chat_id: chatId, message_id: query.message.message_id, ...gamesMenu() });
 }
 
 function handleSlot(chatId, query) {
   bot.answerCallbackQuery(query.id);
-  bot.editMessageText('🎰 *Slot Machine*\nApostar 5💎 - 3 iguales = 50💎', {
+  bot.editMessageText('🎰 *Slot Machine*\nApostar 5🪙 - 3 iguales = 50🪙', {
     chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown',
     reply_markup: { inline_keyboard: [
       [{ text: '🎰 GIRAR', callback_data: 'slot_spin' }],
@@ -521,26 +521,26 @@ function handleSlot(chatId, query) {
 
 function handleSlotSpin(chatId, query, data) {
   const user = getUser(chatId);
-  if (user.diamonds < 5) { bot.answerCallbackQuery(query.id, { text: 'Necesitas 5 💎' }); return; }
-  user.diamonds -= 5;
-  const emojis = ['🍒', '🍋', '🍊', '🍇', '💎', '7️⃣'];
+  if (user.coins < 5) { bot.answerCallbackQuery(query.id, { text: 'Necesitas 5 🪙' }); return; }
+  user.coins -= 5;
+  const emojis = ['🍒', '🍋', '🍊', '🍇', '🪙', '7️⃣'];
   const r1 = emojis[Math.floor(Math.random() * emojis.length)];
   const r2 = emojis[Math.floor(Math.random() * emojis.length)];
   const r3 = emojis[Math.floor(Math.random() * emojis.length)];
   let reward = 0, xpGain = 3, msg;
-  if (r1 === r2 && r2 === r3) { reward = 50; xpGain = 20; msg = `🎰 ${r1}${r2}${r3}\n🎉 JACKPOT! +50 💎`; }
-  else if (r1 === r2 || r2 === r3 || r1 === r3) { reward = 10; xpGain = 8; msg = `🎰 ${r1}${r2}${r3}\n📈 Pareja! +10 💎`; }
-  else { reward = 0; msg = `🎰 ${r1}${r2}${r3}\n📉 Sin suerte. -5 💎`; }
-  user.diamonds += reward; user.gamesPlayed++; user.totalEarned += reward;
+  if (r1 === r2 && r2 === r3) { reward = 50; xpGain = 20; msg = `🎰 ${r1}${r2}${r3}\n🎉 JACKPOT! +50 🪙`; }
+  else if (r1 === r2 || r2 === r3 || r1 === r3) { reward = 10; xpGain = 8; msg = `🎰 ${r1}${r2}${r3}\n📈 Pareja! +10 🪙`; }
+  else { reward = 0; msg = `🎰 ${r1}${r2}${r3}\n📉 Sin suerte. -5 🪙`; }
+  user.coins += reward; user.gamesPlayed++; user.totalEarned += reward;
   const xp = addXP(user, xpGain); saveUser(user);
   if (xp.leveledUp) msg += `\n🚀 NIVEL ${user.level}!`;
   bot.answerCallbackQuery(query.id, { text: msg.replace(/\n/g, ' ') });
-  bot.editMessageText(`${msg}\n💎 Balance: ${user.diamonds}`, { chat_id: chatId, message_id: query.message.message_id, ...gamesMenu() });
+  bot.editMessageText(`${msg}\n🪙 Balance: ${user.coins}`, { chat_id: chatId, message_id: query.message.message_id, ...gamesMenu() });
 }
 
 function handleLucky(chatId, query) {
   bot.answerCallbackQuery(query.id);
-  bot.editMessageText('🔢 *Lucky Number*\nElige 1-10. Acertas = 100💎!', {
+  bot.editMessageText('🔢 *Lucky Number*\nElige 1-10. Acertas = 100🪙!', {
     chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown',
     reply_markup: { inline_keyboard: [
       [{ text: '1', callback_data: 'lucky_1' }, { text: '2', callback_data: 'lucky_2' }, { text: '3', callback_data: 'lucky_3' }, { text: '4', callback_data: 'lucky_4' }, { text: '5', callback_data: 'lucky_5' }],
@@ -555,20 +555,20 @@ function handleLuckyPick(chatId, query, data) {
   const secret = Math.floor(Math.random() * 10) + 1;
   const user = getUser(chatId);
   let reward, xpGain, msg;
-  if (pick === secret) { reward = 100; xpGain = 30; msg = `🎯 ${pick} = ${secret} JACKPOT! +100 💎`; }
-  else if (Math.abs(pick - secret) === 1) { reward = 20; xpGain = 10; msg = `📈 Casi! ${pick} vs ${secret} +20 💎`; }
-  else { reward = 2; xpGain = 5; msg = `📉 ${pick} vs ${secret} +2 💎`; }
-  user.diamonds += reward; user.gamesPlayed++; user.totalEarned += reward;
+  if (pick === secret) { reward = 100; xpGain = 30; msg = `🎯 ${pick} = ${secret} JACKPOT! +100 🪙`; }
+  else if (Math.abs(pick - secret) === 1) { reward = 20; xpGain = 10; msg = `📈 Casi! ${pick} vs ${secret} +20 🪙`; }
+  else { reward = 2; xpGain = 5; msg = `📉 ${pick} vs ${secret} +2 🪙`; }
+  user.coins += reward; user.gamesPlayed++; user.totalEarned += reward;
   const xp = addXP(user, xpGain); saveUser(user);
   if (xp.leveledUp) msg += `\n🚀 NIVEL ${user.level}!`;
   bot.answerCallbackQuery(query.id, { text: msg.replace(/\n/g, ' ') });
-  bot.editMessageText(`${msg}\n💎 Balance: ${user.diamonds}`, { chat_id: chatId, message_id: query.message.message_id, ...gamesMenu() });
+  bot.editMessageText(`${msg}\n🪙 Balance: ${user.coins}`, { chat_id: chatId, message_id: query.message.message_id, ...gamesMenu() });
 }
 
 function handleHighLow(chatId, query) {
   bot.answerCallbackQuery(query.id);
   const current = Math.floor(Math.random() * 50) + 1;
-  bot.editMessageText(`🃏 *High or Low?*\n\nNumero actual: *${current}*\nAdivina si el siguiente sera mayor o menor\n\nAcertas = 25💎+12XP`, {
+  bot.editMessageText(`🃏 *High or Low?*\n\nNumero actual: *${current}*\nAdivina si el siguiente sera mayor o menor\n\nAcertas = 25🪙+12XP`, {
     chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown',
     reply_markup: { inline_keyboard: [
       [{ text: '📈 Mayor', callback_data: `hl_high_${current}` }, { text: '📉 Menor', callback_data: `hl_low_${current}` }],
@@ -585,13 +585,13 @@ function handleHighLowChoice(chatId, query, data) {
   const user = getUser(chatId);
   let win = (choice === 'high' && next > current) || (choice === 'low' && next < current);
   let reward, xpGain, msg;
-  if (win) { reward = 25; xpGain = 12; msg = `🃏 ${current} → ${next}\n📈 Ganaste! +25 💎`; }
-  else { reward = 3; xpGain = 5; msg = `🃏 ${current} → ${next}\n📉 Perdiste +3 💎`; }
-  user.diamonds += reward; user.gamesPlayed++; user.totalEarned += reward;
+  if (win) { reward = 25; xpGain = 12; msg = `🃏 ${current} → ${next}\n📈 Ganaste! +25 🪙`; }
+  else { reward = 3; xpGain = 5; msg = `🃏 ${current} → ${next}\n📉 Perdiste +3 🪙`; }
+  user.coins += reward; user.gamesPlayed++; user.totalEarned += reward;
   const xp = addXP(user, xpGain); saveUser(user);
   if (xp.leveledUp) msg += `\n🚀 NIVEL ${user.level}!`;
   bot.answerCallbackQuery(query.id, { text: msg.replace(/\n/g, ' ') });
-  bot.editMessageText(`${msg}\n💎 Balance: ${user.diamonds}`, { chat_id: chatId, message_id: query.message.message_id, ...gamesMenu() });
+  bot.editMessageText(`${msg}\n🪙 Balance: ${user.coins}`, { chat_id: chatId, message_id: query.message.message_id, ...gamesMenu() });
 }
 
 // ============ OFFERS ============
@@ -601,7 +601,7 @@ function handleCPA(chatId, query) {
     `🎁 *Muro de Ofertas CPA*\n\n` +
     `Gana $0.50-$3.00 por accion:\n\n` +
     `• Descarga apps y juegos\n• Responde encuestas\n• Prueba servicios\n\n` +
-    `Recompensa: 100-300 💎 por oferta\n` +
+    `Recompensa: 100-300 🪙 por oferta\n` +
     `Bonus nivel: +${(getTier(getUser(chatId).level).bonus*100)}%\n\n` +
     `🔗 [Abrir Muro](${CPA_LINK})\n\n` +
     `_Envia captura al admin para reclamar_`,
@@ -613,7 +613,7 @@ function handleCrypto(chatId, query) {
   bot.editMessageText(
     `₿ *Bono Cripto - Binance*\n\n` +
     `Abre cuenta en Binance y gana:\n\n` +
-    `✅ VIP permanente en RewardNexus\n✅ +200 💎 diamantes\n✅ +50 XP\n✅ Hasta $50 USD en comisiones\n\n` +
+    `✅ VIP permanente en RewardNexus\n✅ +200 🪙 monedas\n✅ +50 XP\n✅ Hasta $50 USD en comisiones\n\n` +
     `🔗 [Registrarse](${CRYPTO_LINK})\n\n` +
     `_Envia tu ID de Binance al admin_`,
     { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...mainMenu(getUser(chatId)) });
@@ -624,7 +624,7 @@ function handleAd(chatId, query) {
   const user = getUser(chatId);
   bot.editMessageText(
     `📺 *Ver Anuncio (Monetag)*\n\n` +
-    `Recompensa: 15 💎 + 5 XP\n` +
+    `Recompensa: 15 🪙 + 5 XP\n` +
     `Bonus nivel: +${(getTier(user.level).bonus*100)}%\n\n` +
     `🔗 [Ver Anuncio](${MONETAG_LINK})`,
     { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown',
@@ -640,8 +640,8 @@ function handleSpecial(chatId, query) {
   bot.editMessageText(
     `🔥 *Oferta Especial*\n\n` +
     `Completa 3 ofertas seguidas:\n\n` +
-    `1. Ver anuncio (15 💎)\n2. Muro CPA (100+ 💎)\n3. Tarea diaria (10+ 💎)\n\n` +
-    `Completa todas y recibe +50 💎 bonus!`,
+    `1. Ver anuncio (15 🪙)\n2. Muro CPA (100+ 🪙)\n3. Tarea diaria (10+ 🪙)\n\n` +
+    `Completa todas y recibe +50 🪙 bonus!`,
     { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...tasksMenu() });
 }
 
@@ -659,12 +659,12 @@ function handleDaily(chatId, query) {
   const baseReward = 10 + streakBonus;
   const tier = getTier(user.level);
   const totalReward = Math.floor(baseReward * (1 + tier.bonus));
-  user.diamonds += totalReward; user.tasksCompleted++; user.totalEarned += totalReward;
+  user.coins += totalReward; user.tasksCompleted++; user.totalEarned += totalReward;
   user.lastDaily = now; addXP(user, 10);
   const ach = checkAchievements(user); saveUser(user);
-  let msg = `📋 *Tarea Diaria*\n\n+${totalReward} 💎 + 10 XP\n🔥 Racha: ${user.dailyStreak} dias\n💎 Balance: ${user.diamonds}`;
+  let msg = `📋 *Tarea Diaria*\n\n+${totalReward} 🪙 + 10 XP\n🔥 Racha: ${user.dailyStreak} dias\n🪙 Balance: ${user.coins}`;
   if (ach.length) msg += `\n🏆 Logro: ${ach[0].emoji} ${ach[0].name}!`;
-  bot.answerCallbackQuery(query.id, { text: `+${totalReward} 💎 Racha: ${user.dailyStreak}!` });
+  bot.answerCallbackQuery(query.id, { text: `+${totalReward} 🪙 Racha: ${user.dailyStreak}!` });
   bot.editMessageText(msg, { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...mainMenu(user) });
 }
 
@@ -672,13 +672,13 @@ function handleDaily(chatId, query) {
 function showWallet(chatId, user, query) {
   const text =
     `💰 *Cartera*\n\n` +
-    `💎 Balance: ${user.diamonds}\n` +
-    `💵 Valor: $${(user.diamonds/100).toFixed(2)} USD\n` +
+    `🪙 Balance: ${user.coins}\n` +
+    `💵 Valor: $${(user.coins/100).toFixed(2)} USD\n` +
     `📊 Tareas: ${user.tasksCompleted}\n` +
     `🎮 Juegos: ${user.gamesPlayed}\n` +
     `👥 Referidos: ${user.referrals}\n` +
-    `🏆 Ganado: ${user.totalEarned} 💎\n\n` +
-    `_100 💎 = $1.00 USD_`;
+    `🏆 Ganado: ${user.totalEarned} 🪙\n\n` +
+    `_100 🪙 = $1.00 USD_`;
   const kb = { reply_markup: { inline_keyboard: [
     [{ text: '💸 Retirar', callback_data: 'withdraw' }, { text: '📋 Diaria', callback_data: 'daily_task' }],
     [{ text: '⬅️ Menu', callback_data: 'main' }]
@@ -688,11 +688,11 @@ function showWallet(chatId, user, query) {
 }
 
 function showWithdraw(chatId, user, query) {
-  if (user.diamonds < 100) { bot.answerCallbackQuery(query.id, { text: 'Necesitas minimo 100 💎' }); return; }
+  if (user.coins < 100) { bot.answerCallbackQuery(query.id, { text: 'Necesitas minimo 100 🪙' }); return; }
   bot.answerCallbackQuery(query.id);
   bot.editMessageText(
-    `💸 *Retirar*\n\nDisponible: ${user.diamonds} 💎 ($${(user.diamonds/100).toFixed(2)})\n\n` +
-    `Metodos: PayPal, Binance Pay, Telegram Stars\n\nMinimo: 100 💎 ($1.00)\nID: ${chatId}`,
+    `💸 *Retirar*\n\nDisponible: ${user.coins} 🪙 ($${(user.coins/100).toFixed(2)})\n\n` +
+    `Metodos: PayPal, Binance Pay, Telegram Stars\n\nMinimo: 100 🪙 ($1.00)\nID: ${chatId}`,
     { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown',
       reply_markup: { inline_keyboard: [
         [{ text: '✅ Confirmar Retiro', callback_data: 'confirm_withdraw' }],
@@ -709,8 +709,8 @@ function showReferrals(chatId, user, query) {
     `Codigo: \`${user.referralCode}\`\n` +
     `Enlace: https://t.me/${botName}?start=${user.referralCode}\n\n` +
     `Referidos: ${user.referrals}\n` +
-    `Ganado: ${user.referrals * 50} 💎\n\n` +
-    `💰 Tu ganas 50 💎 por referido\nTu amigo gana 25 💎 al entrar`;
+    `Ganado: ${user.referrals * 50} 🪙\n\n` +
+    `💰 Tu ganas 50 🪙 por referido\nTu amigo gana 25 🪙 al entrar`;
   if (query) bot.editMessageText(text, { chat_id: chatId, message_id: query.message.message_id, parse_mode: 'Markdown', ...mainMenu(user) });
   else bot.sendMessage(chatId, text, { parse_mode: 'Markdown', ...mainMenu(user) });
 }

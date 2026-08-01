@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CardGiftcard
-import androidx.compose.material.icons.filled.Diamond
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -33,7 +33,7 @@ fun RewardContent() {
                 onClick = { showAd = false },
                 modifier = Modifier.align(Alignment.TopEnd).padding(16.dp).background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(50))
             ) {
-                Icon(Icons.Default.Diamond, contentDescription = "Close", tint = Color.White)
+                Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.White)
             }
         }
     } else {
@@ -52,26 +52,26 @@ fun RewardContent() {
             )
             Spacer(Modifier.height(24.dp))
             Text(
-                "RewardNexus Rewards",
+                "Mis Monedas",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = OnBackgroundLight
             )
             Spacer(Modifier.height(12.dp))
             Text(
-                "Support the xpe.nettt community and unlock premium tools by viewing a quick reward. This helps us keep the app automated and free!",
+                "Mira un anuncio rapido y gana monedas. Las monedas se pueden canjear por dinero real via PayPal.",
                 textAlign = TextAlign.Center,
                 color = TextSecondary
             )
             Spacer(Modifier.height(48.dp))
             MonetagInterstitialTrigger(
-                buttonText = "Watch to Unlock Tools",
+                buttonText = "Ver Anuncio y Ganar Monedas",
                 onRewardEarned = { showAd = true },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(16.dp))
             Text(
-                "Ads by Monetag - Automated & Secure",
+                "Anuncios por Monetag - Seguro y Automatico",
                 fontSize = 10.sp,
                 color = TextSecondary.copy(alpha = 0.5f)
             )

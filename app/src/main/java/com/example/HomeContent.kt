@@ -62,7 +62,7 @@ fun HomeContent(onNavigate: (String) -> Unit) {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text("Guarda tu progreso", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                            Text("Tus Monedas", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
                             Text("Inicia sesión para no perder recompensas", fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         Spacer(modifier = Modifier.width(12.dp))
@@ -73,7 +73,7 @@ fun HomeContent(onNavigate: (String) -> Unit) {
                             shape = RoundedCornerShape(12.dp),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                         ) {
-                            Text("Google Auth", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text("Iniciar Sesion", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -85,6 +85,9 @@ fun HomeContent(onNavigate: (String) -> Unit) {
         }
 
         item {
+        item {
+            GamesThatPaySection(onNavigate)
+        }
             AiTrendsSection()
         }
 
@@ -154,6 +157,9 @@ fun HomeContent(onNavigate: (String) -> Unit) {
         }
 
         item {
+        item {
+            UpdateCheckButton()
+        }
             AppFooter()
         }
     }
@@ -236,6 +242,9 @@ fun HeroSection() {
 }
 
 @Composable
+        item {
+            GamesThatPaySection(onNavigate)
+        }
 fun AiTrendsSection() {
     var trends by remember { mutableStateOf("Loading trends...") }
     
@@ -415,3 +424,82 @@ val trendingChannels = listOf(
     TelegramChannel("Global Memes", "The funniest memes on the planet", "https://via.placeholder.com/150"),
     TelegramChannel("Crypto Alerts", "Real-time crypto signals", "https://via.placeholder.com/150")
 )
+
+@Composable
+fun GamesThatPaySection(onNavigate: (String) -> Unit) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Default.SportsEsports, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            Spacer(Modifier.width(8.dp))
+            Text("Juegos que Pagan", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground)
+        }
+        Spacer(Modifier.height(12.dp))
+        
+        val games = listOf(
+            GameItem("Dado Magico", "+30 monedas", Icons.Default.Casino),
+            GameItem("Adivina el Numero", "+40 monedas", Icons.Default.Psychology),
+            GameItem("Cara o Cruz", "+20 monedas", Icons.Default.CurrencyExchange),
+            GameItem("Slot Machine", "+50 monedas", Icons.Default.VideogameAsset),
+            GameItem("Lucky Number", "+100 monedas", Icons.Default.Lottery),
+            GameItem("High or Low", "+25 monedas", Icons.Default.Style)
+        )
+        
+        games.chunked(2).forEach { rowGames ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                for (game in rowGames) {
+                    GameCard(game, Modifier.weight(1f))
+                }
+                if (rowGames.size == 1) Spacer(Modifier.weight(1f))
+            }
+            Spacer(Modifier.height(12.dp))
+        }
+    }
+}
+
+data class GameItem(val name: String, val reward: String, val icon: ImageVector)
+
+@Composable
+fun GameCard(game: GameItem, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(16.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+    ) {
+        Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(game.icon, contentDescription = game.name, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(32.dp))
+            Spacer(Modifier.height(8.dp))
+            Text(game.name, fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
+            Spacer(Modifier.height(4.dp))
+            Text(game.reward, fontSize = 12.sp, color = Color(0xFF00E580), fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+@Composable
+fun UpdateCheckButton() {
+    val context = LocalContext.current
+    Card(
+        onClick = { com.example.ui.update.AutoUpdater.manualCheck(context) },
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(16.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primaryContainer)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(Icons.Default.SystemUpdate, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            Spacer(Modifier.width(12.dp))
+            Column {
+                Text("Buscar actualizaciones", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                Text("Ultima version: v2.1.0", fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+    }
+}
