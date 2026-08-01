@@ -28,9 +28,16 @@ object AutoUpdater {
                 // Compare versions
                 val hasUpdate = if (tagName.isNotEmpty()) {
                     try {
-                        val latest = tagName.removePrefix("v").split(".").map { it.toInt() }
-                        val current = CURRENT_VERSION.split(".").map { it.toInt() }
-                        latest > current
+                        val latestParts = tagName.removePrefix("v").split(".").map { it.toIntOrNull() ?: 0 }
+                        val currentParts = CURRENT_VERSION.split(".").map { it.toIntOrNull() ?: 0 }
+                        var updateFound = false
+                        for (i in 0 until maxOf(latestParts.size, currentParts.size)) {
+                            val l = if (i < latestParts.size) latestParts[i] else 0
+                            val c = if (i < currentParts.size) currentParts[i] else 0
+                            if (l > c) { updateFound = true; break }
+                            if (l < c) { break }
+                        }
+                        updateFound
                     } catch (e: Exception) {
                         tagName != CURRENT_VERSION
                     }
