@@ -184,25 +184,8 @@
             
             <div class="overflow-hidden w-full select-none flex">
                 <div class="animate-marquee flex items-center" id="ticker-marquee">
-                    <!-- Repeated ticker cards to allow seamless looping -->
-                    <div class="ticker-group flex items-center">
-                        <span class="mx-6 flex items-center gap-1"><span class="text-primarygreen font-bold">@mario_99</span> completó CPA Offer <span class="text-primarygreen font-bold text-xs ml-1">+$45.20 USD</span><i class="fa-solid fa-square-check text-primarygreen ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-brandblue font-bold">@crypto_king</span> retiró <span class="text-brandblue font-bold text-xs ml-1">85.00 USDT</span><i class="fa-solid fa-bolt text-brandblue ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-brandpurple font-bold">@ana_valdez</span> ganó <span class="text-brandpurple font-bold text-xs ml-1">+100 🪙 por referido</span><i class="fa-solid fa-users text-brandpurple ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-primarygreen font-bold">@jose_m</span> retiró <span class="text-primarygreen font-bold text-xs ml-1">$15.50 Litecoin</span><i class="fa-brands fa-bitcoin text-brandgold ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-brandgold font-bold">@lisa_crypto</span> completó Video Patrocinado <span class="text-brandgold font-bold text-xs ml-1">+$1.50 USD</span><i class="fa-solid fa-circle-play text-brandgold ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-primarygreen font-bold">@user_8874</span> completó Tarea <span class="text-primarygreen font-bold text-xs ml-1">+$4.20 USD</span><i class="fa-solid fa-check text-primarygreen ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-brandpurple font-bold">@alex_earn</span> retiró <span class="text-brandpurple font-bold text-xs ml-1">45.00 USDT</span><i class="fa-solid fa-wallet text-brandpurple ml-1"></i></span>
-                    </div>
-                    <div class="ticker-group flex items-center">
-                        <span class="mx-6 flex items-center gap-1"><span class="text-primarygreen font-bold">@mario_99</span> completó CPA Offer <span class="text-primarygreen font-bold text-xs ml-1">+$45.20 USD</span><i class="fa-solid fa-square-check text-primarygreen ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-brandblue font-bold">@crypto_king</span> retiró <span class="text-brandblue font-bold text-xs ml-1">85.00 USDT</span><i class="fa-solid fa-bolt text-brandblue ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-brandpurple font-bold">@ana_valdez</span> ganó <span class="text-brandpurple font-bold text-xs ml-1">+100 🪙 por referido</span><i class="fa-solid fa-users text-brandpurple ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-primarygreen font-bold">@jose_m</span> retiró <span class="text-primarygreen font-bold text-xs ml-1">$15.50 Litecoin</span><i class="fa-brands fa-bitcoin text-brandgold ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-brandgold font-bold">@lisa_crypto</span> completó Video Patrocinado <span class="text-brandgold font-bold text-xs ml-1">+$1.50 USD</span><i class="fa-solid fa-circle-play text-brandgold ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-primarygreen font-bold">@user_8874</span> completó Tarea <span class="text-primarygreen font-bold text-xs ml-1">+$4.20 USD</span><i class="fa-solid fa-check text-primarygreen ml-1"></i></span>
-                        <span class="mx-6 flex items-center gap-1"><span class="text-brandpurple font-bold">@alex_earn</span> retiró <span class="text-brandpurple font-bold text-xs ml-1">45.00 USDT</span><i class="fa-solid fa-wallet text-brandpurple ml-1"></i></span>
-                    </div>
+                    <div class="ticker-group flex items-center" id="ticker-content-1"></div>
+                    <div class="ticker-group flex items-center" id="ticker-content-2"></div>
                 </div>
             </div>
         </div>
@@ -295,7 +278,7 @@
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primarygreen opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-primarygreen"></span>
                         </span>
-                        RewardNexus - Earn While You Play
+                        RewardNexus
                     </div>
                     
                     <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
@@ -437,7 +420,7 @@
                         <span class="inline-block w-2.5 h-2.5 rounded-full bg-primarygreen animate-ping"></span>
                         <span class="text-3xl sm:text-4xl font-extrabold text-white counter-val" data-target="12842" id="stats-online">12,842</span>
                     </div>
-                    <p class="text-[11px] text-primarygreen font-semibold mt-1">Sincronizado en tiempo real</p>
+                    <p id="sub-online" class="text-[11px] text-primarygreen font-semibold mt-1">Sincronizado en tiempo real</p>
                 </div>
                 
                 <!-- Stat 2 -->
@@ -446,14 +429,14 @@
                     <div class="flex items-center justify-center gap-1.5 text-3xl sm:text-4xl font-extrabold text-white">
                         <span class="counter-val currency" data-target="284950" id="stats-paid">$284,950</span>
                     </div>
-                    <p class="text-[11px] text-primarygreen font-semibold mt-1">Transacciones verificadas en Blockchain</p>
+                    <p id="sub-paid" class="text-[11px] text-primarygreen font-semibold mt-1">Transacciones verificadas en Blockchain</p>
                 </div>
                 
                 <!-- Stat 3 -->
                 <div class="pt-6 md:pt-0">
                     <p class="text-xs uppercase font-extrabold text-slate-400 tracking-widest mb-1">Ofertas Disponibles</p>
                     <span class="text-3xl sm:text-4xl font-extrabold text-white counter-val" data-target="1450" id="stats-offers">1,450</span>
-                    <p class="text-[11px] text-brandblue font-semibold mt-1">Actualizado hace 2 minutos</p>
+                    <p id="sub-offers" class="text-[11px] text-brandblue font-semibold mt-1">Actualizado hace 2 minutos</p>
                 </div>
                 
             </div>
@@ -1042,6 +1025,120 @@
     </section>
 
     <!-- ====== SECCIÓN: MINIJUEGOS INTERACTIVOS ====== -->
+    
+    <!-- ====== SECCIÓN: MÉTODOS DE PAGO Y RETIRO ====== -->
+    <section id="metodos-pago" class="py-24 relative bg-slate-900/40 border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-primarygreen/10 text-primarygreen text-xs font-bold uppercase tracking-wider mb-2">Métodos de Pago y Retiro</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Retira tus ganancias de forma instantánea</h2>
+                <p class="text-slate-400 font-medium">Soportamos los principales bancos locales e internacionales, monederos digitales y criptomonedas con las comisiones más bajas del mercado.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- PayPal -->
+                <div onclick="selectPaymentMethod('PayPal', this)" class="payment-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-primarygreen transition-all cursor-pointer text-left relative group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                            <i class="fa-brands fa-paypal text-blue-400 text-2xl"></i>
+                        </div>
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300">Global</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">PayPal</h4>
+                    <p class="text-xs text-slate-400">Retiro desde $1.00 USD</p>
+                    <p class="text-[11px] text-primarygreen font-semibold mt-3 flex items-center gap-1"><i class="fa-solid fa-bolt"></i> Procesamiento &lt; 24h</p>
+                </div>
+
+                <!-- Mastercard -->
+                <div onclick="selectPaymentMethod('Mastercard', this)" class="payment-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-primarygreen transition-all cursor-pointer text-left relative group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                            <i class="fa-brands fa-cc-mastercard text-red-400 text-2xl"></i>
+                        </div>
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300">Tarjeta</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Mastercard</h4>
+                    <p class="text-xs text-slate-400">Abono directo a tarjeta</p>
+                    <p class="text-[11px] text-primarygreen font-semibold mt-3 flex items-center gap-1"><i class="fa-solid fa-shield-halved"></i> Verificación Segura</p>
+                </div>
+
+                <!-- Visa -->
+                <div onclick="selectPaymentMethod('Visa', this)" class="payment-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-primarygreen transition-all cursor-pointer text-left relative group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-600/20 flex items-center justify-center">
+                            <i class="fa-brands fa-cc-visa text-blue-500 text-2xl"></i>
+                        </div>
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300">Tarjeta</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Visa</h4>
+                    <p class="text-xs text-slate-400">Abono directo a tarjeta</p>
+                    <p class="text-[11px] text-primarygreen font-semibold mt-3 flex items-center gap-1"><i class="fa-solid fa-shield-halved"></i> Verificación Segura</p>
+                </div>
+
+                <!-- Banco Popular Dominicano -->
+                <div onclick="selectPaymentMethod('Banco Popular Dominicano', this)" class="payment-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-primarygreen transition-all cursor-pointer text-left relative group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center font-black text-emerald-400 text-xs tracking-tighter">
+                            POPULAR
+                        </div>
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400">RD 🇩🇴</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Banco Popular</h4>
+                    <p class="text-xs text-slate-400">Transferencia bancaria local</p>
+                    <p class="text-[11px] text-primarygreen font-semibold mt-3 flex items-center gap-1"><i class="fa-solid fa-building-columns"></i> LBTR / ACH Directo</p>
+                </div>
+
+                <!-- Banreservas -->
+                <div onclick="selectPaymentMethod('Banreservas', this)" class="payment-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-primarygreen transition-all cursor-pointer text-left relative group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center font-black text-blue-400 text-xs tracking-tighter">
+                            RESERVAS
+                        </div>
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400">RD 🇩🇴</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Banreservas</h4>
+                    <p class="text-xs text-slate-400">Transferencia bancaria local</p>
+                    <p class="text-[11px] text-primarygreen font-semibold mt-3 flex items-center gap-1"><i class="fa-solid fa-building-columns"></i> LBTR / ACH Directo</p>
+                </div>
+
+                <!-- BHD -->
+                <div onclick="selectPaymentMethod('Banco BHD', this)" class="payment-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-primarygreen transition-all cursor-pointer text-left relative group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-600/10 border border-emerald-600/20 flex items-center justify-center font-black text-emerald-300 text-xs tracking-tighter">
+                            BHD
+                        </div>
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-600/10 text-emerald-300">RD 🇩🇴</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Banco BHD</h4>
+                    <p class="text-xs text-slate-400">Transferencia bancaria local</p>
+                    <p class="text-[11px] text-primarygreen font-semibold mt-3 flex items-center gap-1"><i class="fa-solid fa-building-columns"></i> LBTR / ACH Directo</p>
+                </div>
+
+                <!-- USDT -->
+                <div onclick="selectPaymentMethod('USDT (Crypto)', this)" class="payment-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-primarygreen transition-all cursor-pointer text-left relative group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
+                            <i class="fa-solid fa-coins text-teal-400 text-2xl"></i>
+                        </div>
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-teal-500/10 text-teal-400">Crypto</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">USDT (TRC20 / BEP20)</h4>
+                    <p class="text-xs text-slate-400">Retiro desde $0.50 USD</p>
+                    <p class="text-[11px] text-primarygreen font-semibold mt-3 flex items-center gap-1"><i class="fa-solid fa-bolt"></i> Pago Instantáneo</p>
+                </div>
+            </div>
+
+            <!-- Selection Banner -->
+            <div id="payment-selection-banner" class="hidden max-w-2xl mx-auto p-4 rounded-2xl bg-slate-900 border border-primarygreen/40 text-center space-y-2">
+                <p class="text-sm font-bold text-white" id="payment-selected-title">Método seleccionado: PayPal</p>
+                <p class="text-xs text-slate-400" id="payment-selected-desc">Mínimo de cobro: $1.00 USD • Sin comisiones adicionales</p>
+                <button onclick="openAuthModal('login')" class="mt-2 px-6 py-2 rounded-xl bg-primarygreen hover:bg-[#00cc72] text-darkbg font-extrabold text-xs transition-all shadow-lg shadow-primarygreen/20">
+                    Solicitar Retiro
+                </button>
+            </div>
+        </div>
+    </section>
+
     <section id="minijuegos" class="py-24 relative bg-gradient-to-br from-[#0A0F1E] to-[#0F172A] border-y border-slate-800/60">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -1658,78 +1755,107 @@
         </div>
     </div>
 
-    <!-- Interactive Authentication Modal (Google + Telegram + Email) -->
-    <div id="auth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
-        <div class="glass-card rounded-3xl max-w-md w-full p-6 sm:p-8 relative border border-slate-800 glow-green overflow-hidden">
-            <!-- Modal Background accents -->
-            <div class="absolute -right-12 -top-12 w-24 h-24 bg-primarygreen/15 blur-xl rounded-full"></div>
-            
+    <!-- Interactive Authentication Modal -->
+    <div id="auth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-opacity">
+        <div class="glass-card rounded-3xl max-w-md w-full p-6 sm:p-8 relative border border-slate-800 glow-green overflow-hidden shadow-2xl">
             <!-- Close Button -->
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 p-1 rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:border-slate-500 transition-all">
+            <button onclick="closeAuthModal()" type="button" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-900/80 border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 flex items-center justify-center transition-all">
                 <i class="fa-solid fa-xmark text-sm"></i>
             </button>
-            
-            <!-- Modal Tab Selection -->
-            <div class="flex border-b border-slate-800 pb-4 mb-6">
-                <button onclick="switchAuthTab('login')" id="tab-btn-login" class="flex-1 text-center font-bold text-sm text-primarygreen pb-2 border-b-2 border-primarygreen">
+
+            <!-- Tabs -->
+            <div class="flex border-b border-slate-800 pb-3 mb-6">
+                <button type="button" onclick="switchAuthTab('login')" id="tab-btn-login" class="flex-1 text-center font-extrabold text-sm pb-2 border-b-2 border-primarygreen text-primarygreen transition-all">
                     Iniciar Sesión
                 </button>
-                <button onclick="switchAuthTab('register')" id="tab-btn-register" class="flex-1 text-center font-bold text-sm text-slate-400 pb-2 border-b-2 border-transparent">
+                <button type="button" onclick="switchAuthTab('register')" id="tab-btn-register" class="flex-1 text-center font-extrabold text-sm pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all">
                     Registrarse
                 </button>
             </div>
-            
-            <!-- Title Info -->
+
             <div class="text-center mb-6">
-                <h4 class="text-xl font-extrabold text-white" id="auth-modal-title">Acceso Broker Seguro</h4>
-                <p class="text-xs text-slate-400 mt-1" id="auth-modal-subtitle">Inicia sesión en RewardNexus para gestionar tus balances</p>
+                <h4 class="text-2xl font-black text-white" id="auth-modal-title">Iniciar Sesión</h4>
+                <p class="text-xs text-slate-400 mt-1" id="auth-modal-subtitle">Accede a tu cuenta de RewardNexus</p>
             </div>
-            
-            <!-- Auth Form -->
-            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+
+            <!-- Google OAuth Button -->
+            <button type="button" onclick="handleGoogleAuth()" class="w-full mb-5 py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs flex items-center justify-center gap-3 transition-all shadow-md hover:shadow-lg">
+                <svg class="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span id="google-btn-text">Iniciar con Google</span>
+            </button>
+
+            <div class="relative mb-5 text-center">
+                <span class="absolute inset-y-1/2 left-0 right-0 h-px bg-slate-800"></span>
+                <span class="relative bg-[#0A0F1E] px-3 text-[10px] text-slate-400 font-bold uppercase tracking-widest">o usa tu correo</span>
+            </div>
+
+            <!-- Login Form -->
+            <form id="auth-form-login" onsubmit="handleAuthSubmit(event, 'login')" class="space-y-4">
                 <div>
-                    <label class="text-xs font-bold text-slate-300 block mb-1.5">Correo Electrónico</label>
+                    <label class="text-xs font-bold text-slate-300 block mb-1.5">Correo o Usuario</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" placeholder="nombre@correo.com" required class="w-full py-2.5 pl-10 pr-4 bg-slate-950/50 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-xs text-white">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fa-solid fa-user text-xs"></i></span>
+                        <input type="text" id="login-identifier" required placeholder="tu@correo.com o @usuario" class="w-full py-2.5 pl-10 pr-4 bg-slate-950/60 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-xs text-white placeholder-slate-500">
                     </div>
                 </div>
                 <div>
                     <label class="text-xs font-bold text-slate-300 block mb-1.5">Contraseña</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" placeholder="••••••••" required class="w-full py-2.5 pl-10 pr-4 bg-slate-950/50 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-xs text-white">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fa-solid fa-lock text-xs"></i></span>
+                        <input type="password" id="login-password" required placeholder="••••••••" class="w-full py-2.5 pl-10 pr-4 bg-slate-950/60 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-xs text-white placeholder-slate-500">
                     </div>
                 </div>
-                <div id="referral-field" class="hidden">
-                    <label class="text-xs font-bold text-slate-300 block mb-1.5">Código de Referido (Opcional)</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500"><i class="fa-solid fa-user-tag"></i></span>
-                        <input type="text" placeholder="Ej: NEXUS_100" class="w-full py-2.5 pl-10 pr-4 bg-slate-950/50 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-xs text-white">
-                    </div>
-                </div>
-                
-                <button type="submit" class="w-full py-3 rounded-xl bg-primarygreen hover:bg-[#00cc72] text-darkbg font-extrabold text-xs transition-colors shadow-lg shadow-primarygreen/15">
-                    Confirmar Ingreso
+                <button type="submit" class="w-full py-3 rounded-xl bg-primarygreen hover:bg-[#00cc72] text-darkbg font-extrabold text-xs transition-all shadow-lg shadow-primarygreen/20">
+                    Iniciar Sesión
                 </button>
             </form>
-            
-            <!-- Divider -->
-            <div class="relative my-6 text-center">
-                <span class="absolute inset-y-1/2 left-0 right-0 h-px bg-slate-800"></span>
-                <span class="relative bg-[#0F172A] dark:bg-[#0F172A] px-3 text-[10px] text-slate-400 font-bold uppercase tracking-widest">O continúa con</span>
-            </div>
-            
-            <!-- OAuth Actions -->
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="handleOAuthLogin('Google')" class="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-800 bg-slate-950/20 text-xs font-bold text-slate-300 hover:text-white hover:border-slate-600 transition-all">
-                    <i class="fa-brands fa-google text-red-500"></i> Google
+
+            <!-- Register Form -->
+            <form id="auth-form-register" onsubmit="handleAuthSubmit(event, 'register')" class="space-y-3 hidden">
+                <div>
+                    <label class="text-xs font-bold text-slate-300 block mb-1">Correo Electrónico</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fa-solid fa-envelope text-xs"></i></span>
+                        <input type="email" id="reg-email" required placeholder="correo@ejemplo.com" class="w-full py-2 pl-10 pr-4 bg-slate-950/60 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-xs text-white placeholder-slate-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-300 block mb-1">Nombre de Usuario</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fa-solid fa-at text-xs"></i></span>
+                        <input type="text" id="reg-username" required placeholder="ej: carlos_99" class="w-full py-2 pl-10 pr-4 bg-slate-950/60 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-xs text-white placeholder-slate-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-300 block mb-1">Contraseña</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fa-solid fa-lock text-xs"></i></span>
+                        <input type="password" id="reg-password" required placeholder="••••••••" class="w-full py-2 pl-10 pr-4 bg-slate-950/60 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-xs text-white placeholder-slate-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-300 block mb-1">Confirmar Contraseña</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fa-solid fa-shield-halved text-xs"></i></span>
+                        <input type="password" id="reg-password-confirm" required placeholder="••••••••" class="w-full py-2 pl-10 pr-4 bg-slate-950/60 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-xs text-white placeholder-slate-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-300 block mb-1">Número de Teléfono</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fa-solid fa-phone text-xs"></i></span>
+                        <input type="tel" id="reg-phone" required placeholder="+1 (809) 000-0000" class="w-full py-2 pl-10 pr-4 bg-slate-950/60 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-xs text-white placeholder-slate-500">
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-primarygreen hover:bg-[#00cc72] text-darkbg font-extrabold text-xs transition-all shadow-lg shadow-primarygreen/20">
+                    Registrarse
                 </button>
-                <button onclick="handleOAuthLogin('Telegram')" class="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-800 bg-slate-950/20 text-xs font-bold text-slate-300 hover:text-white hover:border-slate-600 transition-all">
-                    <i class="fa-brands fa-telegram text-brandblue"></i> Telegram
-                </button>
-            </div>
-            
+            </form>
         </div>
     </div>
 
@@ -1745,29 +1871,82 @@
             updateBalanceDisplay();
             selectCalcLevel('oro', 1.10);
             
-            // Add initial random user payouts
-            setInterval(() => {
-                const names = ['@daniela_tr', '@josh_crypto', '@fer_99', '@mariela_x', '@roberto_btc', '@usdt_hunter'];
-                const actions = [
-                    { t: 'completó CPA Offer (+$12.50)', i: '🔥' },
-                    { t: 'retiró $5.00 USDT', i: '💸' },
-                    { t: 'reclamó Bono Diario', i: '🎁' },
-                    { t: 'completó Video Ad (+$1.50)', i: '📺' }
-                ];
-                const randName = names[Math.floor(Math.random() * names.length)];
-                const randAct = actions[Math.floor(Math.random() * actions.length)];
-                
-                // Add to ticker
-                const tickerGroup = document.querySelector('.ticker-group');
-                if (tickerGroup) {
-                    const span = document.createElement('span');
-                    span.className = "mx-6 flex items-center gap-1";
-                    span.innerHTML = `<span class="text-primarygreen font-bold">${randName}</span> ${randAct.t} <i class="fa-solid fa-bolt text-brandblue ml-1"></i>`;
-                    tickerGroup.appendChild(span);
-                    if(tickerGroup.children.length > 20) {
-                        tickerGroup.removeChild(tickerGroup.firstChild);
+            // ===== MASSIVE WINNER TICKER SYSTEM =====
+            const winnerNames = [
+                '@carlos_m', '@laura_g', '@pedro_pv', '@maria_fe', '@jose_d', '@ana_valdez',
+                '@luis_r', '@carmen_s', '@diego_t', '@sofia_l', '@mario_99', '@crypto_king',
+                '@lisa_crypto', '@alex_earn', '@roberto_btc', '@usdt_hunter', '@daniela_tr',
+                '@josh_crypto', '@fer_99', '@mariela_x', '@camila_88', '@sebastian_q',
+                '@valeria_h', '@andres_p', '@natalia_c', '@ricardo_m', '@patricia_v',
+                '@gabriel_s', '@isabela_r', '@fernando_d', '@paula_a', '@oscar_l',
+                '@monica_g', '@rafael_t', '@elena_b', '@nicolas_f', '@adriana_j',
+                '@tommy_v', '@cristian_r', '@jessica_h', '@manuel_d', '@veronica_s',
+                '@eduardo_m', '@diana_p', '@santiago_l', '@gloria_f', '@hugo_m',
+                '@beatriz_r', '@ivan_t', '@lucia_g', '@marco_a', '@silvia_d', '@pablo_s',
+                '@teresa_v', '@javier_m', '@lorena_c', '@cesar_r', '@meli_p', '@ramon_f',
+                '@karen_l', '@bruno_d', '@nadia_s', '@matias_g', '@rosa_v', '@emilio_t'
+            ];
+            const winnerActions = [
+                { t: 'completó encuesta', c: 'text-primarygreen', a: '+$', i: 'fa-square-check' },
+                { t: 'ganó en minijuego', c: 'text-brandpurple', a: '+', i: 'fa-gamepad' },
+                { t: 'retiró a PayPal', c: 'text-brandblue', a: '-', i: 'fa-wallet' },
+                { t: 'completó tarea CPA', c: 'text-primarygreen', a: '+$', i: 'fa-fire' },
+                { t: 'obtuvo referral bonus', c: 'text-brandpurple', a: '+', i: 'fa-users' },
+                { t: 'completó video patrocinado', c: 'text-brandgold', a: '+$', i: 'fa-circle-play' },
+                { t: 'canjeó monedas', c: 'text-brandgold', a: '-', i: 'fa-coins' },
+                { t: 'recibió bonus diario', c: 'text-primarygreen', a: '+$', i: 'fa-gift' },
+                { t: 'retiró en USDT', c: 'text-brandblue', a: '-', i: 'fa-bolt' },
+                { t: 'retiró en Litecoin', c: 'text-brandgold', a: '-', i: 'fa-bitcoin' },
+                { t: 'subió de nivel', c: 'text-brandpurple', a: '+', i: 'fa-trophy' },
+                { t: 'completó oferta especial', c: 'text-primarygreen', a: '+$', i: 'fa-star' }
+            ];
+            const colorClasses = ['text-primarygreen', 'text-brandblue', 'text-brandpurple', 'text-brandgold'];
+            
+            function generateWinnerEntry() {
+                const name = winnerNames[Math.floor(Math.random() * winnerNames.length)];
+                const action = winnerActions[Math.floor(Math.random() * winnerActions.length)];
+                const color = colorClasses[Math.floor(Math.random() * colorClasses.length)];
+                let amount;
+                if (action.t.includes('retiró')) {
+                    amount = (Math.random() * 80 + 5).toFixed(2);
+                    return `<span class="mx-6 flex items-center gap-1"><span class="${color} font-bold">${name}</span> ${action.t} <span class="${color} font-bold text-xs ml-1">${amount} USDT</span><i class="fa-solid ${action.i} ${color} ml-1"></i></span>`;
+                } else if (action.t.includes('referral') || action.t.includes('subió')) {
+                    amount = Math.floor(Math.random() * 200 + 50);
+                    return `<span class="mx-6 flex items-center gap-1"><span class="${color} font-bold">${name}</span> ${action.t} <span class="${color} font-bold text-xs ml-1">+${amount} 🪙</span><i class="fa-solid ${action.i} ${color} ml-1"></i></span>`;
+                } else {
+                    amount = (Math.random() * 49 + 0.25).toFixed(2);
+                    return `<span class="mx-6 flex items-center gap-1"><span class="${color} font-bold">${name}</span> ${action.t} <span class="${color} font-bold text-xs ml-1">+$${amount} USD</span><i class="fa-solid ${action.i} ${color} ml-1"></i></span>`;
+                }
+            }
+            
+            // Initialize ticker with 15 entries per group
+            function initTicker() {
+                const group1 = document.getElementById('ticker-content-1');
+                const group2 = document.getElementById('ticker-content-2');
+                if (group1 && group2) {
+                    for (let i = 0; i < 15; i++) {
+                        group1.insertAdjacentHTML('beforeend', generateWinnerEntry());
+                        group2.insertAdjacentHTML('beforeend', generateWinnerEntry());
                     }
                 }
+            }
+            initTicker();
+            
+            // Update ticker every 2-4 seconds with a new entry
+            setInterval(() => {
+                const groups = [document.getElementById('ticker-content-1'), document.getElementById('ticker-content-2')];
+                const group = groups[Math.floor(Math.random() * groups.length)];
+                if (group) {
+                    const span = document.createElement('span');
+                    span.className = 'mx-6 flex items-center gap-1';
+                    span.innerHTML = generateWinnerEntry();
+                    span.style.animation = 'fadeInUp 0.5s ease';
+                    group.appendChild(span);
+                    if (group.children.length > 20) {
+                        group.removeChild(group.firstChild);
+                    }
+                }
+            }, 2000 + Math.random() * 2000);
                 
                 // Add to dashboard mock transaction table
                 const txList = document.getElementById('dashboard-tx-list');
