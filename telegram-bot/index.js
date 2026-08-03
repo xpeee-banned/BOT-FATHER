@@ -14,7 +14,7 @@ const ADMIN_ID = process.env.ADMIN_ID || '';
 const MONETAG_LINK = process.env.MONETAG_LINK || 'https://omg10.com/4/11368455';
 const CPA_LINK = process.env.CPA_LINK || 'https://cpalead.com/';
 const CRYPTO_LINK = process.env.CRYPTO_LINK || 'https://www.binance.com/es/register';
-const WEBHOOK_URL = process.env.WEBHOOK_URL || process.env.VERCEL_URL || '';
+const WEBHOOK_URL = process.env.WEBHOOK_URL || '';  // Solo webhook si se setea explicitamente
 
 if (!TOKEN) { console.error('ERROR: TELEGRAM_BOT_TOKEN no configurado'); process.exit(1); }
 
