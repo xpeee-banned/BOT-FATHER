@@ -38,6 +38,9 @@ if (WEBHOOK_URL) {
 
 // Express server
 app.get('/health', (req, res) => res.json({ status: 'ok', bot: 'RewardNexus', version: '2.1' }));
+
+// Only start express server in webhook mode (needs port for webhook)
+// In polling mode, the bot doesn't need a web server
 app.get('/', (req, res) => res.json({ status: 'ok', bot: 'RewardNexus', version: '2.1' }));
 
 // Webhook endpoint para Vercel
@@ -64,9 +67,7 @@ app.get('/postback', (req, res) => {
   res.send('OK');
 });
 
-if (!WEBHOOK_URL) {
-  app.listen(PORT, () => console.log(`RewardNexus escuchando en puerto ${PORT}`));
-}
+// En modo polling no necesitamos servidor express
 
 // ============ DATABASE ============
 const users = new Map();
