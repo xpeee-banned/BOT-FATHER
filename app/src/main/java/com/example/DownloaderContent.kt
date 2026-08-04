@@ -84,7 +84,7 @@ fun DownloaderContent() {
                 CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
             }
         } else {
-            MonetagInterstitialTrigger(
+            RewardAdTrigger(
                 buttonText = "Process Link",
                 onRewardEarned = {
                     if (url.isNotEmpty()) {

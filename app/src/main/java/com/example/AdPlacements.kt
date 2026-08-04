@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.ui.theme.*
 
 @Composable
-fun MonetagNativeBanner(modifier: Modifier = Modifier) {
+fun RewardNativeBanner(modifier: Modifier = Modifier) {
     var isVisible by remember { mutableStateOf(true) }
 
     if (isVisible) {
@@ -60,7 +60,7 @@ fun MonetagNativeBanner(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MonetagInterstitialTrigger(
+fun RewardAdTrigger(
     buttonText: String,
     onRewardEarned: () -> Unit,
     modifier: Modifier = Modifier
@@ -79,7 +79,7 @@ fun MonetagInterstitialTrigger(
     }
 
     if (showInterstitial) {
-        // Full screen dialog simulating Monetag Interstitial/Reward video
+        // Full screen dialog simulating Reward Interstitial/Reward video
         AlertDialog(
             onDismissRequest = { /* Prevent dismiss to force watch */ },
             confirmButton = {
@@ -99,7 +99,7 @@ fun MonetagInterstitialTrigger(
                         .background(Color.Black, RoundedCornerShape(12.dp)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Monetag Video Ad Playing...", color = Color.White)
+                    Text("Reward Video Ad Playing...", color = Color.White)
                 }
             },
             properties = androidx.compose.ui.window.DialogProperties(

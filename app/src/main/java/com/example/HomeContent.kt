@@ -102,7 +102,7 @@ fun HomeContent(onNavigate: (String) -> Unit) {
         }
         
         item {
-            MonetagNativeBanner()
+            RewardNativeBanner()
         }
         
         item {

@@ -62,7 +62,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <!-- RewardNexus Ad Network SDK -->
-    <script src='//libtl.com/sdk.js' data-zone='11443377' data-sdk='show_11443377'></script>
+    
     
     <!-- Telegram Web App SDK (optional compatibility) -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -177,6 +177,8 @@
             box-shadow: 0 0 10px rgba(0, 229, 128, 0.8);
         }
     </style>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="/_vercel/insights/script.js" defer></script>
 </head>
 <body class="bg-darkbg text-slate-100 dark:bg-darkbg dark:text-slate-100 transition-colors duration-300 bg-grid">
 
@@ -1856,6 +1858,30 @@
                     Registrarse
                 </button>
             </form>
+
+            <!-- Verification Code Step (hidden by default) -->
+            <div id="verification-step" class="space-y-4 hidden">
+                <div class="text-center mb-4">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primarygreen/10 border border-primarygreen/30 mb-3">
+                        <i class="fa-solid fa-shield-halved text-primarygreen text-xl"></i>
+                    </div>
+                    <p class="text-xs text-slate-400">Ingresa el código de 6 dígitos enviado a</p>
+                    <p class="text-xs font-bold text-primarygreen" id="verify-email-display"></p>
+                </div>
+                <input type="hidden" id="verify-mode" value="register">
+                <input type="text" id="verify-code-input" maxlength="6" placeholder="000000" class="w-full py-3 text-center text-2xl font-black tracking-[0.5em] bg-slate-950/60 border border-slate-800 focus:border-primarygreen focus:outline-none rounded-xl text-white placeholder-slate-700">
+                <button type="button" id="verify-btn" onclick="verifyCode()" class="w-full py-3 rounded-xl bg-primarygreen hover:bg-[#00cc72] text-darkbg font-extrabold text-xs transition-all shadow-lg shadow-primarygreen/20">
+                    Verificar Código
+                </button>
+                <div class="flex items-center justify-between">
+                    <button type="button" onclick="backToAuthForm()" class="text-xs text-slate-400 hover:text-slate-200 font-bold">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Volver
+                    </button>
+                    <button type="button" id="resend-code-btn" onclick="resendCode()" class="text-xs text-slate-400 hover:text-primarygreen font-bold">
+                        Reenviar código
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2083,24 +2109,200 @@
                 subtitle.textContent = 'Empieza a ganar con tu tiempo en minutos';
             }
         }
-        function handleAuthSubmit(e) {
+        const WEBAUTH_URL = 'https://vesper-aa18ea6c.base44.app/functions/webAuth';
+        let pendingEmail = '';
+        let resendTimer = null;
+
+        async function handleAuthSubmit(e, mode) {
             e.preventDefault();
-            const emailInput = e.target.querySelector('input[type="email"]');
-            const username = emailInput ? emailInput.value.split('@')[0] : 'Usuario';
-            triggerConfetti();
-            closeAuthModal();
-            Swal.fire({
-                title: '¡Acceso Concedido!',
-                text: 'Bienvenido a RewardNexus. Cargando tu panel...',
-                icon: 'success',
-                timer: 1500,
-                showConfirmButton: false,
-                confirmButtonColor: '#00E580',
-                background: '#0F172A',
-                color: '#fff'
-            });
-            setTimeout(() => { showDashboard(username); }, 1600);
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Procesando...';
+            submitBtn.disabled = true;
+
+            try {
+                if (mode === 'register') {
+                    const email = document.getElementById('reg-email').value.toLowerCase().trim();
+                    const username = document.getElementById('reg-username').value.trim();
+                    const password = document.getElementById('reg-password').value;
+                    const passwordConfirm = document.getElementById('reg-password-confirm').value;
+                    const phone = document.getElementById('reg-phone') ? document.getElementById('reg-phone').value : '';
+
+                    if (password !== passwordConfirm) {
+                        Swal.fire({ title: 'Error', text: 'Las contraseñas no coinciden', icon: 'error', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+                        submitBtn.innerHTML = originalText; submitBtn.disabled = false; return;
+                    }
+                    if (password.length < 6) {
+                        Swal.fire({ title: 'Error', text: 'La contraseña debe tener al menos 6 caracteres', icon: 'error', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+                        submitBtn.innerHTML = originalText; submitBtn.disabled = false; return;
+                    }
+
+                    const refCode = new URLSearchParams(window.location.search).get('ref') || '';
+                    const resp = await fetch(WEBAUTH_URL, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'register', email, username, referral: refCode })
+                    });
+                    const data = await resp.json();
+
+                    if (data.ok) {
+                        pendingEmail = email;
+                        showVerificationStep('register');
+                    } else {
+                        Swal.fire({ title: 'Error', text: data.error || 'Error al registrar', icon: 'error', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+                    }
+                } else {
+                    const identifier = document.getElementById('login-identifier').value.trim();
+                    const password = document.getElementById('login-password').value;
+                    const email = identifier.includes('@') ? identifier.toLowerCase() : identifier + '@rewardnexus.app';
+                    pendingEmail = email;
+
+                    const resp = await fetch(WEBAUTH_URL, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'login', email })
+                    });
+                    const data = await resp.json();
+
+                    if (data.ok && data.needCode) {
+                        showVerificationStep('login');
+                    } else if (data.needVerification) {
+                        showVerificationStep('register');
+                    } else {
+                        Swal.fire({ title: 'Error', text: data.error || 'Error al iniciar sesión', icon: 'error', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+                    }
+                }
+            } catch(err) {
+                Swal.fire({ title: 'Error', text: 'Error de conexión', icon: 'error', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+            }
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
         }
+
+        function showVerificationStep(mode) {
+            document.getElementById('auth-form-login').classList.add('hidden');
+            document.getElementById('auth-form-register').classList.add('hidden');
+            document.getElementById('verification-step').classList.remove('hidden');
+            document.getElementById('auth-modal-title').textContent = 'Verifica tu Cuenta';
+            document.getElementById('auth-modal-subtitle').textContent = 'Te enviamos un código de 6 dígitos a tu correo';
+            document.getElementById('verify-mode').value = mode;
+            startResendCountdown();
+        }
+
+        function startResendCountdown() {
+            let countdown = 60;
+            const btn = document.getElementById('resend-code-btn');
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+            if (resendTimer) clearInterval(resendTimer);
+            resendTimer = setInterval(() => {
+                btn.textContent = 'Reenviar en ' + countdown + 's';
+                countdown--;
+                if (countdown < 0) {
+                    clearInterval(resendTimer);
+                    btn.textContent = 'Reenviar código';
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50');
+                }
+            }, 1000);
+        }
+
+        async function verifyCode() {
+            const code = document.getElementById('verify-code-input').value.trim();
+            const mode = document.getElementById('verify-mode').value;
+            if (code.length !== 6) {
+                Swal.fire({ title: 'Error', text: 'El código debe tener 6 dígitos', icon: 'error', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+                return;
+            }
+
+            const verifyBtn = document.getElementById('verify-btn');
+            verifyBtn.innerHTML = 'Verificando...';
+            verifyBtn.disabled = true;
+
+            try {
+                const action = mode === 'register' ? 'verify' : 'login_verify';
+                const resp = await fetch(WEBAUTH_URL, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action, email: pendingEmail, code })
+                });
+                const data = await resp.json();
+
+                if (data.ok) {
+                    localStorage.setItem('rn_user', JSON.stringify(data.user || { email: pendingEmail, username: pendingEmail.split('@')[0] }));
+                    closeAuthModal();
+                    triggerConfetti();
+                    Swal.fire({ title: '¡Verificado!', text: 'Bienvenido a RewardNexus', icon: 'success', timer: 1500, showConfirmButton: false, background: '#0F172A', color: '#fff' });
+                    setTimeout(() => { showDashboard((data.user || {}).username || pendingEmail.split('@')[0]); }, 1600);
+                } else {
+                    Swal.fire({ title: 'Error', text: data.error || 'Código inválido', icon: 'error', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+                }
+            } catch(err) {
+                Swal.fire({ title: 'Error', text: 'Error de conexión', icon: 'error', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+            }
+            verifyBtn.innerHTML = 'Verificar Código';
+            verifyBtn.disabled = false;
+        }
+
+        async function resendCode() {
+            const mode = document.getElementById('verify-mode').value;
+            const action = mode === 'register' ? 'register' : 'login';
+            try {
+                await fetch(WEBAUTH_URL, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action, email: pendingEmail, username: pendingEmail.split('@')[0] })
+                });
+                startResendCountdown();
+                Swal.fire({ title: 'Enviado', text: 'Nuevo código enviado', icon: 'success', timer: 1500, showConfirmButton: false, background: '#0F172A', color: '#fff' });
+            } catch(err) {}
+        }
+
+        function backToAuthForm() {
+            document.getElementById('verification-step').classList.add('hidden');
+            document.getElementById('verify-code-input').value = '';
+            if (resendTimer) clearInterval(resendTimer);
+            switchAuthTab(document.getElementById('verify-mode').value === 'register' ? 'register' : 'login');
+        }
+
+        function handleGoogleAuth() {
+            if (typeof google === 'undefined' || !google.accounts) {
+                Swal.fire({ title: 'Próximamente', text: 'Google OAuth estará disponible pronto. Usa registro por email por ahora.', icon: 'info', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+                return;
+            }
+            google.accounts.id.initialize({
+                client_id: 'YOUR_GOOGLE_CLIENT_ID',
+                callback: async (response) => {
+                    try {
+                        const resp = await fetch(WEBAUTH_URL, {
+                            method: 'POST', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'google', credential: response.credential })
+                        });
+                        const data = await resp.json();
+                        if (data.ok) {
+                            localStorage.setItem('rn_user', JSON.stringify(data.user));
+                            closeAuthModal();
+                            triggerConfetti();
+                            Swal.fire({ title: '¡Conectado!', text: 'Bienvenido a RewardNexus', icon: 'success', timer: 1500, showConfirmButton: false, background: '#0F172A', color: '#fff' });
+                            setTimeout(() => { showDashboard(data.user.username || data.user.name); }, 1600);
+                        } else {
+                            Swal.fire({ title: 'Error', text: data.error || 'Error con Google', icon: 'error', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+                        }
+                    } catch(err) {
+                        Swal.fire({ title: 'Error', text: 'Error de conexión', icon: 'error', background: '#0F172A', color: '#fff', confirmButtonColor: '#00E580' });
+                    }
+                }
+            });
+            google.accounts.id.prompt();
+        }
+
+        // Check existing session on page load
+        window.addEventListener('load', () => {
+            const savedUser = localStorage.getItem('rn_user');
+            if (savedUser) {
+                try {
+                    const user = JSON.parse(savedUser);
+                    showDashboard(user.username || user.name || user.email);
+                } catch(e) { localStorage.removeItem('rn_user'); }
+            }
+        });
         
         function showDashboard(username) {
             // Hide all landing sections
@@ -2125,21 +2327,7 @@
             if (dash) dash.classList.add('hidden');
             window.scrollTo(0, 0);
         }
-        function handleOAuthLogin(provider) {
-            triggerConfetti();
-            closeAuthModal();
-            Swal.fire({
-                title: `Conectado vía ${provider}`,
-                text: 'Bienvenido a RewardNexus. Cargando tu panel...',
-                icon: 'success',
-                timer: 1500,
-                showConfirmButton: false,
-                confirmButtonColor: '#00E580',
-                background: '#0F172A',
-                color: '#fff'
-            });
-            setTimeout(() => { showDashboard(provider.toLowerCase() + '_user'); }, 1600);
-        }
+
 
         // CPA Offer Modal & Redirect
         function startCpaOffer() {
@@ -2623,6 +2811,5 @@
 <!-- Vercel Analytics: Enable Speed Insights and Web Analytics in Vercel Dashboard -->
 
 <!-- Vercel Web Analytics -->
-<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

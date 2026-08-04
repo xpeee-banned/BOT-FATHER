@@ -25,7 +25,7 @@ fun RewardContent() {
     if (showAd) {
         Box(modifier = Modifier.fillMaxSize()) {
             AdWebView(
-                // Placeholder for Monetag Smart Link
+                // Placeholder for Sponsored Content
                 url = "https://www.google.com", 
                 modifier = Modifier.fillMaxSize()
             )
@@ -64,14 +64,14 @@ fun RewardContent() {
                 color = TextSecondary
             )
             Spacer(Modifier.height(48.dp))
-            MonetagInterstitialTrigger(
+            RewardAdTrigger(
                 buttonText = "Ver Anuncio y Ganar Monedas",
                 onRewardEarned = { showAd = true },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(16.dp))
             Text(
-                "Anuncios por Monetag - Seguro y Automatico",
+                "Anuncios Patrocinados - Seguro y Automatico",
                 fontSize = 10.sp,
                 color = TextSecondary.copy(alpha = 0.5f)
             )

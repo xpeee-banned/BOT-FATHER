@@ -12,7 +12,7 @@ import kotlin.concurrent.thread
 object AutoUpdater {
     private const val RELEASES_URL = "https://api.github.com/repos/xpeee-banned/BOT-FATHER/releases/latest"
     private const val DOWNLOAD_URL = "https://github.com/xpeee-banned/BOT-FATHER/releases/download/latest/app-debug.apk"
-    private const val CURRENT_VERSION = "2.1.0"
+    private const val CURRENT_VERSION = "2.4.0"
 
     fun checkForUpdate(context: Context, onResult: (Boolean, String) -> Unit) {
         thread {
