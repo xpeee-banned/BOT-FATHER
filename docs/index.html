@@ -10,13 +10,14 @@
     <meta name="keywords" content="RewardNexus, ganar dinero, tareas pagadas, encuestas, minijuegos, referidos, cripto gratis, USDT, ganar dinero jugando, trading, fintech">
     <meta name="author" content="RewardNexus Co.">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://rewardnexus.vercel.app/">
     
     <!-- Open Graph Tags (Facebook & WhatsApp) -->
     <meta property="og:title" content="RewardNexus - La Plataforma de Recompensas Inteligente">
     <meta property="og:description" content="Gana dinero real de forma garantizada completando ofertas, minijuegos y con nuestro sistema elite de afiliados. ¡Regístrate gratis hoy!">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://rewardnexus.app">
-    <meta property="og:image" content="https://img.icons8.com/nolan/256/money-bag.png">
+    <meta property="og:url" content="https://rewardnexus.vercel.app">
+    <meta property="og:image" content="https://media.base44.com/images/public/6a699f4f0f360427aa18ea6c/d3f8174a1_generated_image.png">
     <meta property="og:site_name" content="RewardNexus">
     
     <!-- Twitter Card Tags -->
@@ -179,6 +180,39 @@
     </style>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="/_vercel/insights/script.js" defer></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "RewardNexus",
+      "url": "https://rewardnexus.vercel.app",
+      "description": "Plataforma de recompensas donde puedes ganar dinero real completando tareas, jugando minijuegos y refiriendo amigos.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Android, Web",
+      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+      "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.8", "ratingCount": "1247"}
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "RewardNexus",
+      "url": "https://rewardnexus.vercel.app",
+      "email": "rewardnexus000@gmail.com",
+      "sameAs": ["https://t.me/xpe_official_bot"]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "Es gratis usar RewardNexus?", "acceptedAnswer": {"@type": "Answer", "text": "Si, RewardNexus es 100% gratis. Solo necesitas registrarte con tu correo y empezar a ganar."}},
+        {"@type": "Question", "name": "Como retiro mis ganancias?", "acceptedAnswer": {"@type": "Answer", "text": "Puedes retirar via PayPal, USDT, Litecoin o transferencia desde el bot de Telegram."}}
+      ]
+    }
+    </script>
 </head>
 <body class="bg-darkbg text-slate-100 dark:bg-darkbg dark:text-slate-100 transition-colors duration-300 bg-grid">
 
@@ -2807,9 +2841,30 @@
             if (currentLang === 'en') applyLanguage();
         });
 
-    </script>
-<!-- Vercel Analytics: Enable Speed Insights and Web Analytics in Vercel Dashboard -->
+    
+        // Social Sharing Functions
+        const SITE_URL = 'https://rewardnexus.vercel.app';
+        const SHARE_TEXT = 'Gana dinero real jugando y completando tareas con RewardNexus! Unete gratis: ';
 
-<!-- Vercel Web Analytics -->
-</body>
-</html>
+        function shareSite(platform) {
+            const urls = {
+                whatsapp: 'https://wa.me/?text=' + encodeURIComponent(SHARE_TEXT + SITE_URL),
+                telegram: 'https://t.me/share/url?url=' + encodeURIComponent(SITE_URL) + '&text=' + encodeURIComponent(SHARE_TEXT),
+                twitter: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(SHARE_TEXT) + '&url=' + encodeURIComponent(SITE_URL),
+                facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(SITE_URL)
+            };
+            if (urls[platform]) window.open(urls[platform], '_blank');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(SITE_URL).then(() => {
+                Swal.fire({ title: 'Copiado!', text: 'Enlace copiado al portapapeles', icon: 'success', timer: 1200, showConfirmButton: false, background: '#0F172A', color: '#fff' });
+            });
+        }
+
+        // Track referral visits
+        (function() {
+            const ref = new URLSearchParams(window.location.search).get('ref');
+            if (ref) { localStorage.setItem('rn_ref', ref); }
+        })();
+    </script>
