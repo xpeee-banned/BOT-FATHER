@@ -309,17 +309,7 @@
                 
                 <!-- Left Hero: Headline & CTAs -->
                 <div class="lg:col-span-7 space-y-8 text-left z-10">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-semibold text-primarygreen">
-                        <span class="flex h-2 w-2 relative">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primarygreen opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-primarygreen"></span>
-                        </span>
-                        RewardNexus
-                    </div>
-                    
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
-                        La forma inteligente de <span class="bg-gradient-to-r from-primarygreen via-brandblue to-brandpurple bg-clip-text text-transparent">ganar con tu tiempo</span>
-                    </h1>
+
                     
                     <p class="text-base sm:text-lg text-slate-400 max-w-xl font-medium">
                         Gana dinero real completando tareas, jugando y refiriendo. <span class="text-white">RewardNexus</span> une las micro-finanzas con recompensas del mundo real en una interfaz limpia y profesional de nivel broker.
@@ -2007,18 +1997,20 @@
                     }
                 }
             }, 2000 + Math.random() * 2000);
-                
-                // Add to dashboard mock transaction table
+
+            // Add to dashboard mock transaction table every 5 seconds
+            setInterval(() => {
                 const txList = document.getElementById('dashboard-tx-list');
                 if (txList) {
+                    const randAct = winnerActions[Math.floor(Math.random() * winnerActions.length)];
                     const div = document.createElement('div');
-                    div.className = "flex items-center justify-between text-xs border-b border-slate-900 pb-1.5 animate-pulse";
+                    div.className = "flex items-center justify-between text-xs border-b border-slate-900 pb-1.5";
                     div.innerHTML = `
                         <div>
                             <p class="font-bold text-white">${randAct.t.split('(')[0]}</p>
                             <p class="text-[9px] text-slate-400">Hace unos segundos</p>
                         </div>
-                        <span class="font-extrabold text-primarygreen">${randAct.t.includes('+$') ? '+' + randAct.t.split('+$')[1].split(')')[0] + ' USD' : '+15 🪙'}</span>
+                        <span class="font-extrabold text-primarygreen">${randAct.t.includes('+$') ? '+' + randAct.t.split('+$')[1].split(')')[0] + ' USD' : '+15 \u00A0\u00A0'}</span>
                     `;
                     txList.insertBefore(div, txList.firstChild);
                     if (txList.children.length > 5) {
@@ -2111,6 +2103,31 @@
                 menu.classList.add('hidden');
                 icon.className = 'fa-solid fa-bars text-lg';
             }
+        }
+
+
+        function isLoggedIn() {
+            return !!localStorage.getItem('rn_user');
+        }
+
+        function requireAuth(action) {
+            if (!isLoggedIn()) {
+                Swal.fire({
+                    title: 'Inicia Sesión',
+                    text: 'Necesitas una cuenta para acceder a esta función. ¡Es gratis!',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Iniciar Sesión',
+                    cancelButtonText: 'Cancelar',
+                    background: '#0F172A',
+                    color: '#fff',
+                    confirmButtonColor: '#00E580'
+                }).then((result) => {
+                    if (result.isConfirmed) openAuthModal('login');
+                });
+                return false;
+            }
+            return true;
         }
 
         // Authentication Modal Actions
@@ -2365,6 +2382,7 @@
 
         // CPA Offer Modal & Redirect
         function startCpaOffer() {
+            if (!requireAuth('startCpaOffer')) return;
             Swal.fire({
                 title: 'Iniciar Oferta CPA',
                 html: `
@@ -2408,6 +2426,7 @@
 
         // Crypto Offer Modal & Redirect
         function startCryptoOffer() {
+            if (!requireAuth('startCryptoOffer')) return;
             Swal.fire({
                 title: 'Iniciar Comunidad Cripto',
                 html: `
@@ -2449,6 +2468,7 @@
 
         // Sponsored Ad Video Integration
         function showSponsoredAd() {
+            if (!requireAuth('showSponsoredAd')) return;
             if (typeof show_11443377 === 'function') {
                 // If ad script is fully loaded and initialized
                 show_11443377().then(() => {
@@ -2517,6 +2537,7 @@
 
         // Referral Program Dashboard in Alert
         function showReferralProgram() {
+            if (!requireAuth('showReferralProgram')) return;
             Swal.fire({
                 title: 'Panel de Socios Elite',
                 html: `
@@ -2727,6 +2748,7 @@
         }
         
         function playDice() {
+            if (!requireAuth('playDice')) return;
             const val = Math.floor(Math.random() * 6) + 1;
             const emojis = ["⚀","⚁","⚂","⚃","⚄","⚅"];
             const el = document.getElementById("dice-result");
@@ -2746,6 +2768,7 @@
         }
         
         function playSlot() {
+            if (!requireAuth('playSlot')) return;
             const emojis = ["🍒","🍋","🍊","🍇","🪙","7️⃣"];
             const el = document.getElementById("slot-result");
             const txt = document.getElementById("slot-text");
@@ -2804,9 +2827,7 @@
             else { txt.innerHTML = "📉 Perdiste " + hlCurrent + " → " + next + " +3 🪙 +5 XP"; txt.className = "text-red-400 text-sm"; gameReward(3, 5); }
             hlCurrent = next;
         }
-        
-            if (overlay) overlay.classList.add("hidden");
-        }
+
         function doLogin(method) {
             hideLogin();
             if (typeof Swal !== "undefined") {
