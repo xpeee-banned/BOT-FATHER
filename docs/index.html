@@ -1750,7 +1750,7 @@
                     <p class="text-sm font-bold text-white" data-es="Descargar APK" data-en="Download APK">Descargar APK</p>
                     <p class="text-[10px] text-slate-400">v2.3 - 23.7MB</p>
                 </a>
-                <button onclick="Swal.fire({title:'Retiro',html:'<p class=text-xs text-slate-300>Retiros disponibles desde $10 USD</p><p class=text-xs text-slate-400 mt-2>Métodos: PayPal, USDT (TRC20), LTC</p>',icon:'info',confirmButtonColor:'#00E580',background:'#0F172A',color:'#fff'})" class="glass-card rounded-2xl p-5 border border-slate-800 hover:border-primarygreen transition-all text-left">
+                <button onclick="showWithdrawInfo()" class="glass-card rounded-2xl p-5 border border-slate-800 hover:border-primarygreen transition-all text-left">
                     <i class="fa-solid fa-wallet text-primarygreen text-2xl mb-2"></i>
                     <p class="text-sm font-bold text-white" data-es="Retirar" data-en="Withdraw">Retirar</p>
                     <p class="text-[10px] text-slate-400">PayPal, USDT, LTC</p>
@@ -2356,6 +2356,17 @@
             }
         });
         
+        function showWithdrawInfo() {
+            Swal.fire({
+                title: 'Retiro',
+                html: '<p style="font-size:12px;color:#cbd5e1">Retiros disponibles desde $10 USD</p><p style="font-size:12px;color:#94a3b8;margin-top:8px">Métodos: PayPal, USDT (TRC20), LTC</p>',
+                icon: 'info',
+                confirmButtonColor: '#00E580',
+                background: '#0F172A',
+                color: '#fff'
+            });
+        }
+
         function showDashboard(username) {
             // Hide all landing sections
             document.querySelectorAll('nav, section, .ticker-wrapper').forEach(el => {
@@ -2367,6 +2378,15 @@
                 dash.classList.remove('hidden');
                 const userEl = document.getElementById('dash-username');
                 if (userEl) userEl.textContent = 'Hola, @' + username;
+                // Try to load real user data
+                const stored = localStorage.getItem('rn_user');
+                if (stored) {
+                    try {
+                        const u = JSON.parse(stored);
+                        const balEl = document.getElementById('dash-balance');
+                        if (balEl && u.coins) balEl.textContent = u.coins.toLocaleString() + ' 🪙';
+                    } catch(e) {}
+                }
                 window.scrollTo(0, 0);
             }
         }
@@ -2829,8 +2849,17 @@
             hlCurrent = next;
         }
 
+        function selectPaymentMethod(method, element) {
+            document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('border-primarygreen'));
+            element.classList.add('border-primarygreen');
+            const banner = document.getElementById('payment-selection-banner');
+            if (banner) {
+                banner.classList.remove('hidden');
+                banner.innerHTML = '<p class="text-sm font-bold text-white">Método seleccionado: <span class="text-primarygreen">' + method + '</span></p><p class="text-xs text-slate-400 mt-1">Continúa completando ofertas para acumular saldo y solicitar tu retiro.</p>';
+            }
+        }
+
         function doLogin(method) {
-            hideLogin();
             if (typeof Swal !== "undefined") {
                 Swal.fire({ title: "¡Bienvenido a RewardNexus!", text: "Cargando tu dashboard...", icon: "success", timer: 1500, showConfirmButton: false, background: "#0F172A", color: "#fff" });
             }
